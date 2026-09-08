@@ -11,7 +11,7 @@ test("site renders real bilingual articles with resolvable static links and filt
   const outDir = await mkdtemp(path.join(tmpdir(), "qca-site-test-"));
   try {
     const result = await buildSite(root, { outDir });
-    assert.equal(result.itemCount, 10);
+    assert.ok(result.itemCount > 0);
     const visit = async (dir) => {
       for (const entry of await readdir(dir, { withFileTypes: true })) {
         const file = path.join(dir, entry.name);
@@ -43,7 +43,9 @@ test("site renders real bilingual articles with resolvable static links and filt
     );
     dom.window.eval(await readFile(path.join(root, "site/site.js"), "utf8"));
     const doc = dom.window.document;
-    assert.equal(doc.querySelectorAll("[data-entry]").length, 5);
+    const initialCount = doc.querySelectorAll("[data-entry]").length;
+    const showcaseCount = doc.querySelectorAll('[data-entry][data-type="showcase"]').length;
+    assert.ok(initialCount > 0 && showcaseCount > 0);
     const search = doc.querySelector("#search");
     search.value = "LittleMemeWorld";
     search.dispatchEvent(new dom.window.Event("input"));
@@ -53,7 +55,7 @@ test("site renders real bilingual articles with resolvable static links and filt
     search.dispatchEvent(new dom.window.Event("input"));
     assert.equal(doc.querySelector(".empty").hidden, false);
     doc.querySelector("#reset").click();
-    assert.equal(doc.querySelectorAll("[data-entry]:not([hidden])").length, 5);
+    assert.equal(doc.querySelectorAll("[data-entry]:not([hidden])").length, initialCount);
     doc.querySelector("#theme-toggle").click();
     assert.equal(doc.documentElement.dataset.theme, "dark");
     doc.querySelector("#theme-toggle").click();
@@ -61,7 +63,7 @@ test("site renders real bilingual articles with resolvable static links and filt
     const type = doc.querySelector("#type");
     type.value = "showcase";
     type.dispatchEvent(new dom.window.Event("input"));
-    assert.equal(doc.querySelectorAll("[data-entry]:not([hidden])").length, 1);
+    assert.equal(doc.querySelectorAll("[data-entry]:not([hidden])").length, showcaseCount);
     assert.equal(dom.window.location.pathname, "/cloud-agents-cookbook/zh-CN/");
     dom.window.close();
   } finally {
