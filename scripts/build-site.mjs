@@ -255,9 +255,7 @@ export async function buildSite(root = process.cwd(), options = {}) {
     await writeFile(
       path.join(outDir, "404.html"),
       '<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Page not found · Qoder Cookbook</title><h1>Page not found</h1><p>This cookbook page does not exist.</p><a href="https://' +
-        repository.split("/")[0] +
-        ".github.io/" +
-        repository.split("/")[1] +
+        "cookbook.anchen.me" +
         '/">Back to Cookbook</a></html>',
     );
     return { outDir, itemCount: catalog.items.length };

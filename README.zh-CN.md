@@ -73,8 +73,10 @@ npm run dev
 
 ## 个人 GitHub Pages
 
-个人预览地址：<https://hellomypastor.github.io/cloud-agents-cookbook/zh-CN/>。
+个人预览地址：<https://cookbook.anchen.me/zh-CN/>。
 
 `.github/workflows/pages.yml` 仅在 `hellomypastor/cloud-agents-cookbook` 执行部署。推送 `codex/cookbook-pages`（或将该工作流合入 `main` 后推送主干）会先运行完整校验，再构建并发布 `dist/site/`。GitHub 仓库 Settings → Pages 的 Source 使用 **GitHub Actions**。部署不需要额外密钥，写权限仅授予部署 job。
 
 正文源码与投稿链接使用构建时的 `GITHUB_REPOSITORY` 和 `GITHUB_SHA`，指向实际构建仓库和版本。发布目录不含 Demo 源码。回退时可将发布分支 revert 到已验证版本并推送，触发重新部署。
+
+独立域名为 `cookbook.anchen.me`，DNS 需要添加 `CNAME cookbook → hellomypastor.github.io`。GitHub Pages 设置中的 Custom domain 使用 `cookbook.anchen.me`，DNS 生效且证书签发后启用 Enforce HTTPS。此设置不更改个人主站 `anchen.me`。
