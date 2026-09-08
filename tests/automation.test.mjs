@@ -37,7 +37,7 @@ test('external content contributions cannot change repository infrastructure', (
 test('workflows pin actions and isolate public pull requests from secrets and write tokens', async () => {
   const directory = path.join(repoRoot, '.github', 'workflows');
   const files = (await readdir(directory)).filter((file) => file.endsWith('.yml'));
-  assert.deepEqual(files.sort(), ['dco.yml', 'merge-queue.yml', 'preview.yml', 'publish.yml', 'validate.yml']);
+  assert.deepEqual(files.sort(), ['dco.yml', 'merge-queue.yml', 'pages.yml', 'preview.yml', 'publish.yml', 'validate.yml']);
 
   for (const file of files) {
     const source = await readFile(path.join(directory, file), 'utf8');
@@ -251,4 +251,15 @@ test('public entry points link the Demo Contract and route Demo review', async (
   assert.match(codeowners, /^\/demos\/ @anchenqlw$/m);
   const proposal = YAML.parse(await readFile(path.join(repoRoot, '.github', 'ISSUE_TEMPLATE', 'content-proposal.yml'), 'utf8'));
   assert.ok(proposal.body.some((item) => item.id === 'demo'));
+});
+
+test('personal Pages deploys only validated static output with scoped permissions', async () => {
+  const workflow = YAML.parse(await readFile(path.join(repoRoot, '.github/workflows/pages.yml'), 'utf8'));
+  assert.equal(workflow.jobs.build.if, "github.repository == 'hellomypastor/cloud-agents-cookbook'");
+  assert.equal(workflow.on.pull_request, undefined);
+  assert.equal(workflow.jobs.deploy.needs, 'build');
+  assert.deepEqual(workflow.jobs.deploy.permissions, { pages: 'write', 'id-token': 'write' });
+  const steps = workflow.jobs.build.steps;
+  assert.ok(steps.findIndex(s => s.run === 'npm run check') < steps.findIndex(s => s.run === 'npm run build:site'));
+  assert.equal(steps.at(-1).with.path, 'dist/site');
 });

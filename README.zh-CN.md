@@ -59,3 +59,22 @@ npm run check
 正文、内容图片、模板和文档使用 [CC BY 4.0](./LICENSES/CC-BY-4.0.txt)；Demo 源码、可执行工具、工作流、测试和独立示例代码使用 [Apache-2.0](./LICENSES/Apache-2.0.txt)。详细适用范围见 [LICENSE](./LICENSE) 和 [NOTICE](./NOTICE)。
 
 投稿内容适用相同许可证，并要求所有 commit 满足 DCO 签署。
+
+## 本地浏览站点
+
+```bash
+npm ci --ignore-scripts
+npm run dev
+```
+
+打开 <http://localhost:4173/zh-CN/>（英文入口为 `/en-US/`）。支持搜索、主题与类型筛选、独立文章页和语言切换。修改内容或页面后运行 `npm run build:site` 并刷新浏览器；端口可通过 `PORT` 环境变量指定。
+
+`npm run build:site` 输出纯静态站点到 `dist/site/`，可以作为 GitHub Pages 的发布目录。当前命令只构建本地文件，不执行线上部署；原有 `npm run preview` 继续提供审核预览。运行 `npm run check` 会重建 `dist/`，之后需要重新运行 `npm run build:site`。
+
+## 个人 GitHub Pages
+
+个人预览地址：<https://hellomypastor.github.io/cloud-agents-cookbook/zh-CN/>。
+
+`.github/workflows/pages.yml` 仅在 `hellomypastor/cloud-agents-cookbook` 执行部署。推送 `codex/cookbook-pages`（或将该工作流合入 `main` 后推送主干）会先运行完整校验，再构建并发布 `dist/site/`。GitHub 仓库 Settings → Pages 的 Source 使用 **GitHub Actions**。部署不需要额外密钥，写权限仅授予部署 job。
+
+正文源码与投稿链接使用构建时的 `GITHUB_REPOSITORY` 和 `GITHUB_SHA`，指向实际构建仓库和版本。发布目录不含 Demo 源码。回退时可将发布分支 revert 到已验证版本并推送，触发重新部署。

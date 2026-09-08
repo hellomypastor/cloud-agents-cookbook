@@ -59,3 +59,9 @@ The generated preview is written to `dist/preview/` and is not committed. Contri
 Content, content images, templates, and documentation are licensed under [CC BY 4.0](./LICENSES/CC-BY-4.0.txt). Demo source, executable tooling, workflows, tests, and standalone examples are licensed under [Apache-2.0](./LICENSES/Apache-2.0.txt). See [LICENSE](./LICENSE) and [NOTICE](./NOTICE) for the exact scope.
 
 Contributions are accepted under the same applicable license and require a Developer Certificate of Origin sign-off.
+
+## Browse locally
+
+Run `npm ci --ignore-scripts`, then `npm run dev`, and open <http://localhost:4173/en-US/> (Chinese: `/zh-CN/`). The site supports search, topic/type filters, article pages, and translation links. After editing content or UI, run `npm run build:site` and refresh. Set `PORT` to change the local port.
+
+`npm run build:site` produces a static, GitHub Pages-compatible directory at `dist/site/`; it does not deploy. The existing `npm run preview` remains the editorial preview. Because `npm run check` rebuilds `dist/`, rebuild the site afterward.
