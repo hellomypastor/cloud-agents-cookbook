@@ -13,13 +13,9 @@ translation_of: "marlin-data-agent"
 
 ## Scenario and outcome
 
-A business question leads through metric clarification, data discovery, queries, interpretation, and reporting. Marlin organizes that chain as a persistent analysis service.
+An analysis request often starts with “Why did conversion decline?” Answering it requires agreeing on definitions, finding tables, querying, interpreting differences, and returning a report to the requester. SQL generation alone does not complete the workflow.
 
-Marlin connects metric definitions, SQL, data questions, analysis, and experiment reports in a knowledge-backed workflow.
-
-This account is based on showcase material contributed by 权栩. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
+权栩’s Marlin showcase describes five capabilities: metric clarification, SQL, data questions, analysis, and experiment reports. Its source also describes domain metadata and analysis SOPs, local Skill and remote MCP knowledge channels, and confirmed requests linked to report delivery. Synthetic numbers below explain the method, not business performance.
 
 ![Conversion analysis](./assets/result-preview.png)
 
@@ -27,87 +23,60 @@ Illustrative output based on this article’s example; synthetic data, not a pro
 
 ## Implementation approach
 
-### How the work moves through the product
+### Put knowledge and queries behind distinct checks
 
-Start with one domain and authorized data. Preserve metric definitions, query versions, and time ranges alongside reports so conclusions remain reproducible.
+A reusable orchestration fixes definitions and a plan before querying, then writes from returned results. Clarification, absent data, and unsupported interpretation are different states. This diagram organizes the source’s responsibilities, not unpublished interfaces.
+
+Associate each result table with a subquestion. Compare totals before launching unnecessary segmentation. The report may display progress but must not fill in values before query results arrive.
 
 ```mermaid
-flowchart LR
-  N0["Agree on definitions"] --> N1
-  N1["Select data"] --> N2
-  N2["Execute analysis"] --> N3
-  N3["Deliver a report"]
+flowchart TD
+  A[Question] --> B[Metric agreement]
+  B --> C[Metadata and analysis SOP]
+  C --> D[Query plan]
+  D --> E[Read-only execution]
+  E --> F{Data available}
+  F -->|Yes| G[Observed results and hypotheses]
+  F -->|No| H[Coverage gap]
+  G --> I[Versioned report and work item]
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-### Responsibilities and authoritative facts
+### Agree on definitions before choosing a method
 
-| Component | Responsibility |
-|---|---|
-| Knowledge | Metadata, metrics, and procedures |
-| Agent | Compose queries and explanations |
-| Data tools | Execute queries and retain results |
+Conversion may mean registration, ordering, or payment; new users may be defined by registration or first visit. Record numerator, denominator, observation window, deduplication entity, and timezone. A successful order query does not answer a payment question.
 
-Reproducibility depends on data versions and definitions rather than report length. Retrieval supplies methods, query tools supply facts, and the model explains their scope.
+The source treats clarification as a distinct capability. A concise definition sheet allows the requester to correct assumptions before computation.
 
-### Follow one concrete request
+### Metadata and SOPs answer different questions
 
-Investigate a conversion-rate decline using synthetic event tables and deliver a report with metric definitions, query results, and evidence limits.
+Table metadata describes fields and joins; an analysis SOP describes the method. Metadata without a method can produce isolated numbers, while a method without metadata cannot execute.
 
-1. **Agree on definitions.** Specify new-user eligibility, conversion events, deduplication entity, timezone, numerator, and denominator.
-2. **Select data.** Use metadata and analysis procedures to identify joins, permissions, and the relevant time range.
-3. **Execute analysis.** Constrain read-only queries and retain SQL versions, result tables, and segment comparisons.
-4. **Deliver a report.** Separate observations, hypotheses, and proposed experiments, linking the report to query evidence.
+The source uses local Skills and remote MCP knowledge. Compare definitions and plans across the channels and record the selected version. Conflicting definitions need resolution, not averaging.
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+### Separate observations, hypotheses, and next checks
 
-### A result that can be checked
+In a synthetic example, period A has 20 conversions from 100 eligible users; B has 15 from 100. The decline is five percentage points, or 25% relative. Label these differently.
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+No channel, cohort, or experiment data is provided, so the report cannot blame a release. Segment comparable data to locate the change, while keeping causal claims separate from descriptive findings.
 
-```json
-{
-  "input": {
-    "period_a": {
-      "eligible": 100,
-      "converted": 20
-    },
-    "period_b": {
-      "eligible": 100,
-      "converted": 15
-    }
-  },
-  "expected": {
-    "conversion_a": 0.2,
-    "conversion_b": 0.15,
-    "difference_percentage_points": -5
-  }
-}
-```
+### Deliver a reproducible report
 
-The report can establish a five-percentage-point decline. Without channel, cohort, or experiment data, it cannot attribute the change to a product release.
+Include the confirmed question, query version, result tables, conclusions, unresolved questions, and report reference. Link the requirement to this artifact rather than copying a context-free chat summary.
 
-### Try the workflow yourself
+The source connects confirmation, work-item progress, and report writeback. Use stable request identity. Retry delivery when only writeback failed; rerun affected queries when the metric definition changes.
 
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+### A conversion-analysis delivery package
 
-> Compare new-user conversion across two periods. Confirm eligibility, conversion events, and denominators first. Separate observations, hypotheses, and next queries, with calculation evidence.
+This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
 
-Check that eligibility and observation windows match. An unfinished period is not directly comparable. The five-point decline is an observation; investigate causes with channel or cohort data instead of asking for a more confident narrative.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Conflicting definitions**. Expected behavior: Resolve the metric definition before querying. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+| Item | Evidence or condition | Decision |
+|---|---|---|
+| Confirmed definition | Same eligibility and observation window | Make periods comparable |
+| Query result | 20/100 versus 15/100 | Retain numerator and denominator |
+| Interpretation | Five points down; 25% relative decline | Distinguish absolute and relative change |
+| Follow-up | Channel and cohort data missing | Keep causality unresolved |
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
-
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Conflicting definitions | Resolve the metric definition before querying. |
-| Empty result | Report missing data rather than a trend. |
-| Correlation presented as causation | Label hypotheses and propose a verification experiment. |
+Start with a question family with human reference answers, then test conflicting definitions, empty results, and incomplete periods. Evaluate retrieval, interpretation, and reproducibility separately. Author-reported scale is not a quality evaluation of the current version.

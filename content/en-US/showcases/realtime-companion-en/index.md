@@ -14,15 +14,9 @@ source_url: "https://qca-realtime-agent.vercel.app/"
 
 ## Scenario and outcome
 
-Voice companionship includes pauses, interruptions, and deliberate endings. This product makes conversational control visible alongside generated responses.
+Xingyu presents a voice companion through topics such as happy moments, worries, and curiosity, with visible guidance for parents.
 
-[Open the online entry](https://qca-realtime-agent.vercel.app/)
-
-A realtime voice companion supports sharing and questions through conversational interaction.
-
-This account is based on showcase material contributed by Qoder Agents 团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
+Listening, response, interruption, and ending shape the experience together. The following interaction contract does not infer backend models or complete safeguards from a public landing page.
 
 ![Showcase view](./assets/showcase-view.webp)
 
@@ -30,80 +24,63 @@ Companion landing page with topic selection and a voice entry point. Source: ori
 
 ## Implementation approach
 
-### How the work moves through the product
+### Carry turn identity through text and audio
 
-Validate interruption, mute, network failure, and ending a session. Child-oriented experiences also require guardian awareness, minimal data collection, and age-appropriate content.
+Input, text, and audio can arrive asynchronously. Associate them with one turn and let each consumer reject superseded output consistently.
+
+Distinguish absent microphone input, a service failure, and playback failure rather than reporting all as misunderstood speech. The reference sequence emphasizes supersession without specifying a voice protocol.
 
 ```mermaid
-flowchart LR
-  N0["Start a session"] --> N1
-  N1["Receive speech"] --> N2
-  N2["Respond and interrupt"] --> N3
-  N3["End and clean up"]
+sequenceDiagram
+  participant U as User
+  participant C as Conversation
+  participant G as Generation
+  participant P as Playback
+  U->>C: Start first turn
+  C->>G: Generate with turn identity
+  G->>P: Queue first-turn audio
+  U->>C: Interrupt with second turn
+  C->>G: Supersede first turn
+  C->>P: Stop and clear first turn
+  C->>G: Handle second turn
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-### Responsibilities and authoritative facts
+### Make voice states understandable
 
-| Component | Responsibility |
-|---|---|
-| Voice UI | Capture, playback, ending controls |
-| Agent | Interpret input and form responses |
-| Session control | Turns, cancellation, data handling |
+A topic selection does not mean the microphone is listening. Connection, permission, and actual input are distinct steps with distinct failures.
 
-Companionship depends on turn-taking and user control as much as fluent speech. Stabilize stop, interruption, and reconnection before adding inspectable, deletable memory.
+Expose listening, thinking, speaking, and ended states instead of relying on an ambiguous animation.
 
-### Follow one concrete request
+### Interruption spans generation and playback
 
-Use an adult test account to share a daily event and verify listening, response, interruption, and session ending without collecting children’s recordings.
+When the user interrupts, stop old audio, clear queued playback, and keep captions aligned with the new turn. Cancelling generation alone leaves buffered speech.
 
-1. **Start a session.** Make microphone state, purpose, and ending controls explicit before capture.
-2. **Receive speech.** Track turns and silence with clear listening and processing states.
-3. **Respond and interrupt.** Allow interruption and discard obsolete queued output.
-4. **End and clean up.** Stop capture and playback, apply the retention policy, and show a closed state.
+Turn identity helps reject late text and audio from the superseded response.
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+### Leave room for the next utterance
 
-### A result that can be checked
+A short acknowledgment and a focused follow-up can leave room for the user. Long monologues increase interruption cost; evaluate conversational opportunity rather than response length.
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+Visible privacy guidance is useful but does not establish backend retention or protection behavior.
 
-```json
-{
-  "input": {
-    "playing_turn": "t1",
-    "new_user_turn": "t2"
-  },
-  "expected": {
-    "cancel_playback": "t1",
-    "active_turn": "t2"
-  }
-}
-```
+### Verify the end of the conversation
 
-Content appropriateness and turn-state correctness are separate checks. First ensure that obsolete speech is not mixed with the new turn.
+Ending should stop input, playback, and pending work for the turn. After disconnection, make recovery explicit instead of unexpectedly playing an old answer.
 
-### Try the workflow yourself
+Test ending during listening, thinking, and speaking, not only after a normal response finishes.
 
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+### Four channels to check on interruption
 
-> Run a short voice conversation. Stop the old response when interrupted and handle the new utterance. Close input and playback when the conversation ends.
+This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
 
-Interrupt while the first response is playing. Check audio stopping, queue clearing, and transcript isolation. Cancelling generation alone does not remove audio already queued for playback; generation, playback, and captions need turn identity.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **User interrupts**. Expected behavior: Stop old playback and isolate the new turn. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+| Item | Evidence or condition | Decision |
+|---|---|---|
+| Input | User starts turn two | Associate speech with the new turn |
+| Generation | Turn one still emits output | Cancel or ignore old results |
+| Playback | Old audio remains queued | Stop and clear the old queue |
+| Captions | Old text arrives late | Do not append to the new turn |
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
-
-| Failure or ambiguity | Required behavior |
-|---|---|
-| User interrupts | Stop old playback and isolate the new turn. |
-| Network loss | Show disconnection rather than waiting indefinitely. |
-| Speech after ending | Do not capture or respond after closure. |
+Test connection, interruption, silence, disconnection, and ending with short topics. Record state transitions and audible outcomes, and evaluate clarity with intended users. Speech capability alone does not establish long-term suitability.

@@ -76,14 +76,3 @@ Start with a few component families. Define a parameter schema, units, and allow
 Preserve the request, final parameters, tool versions, check reports, and artifact associations for every task. Acceptance should cover dimensional agreement and reopening exported files. A failed run must not deliver an older artifact as its own result.
 
 The reusable pattern is request → parameters → geometry → checks → files. A QCA implementation would additionally need task execution, artifact storage, and failure recovery; those capabilities have not been established by inspecting this public viewer.
-
-### Verify the delivery boundary
-
-This exercise checks artifact consistency, not arbitrary natural-language generation or engineering compliance.
-
-| Check | Expected behavior |
-|---|---|
-| Stale download link | Detect sample-artifact mismatch. |
-| Preview without export | Do not count it as artifact delivery. |
-| Reported check passes | Engineering acceptance remains separate. |
-

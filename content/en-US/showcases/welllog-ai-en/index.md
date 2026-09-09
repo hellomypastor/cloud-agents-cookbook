@@ -79,14 +79,3 @@ For other industrial analysis tasks, retain the sequence of selecting data, comp
 For evaluation, have domain experts establish reference conclusions on synthetic or authorized data. Cover intervals spanning layers, missing curves, anomalous values, and endpoint failures. Assess numerical calculations, evidence use, and interpretation quality separately; producing a complete-looking report is not sufficient evidence of success.
 
 Operational suggestions such as perforation or well testing require professional review. The reusable contribution is an industry workspace with explicit selection, visible evidence, and transparent failure handling.
-
-### Verify the delivery boundary
-
-Evaluate arithmetic, grounding, and geological conclusions separately.
-
-| Check | Expected behavior |
-|---|---|
-| Rapid selection change | Old responses do not overwrite the current request. |
-| Similar cross-layer averages | Explain aggregation limits. |
-| Endpoint failure | Label rule-based fallback clearly. |
-

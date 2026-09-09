@@ -105,21 +105,10 @@ sequenceDiagram
 
 面向公网接入前，还需要为代理补齐调用方身份、会话归属校验、限流和用量控制。在所核对的共享代理文件中，没有看到这些控制；“PAT 不下发”不等于已经具备完整的多租户隔离。不要直接把一个可调用任意传入 Session ID 的代理当成生产网关。
 
-本文没有复制第三方源码和图片。复用代码或品牌素材前，应核对原仓库的许可和素材授权；公开可读不自动等于可按本 Cookbook 的许可证再分发。
+正文没有复制第三方源码；界面图使用原 showcase 提供的演示素材。复用代码或品牌素材前，应核对原仓库的许可和素材授权；公开可读不自动等于可按本 Cookbook 的许可证再分发。
 
 ## 参考实现
 
 - [项目说明与启动方式](https://github.com/kunlun322/portal-rag-assistant)
 - [固定版本：服务端代理](https://github.com/kunlun322/portal-rag-assistant/blob/eb1afef05af0565231e16e4bb3a6fc9da8d402b2/lib/qoder.js)
 - [固定版本：客服客户端](https://github.com/kunlun322/portal-rag-assistant/blob/eb1afef05af0565231e16e4bb3a6fc9da8d402b2/customer-service.js)
-
-### 复用时核对交付边界
-
-事件流协议与最终消息应有明确优先级。端到端测试需要核对可见文本，不只是请求是否返回成功。
-
-| 检查点 | 预期行为 |
-|---|---|
-| 事件重放 | 文字不重复。 |
-| 代理返回错误 | 停止等待并显示可理解错误。 |
-| 恶意消息内容 | 渲染为安全文本或受控格式。 |
-

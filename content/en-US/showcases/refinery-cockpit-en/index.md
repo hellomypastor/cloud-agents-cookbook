@@ -14,15 +14,9 @@ source_url: "https://hao2-lzsh-refinery.vercel.app"
 
 ## Scenario and outcome
 
-A refinery overview brings units, material flow, trends, and alerts into a readable surface. This demonstration guides readers from global changes to individual metrics.
+The refinery cockpit brings unit load, material flow, trends, and safety information into a global view. The demo illustrates domain-oriented information organization.
 
-[Open the online entry](https://hao2-lzsh-refinery.vercel.app)
-
-A refinery cockpit organizes unit loads, material flow, trends, and safety indicators using demonstration data.
-
-This account is based on showcase material contributed by 何傲. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
+Operational readings are simulated, not a production connection. Use it to study representation and navigation, not to assess actual equipment or make process decisions.
 
 ![Showcase view](./assets/showcase-view.webp)
 
@@ -30,80 +24,61 @@ Demo cockpit showing unit loads and material flow; operational readings are simu
 
 ## Implementation approach
 
-### How the work moves through the product
+### Normalize data before visualization
 
-Label static context, simulated readings, and live data separately. The public page is a cockpit demonstration, not evidence of a production integration.
+A data adapter reconciles object identity and time while retaining source units, quality, and windows. Do not silently fill gaps merely to connect a chart; label any interpolation.
+
+Visualization presents these facts. Generated explanations should refer to selected objects and windows. The reference flow does not imply a live production feed.
 
 ```mermaid
 flowchart LR
-  N0["Separate data sources"] --> N1
-  N1["Create a hierarchy"] --> N2
-  N2["Explain alerts"] --> N3
-  N3["Verify navigation"]
+  A[Demonstration dataset] --> B[Object and time mapping]
+  B --> C[Units and quality labels]
+  C --> D[Overview]
+  C --> E[Unit detail]
+  C --> F[Trend view]
+  D --> G[Selected object and window]
+  G --> E
+  G --> F
+  E --> H[Export with data mode]
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-### Responsibilities and authoritative facts
+### Design a reading order before adding metrics
 
-| Component | Responsibility |
-|---|---|
-| Data | Source, units, timestamps |
-| Cockpit | Overview, trends, details |
-| Explanation | Alert evidence and data identity |
+An overview should identify what needs attention, then support tracing units, neighbors, and change over time. Equal-sized metrics obscure priority; color alone does not explain it.
 
-The public cockpit is a demonstration. If an Agent explains its values, preserve the simulation label so the report cannot be mistaken for production evidence.
+Preserve units, object, window, and data mode, separating static context from dynamic demo readings.
 
-### Follow one concrete request
+### Follow one material path
 
-Inspect a simulated unit-load change from overview to trend and alert timeline, focusing on clear data semantics.
+Trace an inlet through processing units to products, distinguishing node and edge measures. Load percentage and flow are different quantities and cannot be added or directly compared as efficiency.
 
-1. **Separate data sources.** Distinguish public background facts, simulated readings, and future live inputs.
-2. **Create a hierarchy.** Use overview for location, trends for timing, and details for values and units.
-3. **Explain alerts.** Attach thresholds, windows, and observations rather than relying on color alone.
-4. **Verify navigation.** Replay a fixed simulated event and reconcile overview with detail.
+Make comparison windows explicit and label missing or stale data rather than silently substituting zero.
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+### Preserve context in drill-down
 
-### A result that can be checked
+Detail views should retain unit identity, time range, and neighbors; returning should preserve selection.
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+Carry simulation labeling into detail and exports. A footer-only label is easily lost when screenshots or reports leave the page.
 
-```json
-{
-  "input": {
-    "data_mode": "simulation",
-    "load_percent": 72
-  },
-  "expected": {
-    "label": "simulated load",
-    "production_claim": false
-  }
-}
-```
+### Explain alert state and evidence
 
-Preserve data identity across overview, detail, and exports rather than relying on a single footer label.
+An alert needs object, time, rule or threshold, and current validity. Otherwise users cannot distinguish an active issue, history, and an animation.
 
-### Try the workflow yourself
+Use domain-approved rules for a real implementation; generated descriptions are not automatic control instructions.
 
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+### Reading one material path
 
-> Inspect unit loads and material flow in the demo cockpit, tracing one unit’s neighbors. Explain units and data mode without presenting simulated readings as measured production data.
+This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
 
-Trace one complete material path and distinguish load percentages from flow units. They cannot be summed as if they were the same measure. The screenshot illustrates organization; simulation identity should survive detail views and report exports.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Stale feed**. Expected behavior: Display staleness instead of a live indicator. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+| Item | Evidence or condition | Decision |
+|---|---|---|
+| Node | Unit load percentage | Identify unit and time |
+| Edge | Material flow | Retain flow units |
+| Trend | Change over a window | Align with overview window |
+| Export | Report outside the page | Preserve simulated-data label |
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
-
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Stale feed | Display staleness instead of a live indicator. |
-| Mixed units | Label units and avoid ambiguous axes. |
-| Alert clears | Retain occurrence and resolution times. |
+Validate one material path and unit before expanding views. Check units, windows, linked selection, missing data, and export labels. Aim for understandable, traceable information rather than metric density.

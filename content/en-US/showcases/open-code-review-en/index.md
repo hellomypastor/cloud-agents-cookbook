@@ -13,13 +13,9 @@ translation_of: "open-code-review"
 
 ## Scenario and outcome
 
-Review asks both which changes were examined and which findings merit action. Open Code Review joins scope, rules, and defect analysis in a review workflow.
+Sending a diff to a model can produce advice, but does not establish coverage, rule applicability, or reproducibility. The Open Code Review showcase separates deterministic scope and rule calculation from model judgment.
 
-Code review combines deterministic scope calculation, project rules, model analysis, and coverage evidence.
-
-This account is based on showcase material contributed by 曲径/安辰. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
+This walkthrough uses a synthetic boundary defect, not a finding against a real repository or a measured accuracy claim.
 
 ![Code review result](./assets/result-preview.png)
 
@@ -27,91 +23,60 @@ Illustrative output based on this article’s example; synthetic data, not a pro
 
 ## Implementation approach
 
-### How the work moves through the product
+### Organize review inputs and outputs
 
-Pin base and target revisions. Distinguish unchecked files from checked files without findings, and evaluate both known defects and false positives.
+Compute a manifest before model review, then reconcile every file against it. Silence about a file is not evidence it was inspected.
+
+Rules need scope: directory conventions should not become repository-wide policy. The reference flow aggregates findings and coverage separately so no findings cannot be confused with no inspection.
 
 ```mermaid
 flowchart LR
-  N0["Pin the scope"] --> N1
-  N1["Load relevant rules"] --> N2
-  N2["Validate findings"] --> N3
-  N3["Report coverage"]
+  A[Pinned revision range] --> B[File manifest and scoped rules]
+  B --> C[Context inspection]
+  C --> D[Candidate finding]
+  D --> E[Evidence and caller checks]
+  E --> F[Validated findings]
+  C --> G[Coverage record]
+  F --> H[Review report]
+  G --> H
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-### Responsibilities and authoritative facts
+### Pin revisions and inspect context
 
-| Component | Responsibility |
-|---|---|
-| Scope logic | Revisions and exclusions |
-| Model | Code understanding and defect analysis |
-| Reporting | Finding evidence and coverage |
+Record base and target revisions, changed files, required context, and exclusions. Apply project rules to generated files, lockfiles, and business code rather than silently omitting large inputs.
 
-Coverage and finding quality are separate. Use known-bug and clean examples to evaluate missed defects and false positives independently.
+Bind the report to its target revision even if the branch moves. Decide explicitly whether later commits need additional review.
 
-### Follow one concrete request
+### Turn a suspicion into a finding
 
-Review a test change containing a deliberate boundary bug and deliver actionable findings with coverage evidence.
+For an agreed minimum age of 18, synthetic code using age > 18 rejects the boundary value. A finding needs the rule, location, input, observed result, and impact.
 
-1. **Pin the scope.** Record base and target revisions, changed code, context, and excluded files.
-2. **Load relevant rules.** Apply project rules and necessary context without overwhelming defects with style comments.
-3. **Validate findings.** Provide trigger, location, impact, and evidence; do not present speculation as a confirmed defect.
-4. **Report coverage.** Distinguish checked, unchecked, and inconclusive areas before summarizing findings.
+Inspect callers as well: upstream handling may change whether a local expression causes a defect. Missing context warrants an unresolved question, not a confirmed finding.
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+### Report coverage independently
 
-### A result that can be checked
+If two files changed and only one was inspected, no findings still means incomplete review. Distinguish checked, unchecked, excluded, and inconclusive scope with reasons.
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+Group repeated root causes without counting unseen instances as reviewed. Report length is not coverage.
 
-```json
-{
-  "input": {
-    "changed_files": [
-      "a.py",
-      "b.py"
-    ],
-    "reviewed_files": [
-      "a.py"
-    ],
-    "findings": []
-  },
-  "expected": {
-    "checked": [
-      "a.py"
-    ],
-    "unchecked": [
-      "b.py"
-    ],
-    "complete": false
-  }
-}
-```
+### Verify fixes and evaluate the reviewer
 
-No findings applies only to reviewed scope. Expose unchecked files instead of presenting an empty finding list as comprehensive assurance.
+After repair, check 17, 18, and 19 rather than only the reported boundary. Include a clean control change to detect false positives.
 
-### Try the workflow yourself
+Known defects measure missed findings; clean samples measure false alarms. Finding one bug does not establish readiness for an automatic gate.
 
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+### A verifiable boundary finding
 
-> Review a pinned revision range. Give location, triggering input, observed behavior, impact, and evidence for each finding. Report unchecked files separately from findings.
+This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
 
-Use a small change with one known boundary bug and one clean file. Check for reproducible findings without generic style noise. Make one file unreadable and verify that coverage changes independently of the findings list.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **File exceeds context capacity**. Expected behavior: Report incomplete coverage. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+| Item | Evidence or condition | Decision |
+|---|---|---|
+| Rule | Minimum age is 18 | Cite the agreed requirement |
+| Trigger | Input 18 | Exercise equality |
+| Observed behavior | age > 18 rejects it | Inspect callers for impact |
+| Verification | After repair, check 17, 18, 19 | Keep valid and invalid inputs |
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
-
-| Failure or ambiguity | Required behavior |
-|---|---|
-| File exceeds context capacity | Report incomplete coverage. |
-| Repeated instances | Group the root cause and affected locations. |
-| No findings | State the reviewed scope without claiming universal correctness. |
+Use a small test repository with clear rules and retain report-to-revision links. Simulate missing context, truncated files, and read failures. Deliver findings and coverage; code changes and merging are separate tasks.

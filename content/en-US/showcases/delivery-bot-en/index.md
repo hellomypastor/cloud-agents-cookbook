@@ -123,14 +123,3 @@ Implement intake → independent task → test repository build → result deliv
 | Concurrent requests from different conversations | Keep execution and return destinations isolated |
 
 The reusable contribution is clear ownership, persistent task state, and evidence-based delivery. Make one task complete and reviewable before expanding the number of routes or the scope of automation.
-
-### Verify the delivery boundary
-
-This exercise verifies separation of execution and delivery without requiring a production deployment.
-
-| Check | Expected behavior |
-|---|---|
-| Duplicate message | Reuse the task. |
-| Notification failure | Retry only delivery. |
-| Concurrent tasks | Preserve source isolation. |
-

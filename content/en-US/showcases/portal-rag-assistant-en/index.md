@@ -104,21 +104,10 @@ The following checks are recommendations for a new integration, not completed te
 
 Before exposing the proxy publicly, add caller authentication, session ownership checks, rate limiting, and usage controls. These were not present in the reviewed shared proxy file. Keeping the PAT server-side is useful, but does not establish tenant isolation when callers can supply a Session ID.
 
-No third-party source code or images are redistributed here. Check the original repository's license and asset permissions before reuse; public visibility does not grant redistribution under this Cookbook's licenses.
+No third-party source code is reproduced; the interface image comes from the original showcase material. Check the original repository's license and asset permissions before reuse; public visibility does not grant redistribution under this Cookbook's licenses.
 
 ## Reference implementation
 
 - [Repository and setup instructions](https://github.com/kunlun322/portal-rag-assistant)
 - [Reviewed revision: server-side proxy](https://github.com/kunlun322/portal-rag-assistant/blob/eb1afef05af0565231e16e4bb3a6fc9da8d402b2/lib/qoder.js)
 - [Reviewed revision: chat client](https://github.com/kunlun322/portal-rag-assistant/blob/eb1afef05af0565231e16e4bb3a6fc9da8d402b2/customer-service.js)
-
-### Verify the delivery boundary
-
-Define precedence between streamed and final content, and verify visible output rather than HTTP success alone.
-
-| Check | Expected behavior |
-|---|---|
-| Replayed event | No duplicated text. |
-| Proxy error | Stop waiting and explain failure. |
-| Hostile message content | Render safely without executing markup. |
-

@@ -13,13 +13,9 @@ translation_of: "information-station"
 
 ## Scenario and outcome
 
-The station receives a continuous stream rather than a single question. It identifies events across repeated coverage, retains sources, and edits relevant changes into a brief.
+Information Station delivers an edited briefing rather than a search-result list. Its showcase describes ongoing collection, structuring, and aggregation, with an 08:30 briefing covering major items, follow-ups, weak signals, and product trends.
 
-Scheduled collection and editorial synthesis turn incoming technology news into a recurring brief.
-
-This account is based on showcase material contributed by 信息站共创团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
+The source describes the workflow without publishing collectors or evaluations. The synthetic source exercise below develops an event-based editorial method.
 
 ![News digest](./assets/result-preview.png)
 
@@ -27,106 +23,59 @@ Illustrative output based on this article’s example; synthetic data, not a pro
 
 ## Implementation approach
 
-### How the work moves through the product
+### Separate collection and delivery cadence
 
-Separate collection, deduplication, topic grouping, and editing. Retain original sources and timestamps so readers can trace each conclusion.
+Collection can be continuous while each issue has a frozen source manifest. Late material belongs to a later issue or explicit revision, not an unnoticed change during delivery retry.
+
+Collectors acquire material, editors prioritize for an audience, and delivery sends a stable artifact. This separates source gaps, clustering errors, editorial distortion, and delivery failure.
 
 ```mermaid
 flowchart LR
-  N0["Collect and archive"] --> N1
-  N1["Cluster and deduplicate"] --> N2
-  N2["Edit by relevance"] --> N3
-  N3["Deliver on schedule"]
+  A[Continuous collection] --> B[Source archive]
+  B --> C[Issue cutoff and manifest]
+  C --> D[Event clustering]
+  D --> E[Editorial sections]
+  E --> F[Saved issue version]
+  F --> G[Delivery]
+  G -->|Retry same version| G
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-### Responsibilities and authoritative facts
+### Define an issue boundary
 
-| Component | Responsibility |
-|---|---|
-| Collection | Sources and original content |
-| Editor | Clustering, selection, summary |
-| Publishing | Issue identity, timing, delivery |
+Collection time, publication time, and event time differ. A repost today is not necessarily a new event; newly verified information about yesterday may still merit an update.
 
-Editorial selection and traceability matter more than filling a quota. Begin with known sources and explicit editing rules before expanding coverage.
+Persist the cutoff and source coverage. Report unavailable sources rather than filling a quota with stale material.
 
-### Follow one concrete request
+### Group events before editing
 
-Produce a morning brief from ten public test articles, linking every conclusion to its source and distinguishing events from signals.
+Sources A and B cover release X, while C covers Y. Produce two events, retaining both X sources. Deduplication must preserve corroborating or differing facts.
 
-1. **Collect and archive.** Retain source URLs, publication and retrieval times, and stable content keys.
-2. **Cluster and deduplicate.** Group syndicated coverage by event while retaining supplemental sources.
-3. **Edit by relevance.** Organize major events, ongoing topics, and weak signals with evidence and uncertainty.
-4. **Deliver on schedule.** Check dates and links, preserve the issue manifest, and allow short issues when little changed.
+Similar titles may describe different events. Compare actor, action, version, and time, retaining unresolved disagreement.
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+### Give sections distinct editorial purposes
 
-### A result that can be checked
+Major items prioritize attention; follow-ups explain changes; weak signals preserve uncertain leads; trends need evidence across events.
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+One release does not establish an industry trend. State uncertainty and what to watch next. Empty sections are preferable to unsupported entries.
 
-```json
-{
-  "input": {
-    "articles": [
-      {
-        "id": "a",
-        "event": "release-x"
-      },
-      {
-        "id": "b",
-        "event": "release-x"
-      },
-      {
-        "id": "c",
-        "event": "release-y"
-      }
-    ]
-  },
-  "expected": {
-    "event_count": 2,
-    "events": [
-      {
-        "id": "release-x",
-        "sources": [
-          "a",
-          "b"
-        ]
-      },
-      {
-        "id": "release-y",
-        "sources": [
-          "c"
-        ]
-      }
-    ]
-  }
-}
-```
+### Carry corrections forward
 
-Count events rather than links while preserving both sources for the first event. Deduplication should not discard corroborating evidence.
+Link summaries to sources and separate facts from editorial interpretation. Record corrections to prior issues when source details change.
 
-### Try the workflow yourself
+A delivery timeout should retry the saved issue, not regenerate a different briefing under the same identity.
 
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+### From three sources to one issue
 
-> Produce an event-based digest. Merge syndicated reports while preserving sources and event times, and distinguish confirmed information from topics under investigation.
+This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
 
-Use two reports of one release plus a separate release. Expect two events with both sources retained for the first. Add an old story reposted today and check that retrieval time does not turn it into a new event.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Three syndicated copies**. Expected behavior: Produce one event with multiple sources. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+| Item | Evidence or condition | Decision |
+|---|---|---|
+| Source A | Covers release X | Retain original time |
+| Source B | Adds details about X | Merge into X, keep citation |
+| Source C | Covers separate release Y | Create a separate event |
+| Issue | Two events, three sources | Check gaps before delivery |
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
-
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Three syndicated copies | Produce one event with multiple sources. |
-| Old news republished | Distinguish event time from repost time. |
-| Source temporarily unavailable | Report a coverage gap rather than reuse stale material as new. |
+Run several issues over a limited source list and inspect duplicates, stale stories, broken links, and unsupported judgments. Evaluate new information and traceability, not word count. Preserve a replayable issue before expanding coverage.

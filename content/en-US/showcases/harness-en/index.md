@@ -13,13 +13,9 @@ translation_of: "harness"
 
 ## Scenario and outcome
 
-Development moves through requirements, implementation, and verification, with revisions and failures sending work backward. Harness represents these dependencies as a task graph.
+Engineering moves through clarification, planning, implementation, verification, and release, with changes and failures along the way. A long conversation can obscure completed work and obsolete conclusions.
 
-A task graph organizes clarification, planning, implementation, verification, and release.
-
-This account is based on showcase material contributed by 蛋总/与天. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
+The Harness showcase assigns stages, dependencies, rollback, and human decisions to a Graph, with Agents executing within nodes. The following input-validation task is a reference graph. Internal project screenshots are not reproduced.
 
 ![Task graph delivery view](./assets/result-preview.png)
 
@@ -27,81 +23,60 @@ Illustrative output based on this article’s example; synthetic data, not a pro
 
 ## Implementation approach
 
-### How the work moves through the product
+### Align graph and execution state
 
-Define inputs, outputs, evidence, and completion conditions for each node. Place human decisions at explicit transitions and resume failed nodes without restarting unrelated work.
+Prefer nodes with business artifacts rather than every internal thought. Overly fine nodes expose noise; coarse ones hide recovery points. Start with requirements, implementation, and verification.
+
+Distinguish running tools, failed execution, and human decisions. The reference graph carries evidence back to implementation and requires a new revision before verification.
 
 ```mermaid
-flowchart LR
-  N0["Define completion"] --> N1
-  N1["Build dependencies"] --> N2
-  N2["Execute nodes"] --> N3
-  N3["Collect outcomes"]
+flowchart TD
+  A[Approved requirement version] --> B[Implementation revision]
+  B --> C[Verification against same revision]
+  C --> D{Evidence passes}
+  D -->|No| E[Failure input and observed result]
+  E --> B
+  D -->|Yes| F[Review decision]
+  F --> G[Release evidence]
+  H[Requirement changes] --> A
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-### Responsibilities and authoritative facts
+### Define node completion before execution
 
-| Component | Responsibility |
-|---|---|
-| Graph | Stages, dependencies, rollback |
-| Agent | Perform specialized node work |
-| Review | Verify artifacts and decide transitions |
+For “accept integers from 1 to 100,” the requirement node delivers bounds, error behavior, and examples. Planning identifies affected areas; implementation produces a revision; verification produces results bound to it.
 
-Graphs suit dependencies, rollback, and human gates. Keep simple tasks linear; additional graph complexity requires stronger node contracts.
+A done message is insufficient. Code, version-specific checks, and deployed revision evidence establish different kinds of completion.
 
-### Follow one concrete request
+### Use dependencies to invalidate stale work
 
-Implement input validation in a test repository using resumable requirement, implementation, and verification nodes.
+Suppose implementation and tests pass against v1, then the allowed range changes to 1–50 in v2. The old implementation and verification become stale. Repeating old tests does not establish compliance with the new requirement.
 
-1. **Define completion.** Specify accepted inputs, error behavior, and reference cases.
-2. **Build dependencies.** Gate implementation on requirements, verification on artifacts, and release on authorization and passing results.
-3. **Execute nodes.** Record input versions, outputs, and tool results; invalidate only affected downstream work.
-4. **Collect outcomes.** Expose evidence and unresolved issues, and make human decisions explicit state transitions.
+Invalidate along dependency edges while preserving unrelated work. This avoids both full reruns and invalid reuse.
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+### Return actionable failure evidence
 
-### A result that can be checked
+If 51 is accepted, return the input, observed and expected behavior, tested revision, and reproduction. Verify the replacement revision after repair.
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+An unavailable test environment is an infrastructure blocker, not evidence of a code defect. Distinguish code failure, environment failure, and human waiting to route recovery correctly.
 
-```json
-{
-  "input": {
-    "requirements_version": 2,
-    "implementation_based_on": 1,
-    "tests": "passed"
-  },
-  "expected": {
-    "implementation": "stale",
-    "delivery": "blocked"
-  }
-}
-```
+### Version decisions and retries
 
-Passing tests validate the old requirement version only. Reassess implementation and test relevance after requirements change.
+Approval applies to a specific requirement or revision, not future changes. Retain attempt identity so a late result from an old attempt cannot replace the current result.
 
-### Try the workflow yourself
+Record node, input version, and attempt. The Graph owns state transitions; the Agent explains and performs the work.
 
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+### Node states after a requirement change
 
-> Create requirement, implementation, and verification nodes for input validation. Record input versions and completion evidence. Invalidate affected outputs when requirements change; passing tests must not trigger release.
+This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
 
-Complete implementation and verification against v1, then change the accepted input range in v2. Preserve the old passing result to check that dependent nodes become stale. Old tests may still pass without establishing compliance with the new requirement.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Requirements change after coding**. Expected behavior: Invalidate affected downstream nodes. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+| Item | Evidence or condition | Decision |
+|---|---|---|
+| Requirement | v1 replaced by v2 | Confirm the revised range |
+| Implementation | Still based on v1 | Invalidate and update affected code |
+| Verification | Old tests passed | Test revised bounds on new code |
+| Release | No v2 verification evidence | Do not reuse old approval |
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
-
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Requirements change after coding | Invalidate affected downstream nodes. |
-| Verification failure | Return to implementation with evidence. |
-| Retry produces stale artifact | Reject outputs from obsolete input versions. |
+Start with requirement, implementation, and verification nodes. Change requirements and cause a test failure to exercise invalidation and recovery before adding release. Every green state should resolve to current evidence.

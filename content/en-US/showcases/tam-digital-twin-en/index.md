@@ -13,13 +13,9 @@ translation_of: "tam-digital-twin"
 
 ## Scenario and outcome
 
-Industry troubleshooting combines accumulated expertise with current resource observations. The support twin connects a collaboration entry point, specialized knowledge, and diagnostics.
+Technical support combines customer descriptions, team knowledge, configuration checks, and current resource state. Handoffs can lose context and repeat questions.
 
-A persistent support entry routes industry troubleshooting tasks to specialized knowledge and resource diagnostics.
-
-This account is based on showcase material contributed by 俊行. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
+The TAM digital-twin showcase describes a messaging-based coordinator routing to specialists with knowledge, Skills, memory, credentials, and diagnostics. This timeout exercise explains the handoffs without claiming measured resolution improvements.
 
 ![Diagnostic evidence report](./assets/result-preview.png)
 
@@ -27,83 +23,63 @@ Illustrative output based on this article’s example; synthetic data, not a pro
 
 ## Implementation approach
 
-### How the work moves through the product
+### Make the investigation transferable
 
-Use a shared incident timeline and resource identifiers. Separate retrieved guidance from current tool observations, and authorize remediation independently.
+Maintain the question, known evidence, and open hypotheses instead of treating the latest reply as all context. Reconcile target, window, and result version before updating the case.
+
+Hand the same case state to a human for continuation. The reference flow separates evidence synthesis from action decisions.
 
 ```mermaid
-flowchart LR
-  N0["Capture the incident"] --> N1
-  N1["Delegate diagnostics"] --> N2
-  N2["Inspect current state"] --> N3
-  N3["Recommend next steps"]
+flowchart TD
+  A[Scoped support case] --> B[Coordinator]
+  B --> C[Network evidence]
+  B --> D[Configuration evidence]
+  B --> E[Resource evidence]
+  C --> F[Reconcile scope and time]
+  D --> F
+  E --> F
+  F --> G{Sufficient evidence}
+  G -->|No| H[Next check or human handoff]
+  G -->|Yes| I[Supported conclusion]
+  I --> J[Separate action decision]
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-### Responsibilities and authoritative facts
+### Build an investigation context
 
-| Component | Responsibility |
-|---|---|
-| Coordinator | Incident context and routing |
-| Specialists | Retrieval and specialized diagnostics |
-| Tools | Current observations and call status |
+“Cannot connect” needs a target, window, symptom, recent changes, and prior checks. Distinguish customer reports from tool observations.
 
-Parallel diagnostics require shared incident context. More Agents cannot compensate for missing identifiers or timestamps; standardize evidence before parallelizing.
+Historical memory suggests investigation paths; a previous root cause is not evidence for the present incident.
 
-### Follow one concrete request
+### Keep one case across specialists
 
-Investigate a test cloud instance connection timeout using guidance, resource observations, and an incident timeline.
+Give specialists the same case identity and scope. Return observations, timestamps, execution status, and gaps from network, configuration, or resource checks.
 
-1. **Capture the incident.** Collect resource identifiers, symptoms, onset time, and scope.
-2. **Delegate diagnostics.** Separate network, configuration, and knowledge checks under the same incident scope.
-3. **Inspect current state.** Timestamp read-only observations and distinguish them from historical guidance.
-4. **Recommend next steps.** Rank candidate causes with supporting and missing evidence; authorize remediation separately.
+Handle credential references and scope in integration code. A denied query is an access gap, not evidence that a resource is absent.
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+### Narrow a timeout investigation
 
-### A result that can be checked
+Initially, a network check times out and configuration evidence is missing. Report the symptom, unresolved cause, and next configuration check. Use new evidence to choose the next discriminating test.
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+Repeating a timeout can establish persistence without explaining cause. Prefer checks that distinguish hypotheses.
 
-```json
-{
-  "input": {
-    "network_check": "timeout",
-    "configuration_check": "unavailable"
-  },
-  "expected": {
-    "observation": "connection timeout",
-    "root_cause": "undetermined",
-    "missing": [
-      "configuration evidence"
-    ]
-  }
-}
-```
+### Hand over evidence, not just a diagnosis
 
-An observed timeout is not a diagnosed root cause. A useful report requests the next check when configuration evidence is missing.
+Record scope, completed checks, excluded and open hypotheses, next action, and owner. The next operator should know what remains valid and what needs rechecking after a change.
 
-### Try the workflow yourself
+Separate recommendations from actions. After an action, observe whether the original symptom disappeared instead of closing on tool success alone.
 
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+### Evidence states in a timeout investigation
 
-> Investigate a test connection timeout. Separate symptoms, performed checks, missing evidence, and next checks without presenting a hypothesis as an established cause.
+This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
 
-Provide a timeout result without configuration evidence. Expect a symptom report and a discriminating next check. Add configuration evidence and check that the diagnosis updates rather than preserving its initial guess.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **One diagnostic tool fails**. Expected behavior: Retain findings and identify the missing check. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+| Item | Evidence or condition | Decision |
+|---|---|---|
+| User report | Connection unavailable | Record scope and time |
+| Tool observation | Network check timed out | Establish symptom, not cause |
+| Evidence gap | Configuration check missing | Obtain configuration evidence |
+| New evidence | Configuration result available | Revise or withdraw the hypothesis |
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
-
-| Failure or ambiguity | Required behavior |
-|---|---|
-| One diagnostic tool fails | Retain findings and identify the missing check. |
-| Conflicting findings | Reconcile resource identifiers and observation times. |
-| Similar historical incident | Treat it as a candidate, not proof of root cause. |
+Use one error family and a test environment with normal, faulty, and missing-evidence samples. Check scope retention, updated judgments, and actionable escalation. Confidence of wording is not diagnostic quality.

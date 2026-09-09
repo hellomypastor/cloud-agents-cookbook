@@ -13,13 +13,9 @@ translation_of: "smart-camera-agent"
 
 ## Scenario and outcome
 
-A question about a scene needs an image from a specific device and time. This case packages camera access as a tool and lets an Agent interpret visible evidence.
+The camera showcase uses QCA Forward and Skills to connect existing cameras, capture frames, and produce analysis. A video demonstrates the interaction path.
 
-Camera access packaged as tools lets an Agent obtain images and describe the observed environment.
-
-This account is based on showcase material contributed by 少狂. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
+The original still contains device and workplace details, so this article uses a synthetic freshness exercise. Seeing an image is different from establishing the current scene.
 
 ![Camera analysis result](./assets/result-preview.png)
 
@@ -27,80 +23,59 @@ Illustrative output based on this article’s example; synthetic data, not a pro
 
 ## Implementation approach
 
-### How the work moves through the product
+### Associate tool results with the observation request
 
-Use authorized test devices and timestamped frames. Distinguish acquisition failures from interpretation failures, and never present an old frame as current evidence.
+Bind request, authorized device, capture time, and observation goal to the analysis. A filename alone cannot explain an old report after a later capture overwrites the file.
+
+Skills also need structured failure and stale-input results. The reference flow is independent of a particular device SDK.
 
 ```mermaid
-flowchart LR
-  N0["Resolve the device"] --> N1
-  N1["Capture a frame"] --> N2
-  N2["Analyze the frame"] --> N3
-  N3["Return evidence"]
+flowchart TD
+  A[Scoped observation request] --> B[Capture tool]
+  B --> C{Image acquired}
+  C -->|No| D[Acquisition error]
+  C -->|Yes| E{Fresh enough}
+  E -->|No| F[Recapture or label stale]
+  E -->|Yes| G[Analyze visible evidence]
+  G --> H[Report with capture reference]
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-### Responsibilities and authoritative facts
+### Specify target and freshness
 
-| Component | Responsibility |
-|---|---|
-| Device tools | Authorized access and image capture |
-| Vision Agent | Answer from image evidence |
-| Application | Timestamps and failure reporting |
+A request for the current scene needs an authorized target, observation goal, and maximum frame age. Return capture time and device reference so a file can be tied to this request.
 
-Capture and visual interpretation need independent error states. Obtaining a frame does not establish visibility, and visibility does not establish off-camera events.
+Keep device selection within authorized scope rather than letting generated identifiers expand access.
 
-### Follow one concrete request
+### Separate capture, freshness, and interpretation
 
-Use an authorized test camera to describe whether a package is on a desk, with timestamped evidence and no identity recognition.
+Check capture success, then age, then visible content. Sharpness does not establish freshness, and blur does not establish device failure.
 
-1. **Resolve the device.** Map the request to a specific authorized, available camera.
-2. **Capture a frame.** Return capture time, device identifier, and image reference; do not silently substitute an old frame.
-3. **Analyze the frame.** Separate visible observations from occlusion and uncertainty.
-4. **Return evidence.** Show observation time and findings, requesting recapture when needed without triggering unrelated actions.
+A 300-second-old frame with a 30-second limit requires recapture. If recapture fails, any retained observation must remain historical.
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+### Separate visible evidence from inference
 
-### A result that can be checked
+Describe visible facts before uncertain interpretation or follow-up needs. A single frame does not prove sustained behavior, and blind spots do not establish absence.
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+Associate observations with regions and capture time. Questions about change require comparable new frames or sequences.
 
-```json
-{
-  "input": {
-    "frame_age_seconds": 300,
-    "max_age_seconds": 30
-  },
-  "expected": {
-    "fresh": false,
-    "action": "recapture"
-  }
-}
-```
+### Return useful acquisition failures
 
-A sharp image is not necessarily current. Preserve the stale-frame label if recapture fails.
+Differentiate connection failure, capture timeout, stale input, and inconclusive interpretation. Route recovery to acquisition when needed rather than rerunning analysis on unchanged evidence.
 
-### Try the workflow yourself
+Keep public reports limited to necessary observations; detailed device diagnostics belong in the authorized troubleshooting path.
 
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+### From frame to observation report
 
-> Check capture time and freshness before describing a test frame. Recapture stale input; if that fails, do not infer the current scene state.
+This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
 
-Use a sharp five-minute-old frame with a thirty-second freshness limit. Expect recapture before any current-scene claim. Simulate recapture failure and ensure the retained observation is visibly stale.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Occluded view**. Expected behavior: Report uncertainty instead of absence. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+| Item | Evidence or condition | Decision |
+|---|---|---|
+| Acquisition | Image with capture time | Match to this request |
+| Freshness | 300 seconds, limit 30 | Recapture before current-scene claims |
+| Recapture failure | Only stale input remains | Label as historical |
+| Fresh frame | Within the agreed age | Describe visible evidence and limits |
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
-
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Occluded view | Report uncertainty instead of absence. |
-| Stale frame | Label it historical or recapture. |
-| Device access failure | Distinguish capture failure from interpretation failure. |
+Test one authorized device and a clear goal, then stale, timed-out, and blurry inputs. Verify capture-time provenance, uncertainty, and replacement of obsolete results after recapture.

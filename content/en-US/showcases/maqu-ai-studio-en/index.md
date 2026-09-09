@@ -13,13 +13,9 @@ translation_of: "maqu-ai-studio"
 
 ## Scenario and outcome
 
-A short film requires alignment across script, shots, images, and sound. Maqu divides the work among roles and reunites it through shared artifacts and versions.
+A film requires script, storyboard, art, performance, music, and editing. The Maqu showcase describes six specialist roles and a coordinator using long-running conversations, with both collaboration footage and a finished film.
 
-A cloud film studio coordinates writing, storyboards, art, performance, music, and editing.
-
-This account is based on showcase material contributed by 何傲. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
+The videos show different things: coordination and final audiovisual output. A finished film alone does not establish how every intermediate step was automated.
 
 ![Showcase view](./assets/showcase-view.webp)
 
@@ -27,87 +23,62 @@ A frame from the original showcase film; the videos on this page show the full r
 
 ## Implementation approach
 
-### How the work moves through the product
+### Exchange artifacts between specialist conversations
 
-Give each role an explicit artifact contract and dependencies. Track versions and revision requests across sessions, with human approval of the final cut.
+Specialist conversations retain context, but peers need approved scripts, shot lists, and artifact references rather than entire chat histories. Keep unapproved ideas distinct from production inputs.
+
+A revised shot should update dependent editing or sound work. The diagram organizes the source roles and dependencies, not a recorded execution trace.
 
 ```mermaid
-flowchart LR
-  N0["Freeze the brief"] --> N1
-  N1["Define role outputs"] --> N2
-  N2["Coordinate dependencies"] --> N3
-  N3["Review the film"]
+flowchart TD
+  A[Confirmed story] --> B[Script]
+  B --> C[Shot list]
+  C --> D[Art and performance]
+  C --> E[Music and sound]
+  D --> F[Versioned shot assets]
+  E --> G[Versioned audio assets]
+  F --> H[Editing]
+  G --> H
+  H --> I[Human review]
+  I -->|Targeted revision| C
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-### Responsibilities and authoritative facts
+### Approve the story before parallel production
 
-| Component | Responsibility |
-|---|---|
-| Coordinator | Brief, dependencies, revisions |
-| Specialists | Script, shots, images, sound |
-| Edit and review | Assemble assets and approve the film |
+Script work establishes story, characters, scenes, and dialogue; storyboarding turns that into shots. Premature asset generation can amplify rework when the story changes.
 
-Parallelism works where dependencies are clear. More roles require shared manifests and version contracts, or generation savings are lost to rework.
+Parallelize tasks with stable inputs. The coordinator maintains shared constraints and the current version.
 
-### Follow one concrete request
+### Use shot-level handoffs
 
-Produce a thirty-second test film with explicit duration, style, and asset constraints across writing, storyboards, art, performance, music, and editing.
+A shot handoff needs identity, script version, character reference, scene, action, duration target, sound requirements, and artifact references.
 
-1. **Freeze the brief.** Record audience, duration, style, and prohibited assets; route scope changes through the coordinator.
-2. **Define role outputs.** Use scene scripts, shot lists, identified assets, and explicit edit versions.
-3. **Coordinate dependencies.** Parallelize independent assets, gate script-dependent work, and revise affected shots only.
-4. **Review the film.** Check duration, continuity, audio, and provenance before human approval of a final version.
+File existence is only one check. Verify usability, version, and creative fit before editing.
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+### Propagate a script revision
 
-### A result that can be checked
+In the fixture, script v2 is approved while shot s01 uses a v1 asset. Review it before editing. A dialogue change may allow picture reuse; an action change may not.
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+Rework by impact instead of regenerating everything or accepting every old asset. Retain the decision rationale.
 
-```json
-{
-  "input": {
-    "approved_script": "v2",
-    "shot_assets": [
-      {
-        "shot": "s01",
-        "script_version": "v1"
-      }
-    ]
-  },
-  "expected": {
-    "ready_to_edit": false,
-    "regenerate_or_review": [
-      "s01"
-    ]
-  }
-}
-```
+### Review the film across shot boundaries
 
-An existing asset is not automatically ready for editing. Check it against the approved script before reuse, regeneration, or review.
+Attractive individual shots can still fail as a sequence. Review character continuity, transitions, synchronization, music, and pacing across the film.
 
-### Try the workflow yourself
+Final human review addresses creative coherence. Bind feedback to shots and versions for focused revision.
 
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+### Asset checks after script v2
 
-> Organize shot assets against the approved script. Check script versions, characters, and shot requirements before identifying editable and rework assets.
+This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
 
-Create a shot list and intentionally attach an old-script asset. A playable file may still contradict the approved story. Review versions before editing and decide whether to reuse or regenerate; the film is useful for pacing, not a substitute for shot-level validation.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Script revision**. Expected behavior: Invalidate affected shots and assets. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+| Item | Evidence or condition | Decision |
+|---|---|---|
+| Dialogue | Lines changed | Revise or review audio |
+| Action | Character action changed | Review picture suitability |
+| Music | Shot duration changed | Recheck timing |
+| Editing | Old-version shots remain | Review versions before final assembly |
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
-
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Script revision | Invalidate affected shots and assets. |
-| Late role deliverable | Show dependency blockage rather than fill with an unexplained gap. |
-| Unclear asset provenance | Resolve or replace the asset before finalization. |
+Start with one short scene and a few shots, completing approval, handoff, edit, review, and revision. Use both videos to assess coordination and final output, not merely the number of Agents.
