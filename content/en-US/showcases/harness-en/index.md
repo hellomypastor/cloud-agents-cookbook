@@ -6,7 +6,7 @@ summary: "A task graph organizes clarification, planning, implementation, verifi
 type: "showcase"
 category: "build-deploy"
 tags: ["agent", "workflow-automation"]
-author: {"name": "Qteam-蛋总/与天"}
+author: {"name": "蛋总/与天"}
 locale: "en-US"
 translation_of: "harness"
 ---
@@ -17,7 +17,7 @@ translation_of: "harness"
 
 A task graph organizes clarification, planning, implementation, verification, and release.
 
-This editorial overview is based on the supplied showcase material, attributed to Qteam-蛋总/与天. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 蛋总/与天. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

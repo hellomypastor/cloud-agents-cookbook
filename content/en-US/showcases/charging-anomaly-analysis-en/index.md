@@ -6,7 +6,7 @@ summary: "Specialized analyses of orders, equipment, billing, and trends contrib
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "能源线-霄羽"}
+author: {"name": "霄羽"}
 locale: "en-US"
 translation_of: "charging-anomaly-analysis"
 ---
@@ -17,7 +17,7 @@ translation_of: "charging-anomaly-analysis"
 
 Specialized analyses of orders, equipment, billing, and trends contribute to a charging anomaly diagnosis.
 
-This editorial overview is based on the supplied showcase material, attributed to 能源线-霄羽. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 霄羽. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

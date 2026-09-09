@@ -6,7 +6,7 @@ summary: "Incremental ingestion and usage feedback maintain a shared organizatio
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "高德-蓝屿"}
+author: {"name": "蓝屿"}
 locale: "en-US"
 translation_of: "digital-assets"
 ---
@@ -17,7 +17,7 @@ translation_of: "digital-assets"
 
 Incremental ingestion and usage feedback maintain a shared organizational knowledge foundation.
 
-This editorial overview is based on the supplied showcase material, attributed to 高德-蓝屿. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 蓝屿. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

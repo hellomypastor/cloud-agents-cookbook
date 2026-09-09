@@ -6,7 +6,7 @@ summary: "Camera access packaged as tools lets an Agent obtain images and descri
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "Qteam-少狂"}
+author: {"name": "少狂"}
 locale: "en-US"
 translation_of: "smart-camera-agent"
 ---
@@ -17,7 +17,7 @@ translation_of: "smart-camera-agent"
 
 Camera access packaged as tools lets an Agent obtain images and describe the observed environment.
 
-This editorial overview is based on the supplied showcase material, attributed to Qteam-少狂. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 少狂. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

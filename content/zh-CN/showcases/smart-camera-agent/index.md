@@ -6,7 +6,7 @@ summary: "将摄像头连接和画面获取封装为工具能力，让 Agent 围
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "Qteam-少狂"}
+author: {"name": "少狂"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 将摄像头连接和画面获取封装为工具能力，让 Agent 围绕实际图像执行环境观察与分析。
 
-本篇根据 showcase 资料整理，原案例贡献者：Qteam-少狂。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：少狂。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

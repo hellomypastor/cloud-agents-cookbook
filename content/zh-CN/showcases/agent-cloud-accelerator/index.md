@@ -6,7 +6,7 @@ summary: "为复杂本地 Agent 补充云端身份、断点续跑、产物归档
 type: "showcase"
 category: "build-deploy"
 tags: ["agent", "workflow-automation"]
-author: {"name": "淘天-蒲浦"}
+author: {"name": "蒲浦"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 为复杂本地 Agent 补充云端身份、断点续跑、产物归档和消息交付能力，减少迁移中的重复适配。
 
-本篇根据 showcase 资料整理，原案例贡献者：淘天-蒲浦。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：蒲浦。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

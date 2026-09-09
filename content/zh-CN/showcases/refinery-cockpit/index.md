@@ -6,7 +6,7 @@ summary: "以装置负荷、物料流、趋势和安环提示组织炼厂驾驶�
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "能源线-何傲"}
+author: {"name": "何傲"}
 locale: "zh-CN"
 source_url: "https://hao2-lzsh-refinery.vercel.app"
 ---
@@ -17,7 +17,7 @@ source_url: "https://hao2-lzsh-refinery.vercel.app"
 
 以装置负荷、物料流、趋势和安环提示组织炼厂驾驶舱，展示流程工业信息的可视化方式。
 
-本篇根据 showcase 资料整理，原案例贡献者：能源线-何傲。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：何傲。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

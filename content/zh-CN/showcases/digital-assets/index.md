@@ -6,7 +6,7 @@ summary: "将研发资料的增量归集、标准化访问和使用反馈连接�
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "高德-蓝屿"}
+author: {"name": "蓝屿"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 将研发资料的增量归集、标准化访问和使用反馈连接起来，形成持续维护的组织知识资产。
 
-本篇根据 showcase 资料整理，原案例贡献者：高德-蓝屿。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：蓝屿。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

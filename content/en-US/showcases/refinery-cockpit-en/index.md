@@ -6,7 +6,7 @@ summary: "A refinery cockpit organizes unit loads, material flow, trends, and sa
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "能源线-何傲"}
+author: {"name": "何傲"}
 locale: "en-US"
 translation_of: "refinery-cockpit"
 source_url: "https://hao2-lzsh-refinery.vercel.app"
@@ -18,7 +18,7 @@ source_url: "https://hao2-lzsh-refinery.vercel.app"
 
 A refinery cockpit organizes unit loads, material flow, trends, and safety indicators using demonstration data.
 
-This editorial overview is based on the supplied showcase material, attributed to 能源线-何傲. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 何傲. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

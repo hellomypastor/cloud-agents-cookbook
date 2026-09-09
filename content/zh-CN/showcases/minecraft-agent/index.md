@@ -6,7 +6,7 @@ summary: "让 Agent 以游戏角色进入共享世界，通过环境感知和行
 type: "showcase"
 category: "build-deploy"
 tags: ["agent", "workflow-automation"]
-author: {"name": "Qteam-残风"}
+author: {"name": "残风"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 让 Agent 以游戏角色进入共享世界，通过环境感知和行动与玩家互动，探索具身陪伴的产品形态。
 
-本篇根据 showcase 资料整理，原案例贡献者：Qteam-残风。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：残风。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

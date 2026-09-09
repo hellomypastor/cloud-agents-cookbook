@@ -6,7 +6,7 @@ summary: "将多种轻量游戏汇聚到浏览器入口，展示 Agent 交付可
 type: "showcase"
 category: "build-deploy"
 tags: ["agent", "workflow-automation"]
-author: {"name": "能源线-何傲"}
+author: {"name": "何傲"}
 locale: "zh-CN"
 source_url: "https://hao2-games.vercel.app"
 ---
@@ -17,7 +17,7 @@ source_url: "https://hao2-games.vercel.app"
 
 将多种轻量游戏汇聚到浏览器入口，展示 Agent 交付可操作、可分享前端产品的一种形态。
 
-本篇根据 showcase 资料整理，原案例贡献者：能源线-何傲。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：何傲。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

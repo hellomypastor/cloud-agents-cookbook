@@ -6,7 +6,7 @@ summary: "以字段映射和问题分析两个角色理解陌生表格，将自�
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "淘天-阿米"}
+author: {"name": "阿米"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 以字段映射和问题分析两个角色理解陌生表格，将自然语言问题转成受约束的计算配置。
 
-本篇根据 showcase 资料整理，原案例贡献者：淘天-阿米。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：阿米。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

@@ -6,7 +6,7 @@ summary: "A cloud adaptation layer adds identity, resumption, artifact archiving
 type: "showcase"
 category: "build-deploy"
 tags: ["agent", "workflow-automation"]
-author: {"name": "淘天-蒲浦"}
+author: {"name": "蒲浦"}
 locale: "en-US"
 translation_of: "agent-cloud-accelerator"
 ---
@@ -17,7 +17,7 @@ translation_of: "agent-cloud-accelerator"
 
 A cloud adaptation layer adds identity, resumption, artifact archiving, and messaging around existing Agent workflows.
 
-This editorial overview is based on the supplied showcase material, attributed to 淘天-蒲浦. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 蒲浦. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

@@ -6,7 +6,7 @@ summary: "将需求澄清、计划、开发、验证和发布组织成有依赖�
 type: "showcase"
 category: "build-deploy"
 tags: ["agent", "workflow-automation"]
-author: {"name": "Qteam-蛋总/与天"}
+author: {"name": "蛋总/与天"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 将需求澄清、计划、开发、验证和发布组织成有依赖关系的任务图，使回退与人工决策点可见。
 
-本篇根据 showcase 资料整理，原案例贡献者：Qteam-蛋总/与天。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：蛋总/与天。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

@@ -6,7 +6,7 @@ summary: "把评审范围、项目规则、缺陷判断和覆盖证据组合成�
 type: "showcase"
 category: "build-deploy"
 tags: ["agent", "workflow-automation"]
-author: {"name": "TRE-曲径/Qteam-安辰"}
+author: {"name": "曲径/安辰"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 把评审范围、项目规则、缺陷判断和覆盖证据组合成代码评审流程，帮助审阅者核对检查结果。
 
-本篇根据 showcase 资料整理，原案例贡献者：TRE-曲径/Qteam-安辰。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：曲径/安辰。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

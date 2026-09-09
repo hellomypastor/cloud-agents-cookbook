@@ -6,7 +6,7 @@ summary: "An ERP proof of concept connects conversational requirements to materi
 type: "showcase"
 category: "operations-governance"
 tags: ["agent", "workflow-automation"]
-author: {"name": "阿里云-泡鲁达"}
+author: {"name": "泡鲁达"}
 locale: "en-US"
 translation_of: "erp-quotation"
 ---
@@ -17,7 +17,7 @@ translation_of: "erp-quotation"
 
 An ERP proof of concept connects conversational requirements to materials, bills of materials, pricing, and draft quotations.
 
-This editorial overview is based on the supplied showcase material, attributed to 阿里云-泡鲁达. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 泡鲁达. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

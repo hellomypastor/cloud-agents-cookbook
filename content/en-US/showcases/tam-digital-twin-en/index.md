@@ -6,7 +6,7 @@ summary: "A persistent support entry routes industry troubleshooting tasks to sp
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "诚云科技-俊行"}
+author: {"name": "俊行"}
 locale: "en-US"
 translation_of: "tam-digital-twin"
 ---
@@ -17,7 +17,7 @@ translation_of: "tam-digital-twin"
 
 A persistent support entry routes industry troubleshooting tasks to specialized knowledge and resource diagnostics.
 
-This editorial overview is based on the supplied showcase material, attributed to 诚云科技-俊行. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 俊行. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

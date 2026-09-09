@@ -6,7 +6,7 @@ summary: "通过常驻协作入口路由行业排障任务，将知识检索、�
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "诚云科技-俊行"}
+author: {"name": "俊行"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 通过常驻协作入口路由行业排障任务，将知识检索、专业 Skill 和云资源诊断连接起来。
 
-本篇根据 showcase 资料整理，原案例贡献者：诚云科技-俊行。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：俊行。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

@@ -6,7 +6,7 @@ summary: "A browser game collection demonstrates playable frontend artifacts del
 type: "showcase"
 category: "build-deploy"
 tags: ["agent", "workflow-automation"]
-author: {"name": "能源线-何傲"}
+author: {"name": "何傲"}
 locale: "en-US"
 translation_of: "game-square"
 source_url: "https://hao2-games.vercel.app"
@@ -18,7 +18,7 @@ source_url: "https://hao2-games.vercel.app"
 
 A browser game collection demonstrates playable frontend artifacts delivered with Agent assistance.
 
-This editorial overview is based on the supplied showcase material, attributed to 能源线-何傲. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 何傲. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

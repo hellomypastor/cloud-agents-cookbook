@@ -6,7 +6,7 @@ summary: "Marlin connects metric definitions, SQL, data questions, analysis, and
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "淘天-权栩"}
+author: {"name": "权栩"}
 locale: "en-US"
 translation_of: "marlin-data-agent"
 ---
@@ -17,7 +17,7 @@ translation_of: "marlin-data-agent"
 
 Marlin connects metric definitions, SQL, data questions, analysis, and experiment reports in a knowledge-backed workflow.
 
-This editorial overview is based on the supplied showcase material, attributed to 淘天-权栩. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 权栩. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

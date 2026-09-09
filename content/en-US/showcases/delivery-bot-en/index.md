@@ -6,7 +6,7 @@ summary: "Route a development request to specialized execution and return build 
 type: "showcase"
 category: "build-deploy"
 tags: ["agent", "workflow-automation"]
-author: {"name": "Qteam-残风"}
+author: {"name": "残风"}
 locale: "en-US"
 translation_of: "delivery-bot"
 ---
@@ -17,7 +17,7 @@ translation_of: "delivery-bot"
 
 Route a development request to specialized execution and return build evidence to its original conversation.
 
-This editorial overview is based on the supplied showcase material, attributed to Qteam-残风. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 残风. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

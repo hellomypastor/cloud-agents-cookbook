@@ -6,7 +6,7 @@ summary: "将 ERP 的物料、BOM、定价和报价接口接入 Agent，探索�
 type: "showcase"
 category: "operations-governance"
 tags: ["agent", "workflow-automation"]
-author: {"name": "阿里云-泡鲁达"}
+author: {"name": "泡鲁达"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 将 ERP 的物料、BOM、定价和报价接口接入 Agent，探索从口语需求到候选报价方案的流程。
 
-本篇根据 showcase 资料整理，原案例贡献者：阿里云-泡鲁达。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：泡鲁达。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

@@ -6,7 +6,7 @@ summary: "Code review combines deterministic scope calculation, project rules, m
 type: "showcase"
 category: "build-deploy"
 tags: ["agent", "workflow-automation"]
-author: {"name": "TRE-曲径/Qteam-安辰"}
+author: {"name": "曲径/安辰"}
 locale: "en-US"
 translation_of: "open-code-review"
 ---
@@ -17,7 +17,7 @@ translation_of: "open-code-review"
 
 Code review combines deterministic scope calculation, project rules, model analysis, and coverage evidence.
 
-This editorial overview is based on the supplied showcase material, attributed to TRE-曲径/Qteam-安辰. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 曲径/安辰. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

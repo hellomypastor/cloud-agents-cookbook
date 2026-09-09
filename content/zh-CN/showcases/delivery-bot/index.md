@@ -6,7 +6,7 @@ summary: "从一条研发请求出发，路由专业任务、执行构建与验�
 type: "showcase"
 category: "build-deploy"
 tags: ["agent", "workflow-automation"]
-author: {"name": "Qteam-残风"}
+author: {"name": "残风"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 从一条研发请求出发，路由专业任务、执行构建与验证，并将交付证据返回原会话。
 
-本篇根据 showcase 资料整理，原案例贡献者：Qteam-残风。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：残风。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

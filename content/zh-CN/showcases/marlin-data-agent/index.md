@@ -6,7 +6,7 @@ summary: "围绕指标口径、SQL、问数、分析和实验报告组织数据�
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "淘天-权栩"}
+author: {"name": "权栩"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 围绕指标口径、SQL、问数、分析和实验报告组织数据服务，以知识和流程支持可复用的分析交付。
 
-本篇根据 showcase 资料整理，原案例贡献者：淘天-权栩。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：权栩。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 

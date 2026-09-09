@@ -6,7 +6,7 @@ summary: "A mapper interprets spreadsheet fields while an analyzer produces cons
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "淘天-阿米"}
+author: {"name": "阿米"}
 locale: "en-US"
 translation_of: "excel-industry-analysis"
 ---
@@ -17,7 +17,7 @@ translation_of: "excel-industry-analysis"
 
 A mapper interprets spreadsheet fields while an analyzer produces constrained aggregation configurations for deterministic execution.
 
-This editorial overview is based on the supplied showcase material, attributed to 淘天-阿米. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This editorial overview is based on the supplied showcase material, attributed to 阿米. It describes the presented approach; it does not establish production deployment or independently measured performance.
 
 ## Implementation approach
 

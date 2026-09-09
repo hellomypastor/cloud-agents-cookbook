@@ -6,7 +6,7 @@ summary: "围绕充电异常，将订单、设备、计费和趋势分析拆成�
 type: "showcase"
 category: "enterprise-integration"
 tags: ["agent", "workflow-automation"]
-author: {"name": "能源线-霄羽"}
+author: {"name": "霄羽"}
 locale: "zh-CN"
 ---
 
@@ -16,7 +16,7 @@ locale: "zh-CN"
 
 围绕充电异常，将订单、设备、计费和趋势分析拆成专业任务，汇聚证据形成诊断说明。
 
-本篇根据 showcase 资料整理，原案例贡献者：能源线-霄羽。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
+本篇根据 showcase 资料整理，原案例贡献者：霄羽。内容介绍材料中的方案，不将其等同于已验证的生产部署或量化收益。
 
 ## 实现思路
 
