@@ -1167,3 +1167,14 @@ footer {
  .home .entry-heading { gap:4px; }
  .inline-resources .resource-link { width:26px; height:26px; }
 }
+
+/* Distinguish secondary destinations without adding another text row. */
+.inline-resources .resource-live { color:#28674c; background:#edf5ef; }
+.inline-resources .resource-video { color:#946021; background:#faf0df; }
+.inline-resources .resource-document { color:#4c6394; background:#eef2f9; }
+.inline-resources .resource-live:hover { color:#194c35; background:#dcece0; }
+.inline-resources .resource-video:hover { color:#75470e; background:#f2e1c4; }
+.inline-resources .resource-document:hover { color:#364d7c; background:#dde5f4; }
+[data-theme="dark"] .inline-resources .resource-live { color:#a3d5b7; background:#26392e; }
+[data-theme="dark"] .inline-resources .resource-video { color:#e6c184; background:#403321; }
+[data-theme="dark"] .inline-resources .resource-document { color:#b3c8ef; background:#2c3547; }
