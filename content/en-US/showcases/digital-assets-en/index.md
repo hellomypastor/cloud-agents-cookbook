@@ -19,6 +19,12 @@ Incremental ingestion and usage feedback maintain a shared organizational knowle
 
 This account is based on showcase material contributed by 蓝屿. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Knowledge retrieval result](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Retain history while citing the current valid version.
+
 ## Implementation approach
 
 ### How the work moves through the product

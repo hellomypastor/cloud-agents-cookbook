@@ -19,6 +19,12 @@ Specialized analyses of orders, equipment, billing, and trends contribute to a c
 
 This account is based on showcase material contributed by 霄羽. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Showcase view](./assets/showcase-view.jpg)
+
+Archived showcase demo: specialist roles organize charging anomaly analysis. This is a historical view. Source: original showcase material.
+
 ## Implementation approach
 
 ### How the work moves through the product

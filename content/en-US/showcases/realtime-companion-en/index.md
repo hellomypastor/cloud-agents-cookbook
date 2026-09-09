@@ -22,6 +22,12 @@ A realtime voice companion supports sharing and questions through conversational
 
 This account is based on showcase material contributed by Qoder Agents 团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Showcase view](./assets/showcase-view.webp)
+
+Companion landing page with topic selection and a voice entry point. Source: original showcase material.
+
 ## Implementation approach
 
 ### How the work moves through the product

@@ -21,6 +21,12 @@ source_url: "https://qoder.com/agents/session/new"
 
 本文根据Qoder Agents 团队提供的 showcase 资料整理。流程图与分工表用于解释案例中的方法；后面的具体示例是复用建议，不作为生产运行的实测结论。
 
+### 效果预览
+
+![远程任务状态](./assets/result-preview.png)
+
+根据本文案例绘制的结果示意，使用合成数据，非产品截图。恢复后查询原任务，避免重复提交和重复产物
+
 ## 实现思路
 
 ### 一次任务如何流经产品

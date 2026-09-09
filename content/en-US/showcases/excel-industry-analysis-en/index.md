@@ -19,6 +19,12 @@ A mapper interprets spreadsheet fields while an analyzer produces constrained ag
 
 This account is based on showcase material contributed by 阿米. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Regional summary](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. One currency · deduplicate orders · subtract refunds.
+
 ## Implementation approach
 
 ### How the work moves through the product

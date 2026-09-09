@@ -19,6 +19,12 @@ Marlin connects metric definitions, SQL, data questions, analysis, and experimen
 
 This account is based on showcase material contributed by 权栩. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Conversion analysis](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Without channel or experiment data, causality is unknown.
+
 ## Implementation approach
 
 ### How the work moves through the product

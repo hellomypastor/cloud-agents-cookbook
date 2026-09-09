@@ -19,6 +19,12 @@ Managed sessions coordinate reading, parsing, computation, validation, and write
 
 This account is based on showcase material contributed by Qoder Agents 团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Batch processing manifest](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Invalid amount; accepted records are not duplicated.
+
 ## Implementation approach
 
 ### How the work moves through the product

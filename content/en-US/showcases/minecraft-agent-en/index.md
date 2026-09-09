@@ -19,6 +19,12 @@ An embodied Agent shares a Minecraft world with players and responds through in-
 
 This account is based on showcase material contributed by 残风. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Showcase view](./assets/showcase-view.webp)
+
+Original demo frame: the agent appears as a character in the player’s world. Source: original showcase material.
+
 ## Implementation approach
 
 ### How the work moves through the product

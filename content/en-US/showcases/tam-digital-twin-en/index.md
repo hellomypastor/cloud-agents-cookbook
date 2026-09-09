@@ -19,6 +19,12 @@ A persistent support entry routes industry troubleshooting tasks to specialized 
 
 This account is based on showcase material contributed by 俊行. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Diagnostic evidence report](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Collect configuration evidence before claiming a cause.
+
 ## Implementation approach
 
 ### How the work moves through the product

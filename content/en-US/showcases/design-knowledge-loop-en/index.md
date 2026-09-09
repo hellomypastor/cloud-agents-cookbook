@@ -19,6 +19,12 @@ Design interactions produce knowledge proposals that pass evaluation and review 
 
 This account is based on showcase material contributed by Qoder Agents 团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Showcase view](./assets/showcase-view.png)
+
+Original showcase concept diagram: design tasks, feedback, knowledge proposals, and expert review; not a runtime screenshot. Source: original showcase material.
+
 ## Implementation approach
 
 ### How the work moves through the product

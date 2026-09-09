@@ -19,6 +19,12 @@ A cloud adaptation layer adds identity, resumption, artifact archiving, and mess
 
 This account is based on showcase material contributed by 蒲浦. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Cloud task receipt](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Return results to the conversation with artifact references.
+
 ## Implementation approach
 
 ### How the work moves through the product

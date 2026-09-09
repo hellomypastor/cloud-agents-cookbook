@@ -19,6 +19,12 @@ A cloud film studio coordinates writing, storyboards, art, performance, music, a
 
 This account is based on showcase material contributed by 何傲. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Showcase view](./assets/showcase-view.webp)
+
+A frame from the original showcase film; the videos on this page show the full result. Source: original showcase material.
+
 ## Implementation approach
 
 ### How the work moves through the product

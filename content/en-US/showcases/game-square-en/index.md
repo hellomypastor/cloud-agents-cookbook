@@ -22,6 +22,12 @@ A browser game collection demonstrates playable frontend artifacts delivered wit
 
 This account is based on showcase material contributed by 何傲. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Showcase view](./assets/showcase-view.webp)
+
+Game selection: card games and casual games share one entry point. Source: original showcase material.
+
 ## Implementation approach
 
 ### How the work moves through the product

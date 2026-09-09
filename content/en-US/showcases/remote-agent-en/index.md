@@ -22,6 +22,12 @@ A web task interface exposes cloud execution, progress, and artifacts without re
 
 This account is based on showcase material contributed by Qoder Agents 团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Remote task state](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Reconnect to the original task rather than resubmitting it.
+
 ## Implementation approach
 
 ### How the work moves through the product

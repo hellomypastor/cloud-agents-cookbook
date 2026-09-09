@@ -19,6 +19,12 @@ An ERP proof of concept connects conversational requirements to materials, bills
 
 This account is based on showcase material contributed by 泡鲁达. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Quotation draft](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Draft: tax basis is unresolved; the final total stays open.
+
 ## Implementation approach
 
 ### How the work moves through the product

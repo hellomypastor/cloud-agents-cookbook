@@ -19,6 +19,12 @@ Camera access packaged as tools lets an Agent obtain images and describe the obs
 
 This account is based on showcase material contributed by 少狂. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Camera analysis result](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. A stale frame cannot establish the current scene state.
+
 ## Implementation approach
 
 ### How the work moves through the product

@@ -49,6 +49,12 @@ flowchart LR
   D --> F[Produce report]
 ```
 
+### Result preview
+
+![Showcase view](./assets/showcase-view.jpg)
+
+Product Experience Officer demo with evaluation tasks, reports, and an execution entry. Source: original showcase material.
+
 ## Recommended approach
 
 In one sentence: **give it full capabilities, lock down permissions, and mean what you say.**

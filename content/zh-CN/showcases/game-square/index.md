@@ -21,6 +21,12 @@ source_url: "https://hao2-games.vercel.app"
 
 本文根据何傲提供的 showcase 资料整理。流程图与分工表用于解释案例中的方法；后面的具体示例是复用建议，不作为生产运行的实测结论。
 
+### 效果预览
+
+![案例效果图](./assets/showcase-view.webp)
+
+游戏广场入口：牌局与小游戏按卡片组织。来源：原 showcase 素材。
+
 ## 实现思路
 
 ### 一次任务如何流经产品

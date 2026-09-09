@@ -19,6 +19,12 @@ A task graph organizes clarification, planning, implementation, verification, an
 
 This account is based on showcase material contributed by 蛋总/与天. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Task graph delivery view](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Retry the affected stage while preserving earlier evidence.
+
 ## Implementation approach
 
 ### How the work moves through the product

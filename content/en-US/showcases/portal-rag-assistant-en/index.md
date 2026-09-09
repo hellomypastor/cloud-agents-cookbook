@@ -35,6 +35,12 @@ This article reviews public implementation revision `eb1afef05af0565231e16e4bb3a
 | Website server | Read credentials from its environment and proxy session, message, and event requests |
 | Configured QCA Agent | Handle the task using knowledge and configuration supplied by the integrator |
 
+### Result preview
+
+![Showcase view](./assets/showcase-view.webp)
+
+Demo portal: the customer-service entry opens product Q&A. Source: original showcase material.
+
 ## Implementation approach
 
 ### Connect through a small server-side proxy

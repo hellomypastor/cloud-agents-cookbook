@@ -22,6 +22,12 @@ A refinery cockpit organizes unit loads, material flow, trends, and safety indic
 
 This account is based on showcase material contributed by 何傲. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Showcase view](./assets/showcase-view.webp)
+
+Demo cockpit showing unit loads and material flow; operational readings are simulated. Source: original showcase material.
+
 ## Implementation approach
 
 ### How the work moves through the product

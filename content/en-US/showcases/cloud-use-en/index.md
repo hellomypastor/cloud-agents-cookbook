@@ -22,6 +22,12 @@ Governed machine identities and tool interfaces support Agent-driven cloud resou
 
 This account is based on showcase material contributed by QCA Cloud Use 团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Cloud resource report](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Missing metrics require investigation, not deletion.
+
 ## Implementation approach
 
 ### How the work moves through the product

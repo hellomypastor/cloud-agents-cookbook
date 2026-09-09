@@ -30,6 +30,12 @@ The supplied case material shows conflict identification, code changes, build an
 
 A narrative summary explains these facts; it does not replace them.
 
+### Result preview
+
+![Delivery receipt](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Example receipt: review the evidence before release.
+
 ## Implementation approach
 
 ### Separate message handling, routing, and execution

@@ -19,6 +19,12 @@ Code review combines deterministic scope calculation, project rules, model analy
 
 This account is based on showcase material contributed by 曲径/安辰. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![Code review result](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Illustration: trace each finding and disclose coverage gaps.
+
 ## Implementation approach
 
 ### How the work moves through the product

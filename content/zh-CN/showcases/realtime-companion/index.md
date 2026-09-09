@@ -21,6 +21,12 @@ source_url: "https://qca-realtime-agent.vercel.app/"
 
 本文根据Qoder Agents 团队提供的 showcase 资料整理。流程图与分工表用于解释案例中的方法；后面的具体示例是复用建议，不作为生产运行的实测结论。
 
+### 效果预览
+
+![案例效果图](./assets/showcase-view.webp)
+
+实时陪伴入口：选择话题后开始语音交流。来源：原 showcase 素材。
+
 ## 实现思路
 
 ### 一次任务如何流经产品

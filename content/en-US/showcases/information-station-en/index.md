@@ -19,6 +19,12 @@ Scheduled collection and editorial synthesis turn incoming technology news into 
 
 This account is based on showcase material contributed by 信息站共创团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
+### Result preview
+
+![News digest](./assets/result-preview.png)
+
+Illustrative output based on this article’s example; synthetic data, not a product screenshot. Deduplicate events while preserving original sources.
+
 ## Implementation approach
 
 ### How the work moves through the product
