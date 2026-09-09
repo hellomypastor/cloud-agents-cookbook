@@ -76,6 +76,11 @@ function icon(type, slug = "") {
       '<rect x="10" y="13" width="47" height="32" rx="3" fill="#dce7ee"/><path d="M33 45v12m-12 0h24M19 34l9-10 8 7 12-12"/>',
   };
   const illustrations = {
+    "portal-rag-assistant": '<rect x="8" y="12" width="50" height="36" rx="4" fill="#e1e9e0"/><path d="M8 22h50M15 17h1m4 0h1M16 30h20m-20 6h12"/><path d="M35 35h25v18H47l-7 6v-6h-5Z" fill="#f7f6ef"/><path d="M41 42h13m-13 5h8"/>',
+    "delivery-bot": '<path d="M11 16h20v17H11Zm28 21h20v17H39Z" fill="#dbe7df"/><path d="M31 24h17v13m-4-5 4 5 4-5M39 46H21V33m-4 5 4-5 4 5"/><path d="m16 24 3 3 7-7m19 25 3 3 7-7"/>',
+    "llm2cad-pipeline": '<path d="m11 25 22-12 23 12v26L33 62 11 50Z" fill="#e1e9e0"/><path d="m11 25 22 12 23-12M33 37v25M21 20l23 12v25M11 38l22 12 23-12"/><path d="M8 8h22M8 5v6m22-6v6"/>',
+    "welllog-ai": '<rect x="10" y="9" width="47" height="50" rx="3" fill="#e1e9e0"/><path d="M23 9v50m16-50v50M10 22h47M10 36h47M10 49h47" stroke-opacity=".4"/><path d="m16 14 3 9-5 7 6 10-5 13m16-39-4 12 7 8-6 10 4 10m16-40 4 9-6 9 7 11-5 11"/>',
+
     "managed-mode-quickstart":
       '<path d="M13 17h41l2 31H12Z" fill="#d5e5db"/><path d="m13 17 3-5h40v32l-2 4M13 24h42m-34 8 6 5-6 5m14 0h10M18 20h1m4 0h1"/><path d="m19 53 28 1"/>',
     "product-experience-officer":
@@ -163,7 +168,11 @@ export async function buildSite(root = process.cwd(), options = {}) {
         .join("")}</select></div>`;
       const resourcesFor = (i) => showcaseSelection.cases.find((c) => c.slug === (i.translation_of ?? i.slug))?.resources ?? [];
       const resourceLabel = (kind) => ({live: locale === "zh-CN" ? "在线体验" : "Live demo", video: locale === "zh-CN" ? "演示视频" : "Video", document: locale === "zh-CN" ? "公开文档" : "Documentation"})[kind];
-      const resourceLinks = (i, article = false) => `<div class="case-resources">${resourcesFor(i).map((r) => `<a class="resource-link resource-${r.kind}" href="${esc(r.kind === "video" ? (article ? "#case-videos" : `./${i.slug}/#case-videos`) : r.url)}"${r.kind === "video" ? "" : ' target="_blank" rel="noopener noreferrer"'}>${resourceLabel(r.kind)} ${r.kind === "video" ? "▷" : "↗"}</a>`).filter((v, n, a) => a.indexOf(v) === n).join("")}${article ? "" : `<a class="resource-link" href="./${i.slug}/">${locale === "zh-CN" ? "案例文档" : "Case study"} →</a>`}</div>`;
+      const resourceLinks = (i, article = false) => {
+        const resources = resourcesFor(i).filter((r, n, all) => all.findIndex((v) => v.kind === r.kind) === n);
+        if (!resources.length) return "";
+        return `<span class="case-resources${article ? " article-resources" : " inline-resources"}">${resources.map((r) => `<a class="resource-link resource-${r.kind}" aria-label="${esc(resourceLabel(r.kind) + ': ' + i.title)}" title="${resourceLabel(r.kind)}" href="${esc(r.kind === "video" ? (article ? "#case-videos" : `./${i.slug}/#case-videos`) : r.url)}"${r.kind === "video" ? "" : ' target="_blank" rel="noopener noreferrer"'}>${article ? resourceLabel(r.kind) + " " : ""}<svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">${r.kind === "video" ? '<rect x="2.5" y="4" width="15" height="12" rx="3"/><path d="m8 7 5 3-5 3Z"/>' : r.kind === "live" ? '<path d="M11 3h6v6m0-6-8 8M8 4H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4"/>' : '<path d="M5 2h7l4 4v12H5ZM12 2v5h4M8 10h5m-5 3h5"/>'}</svg></a>`).join("")}</span>`;
+      };
       const mediaSection = (i) => {
         const videos = resourcesFor(i).filter((r) => r.kind === "video");
         return videos.length ? `<section class="case-videos" id="case-videos"><h2>${resourceLabel("video")}</h2>${videos.map((r) => `<figure><figcaption>${esc(r.title[locale])}</figcaption><video controls playsinline preload="none" poster="../../media/${esc(r.file.replace(/\.mp4$/, ".jpg"))}" aria-label="${esc(r.title[locale])}"><source src="../../media/${esc(r.file)}" type="video/mp4"></video><a href="../../media/${esc(r.file)}">${locale === "zh-CN" ? "单独打开视频" : "Open video"} ↗</a></figure>`).join("")}</section>` : "";
@@ -171,16 +180,16 @@ export async function buildSite(root = process.cwd(), options = {}) {
       const cards = featured
         .map(
           (i) =>
-            `<a class="feature" href="./${i.slug}/">${icon(i.type, i.slug)}<h2>${esc(i.title)}</h2><p>${esc(i.summary)}</p><span class="resource-badges">${[...new Set(resourcesFor(i).map((r) => resourceLabel(r.kind)))].join(" · ") || (locale === "zh-CN" ? "案例文档" : "Case study")}</span></a>`,
+            `<a class="feature" href="./${i.slug}/">${icon(i.type, i.slug)}<h2>${esc(i.title)}</h2><p>${esc(i.summary)}</p></a>`,
         )
         .join("");
       const rows = items
         .map(
           (i) =>
-            `<tr data-entry data-category="${i.category}" data-type="${i.type}" data-search="${esc([i.title, i.summary, i.author.name, ...i.tags, categoryLabel(i), typeLabel(i)].join(" ").toLowerCase())}"><td><a class="entry-title" href="./${i.slug}/">${esc(i.title)}</a><p>${esc(i.summary)}</p>${resourceLinks(i)}</td><td class="category-cell"><a class="pill topic-${i.category}" href="?category=${i.category}" data-filter="${i.category}">${esc(categoryLabel(i))}</a><span class="pill type-${i.type}">${esc(typeLabel(i))}</span></td><td><span class="author"><span class="avatar" aria-hidden="true">${esc([...i.author.name][0])}</span>${esc(i.author.name)}</span></td><td class="date">${i.updated_at ? esc(new Intl.DateTimeFormat(locale, { year: "numeric", month: "short" }).format(new Date(i.updated_at))) : "—"}</td></tr>`,
+            `<tr data-entry data-category="${i.category}" data-type="${i.type}" data-search="${esc([i.title, i.summary, i.author.name, ...i.tags, categoryLabel(i), typeLabel(i)].join(" ").toLowerCase())}"><td><div class="entry-heading"><a class="entry-title" href="./${i.slug}/">${esc(i.title)}</a>${resourceLinks(i)}</div><p>${esc(i.summary)}</p></td><td class="category-cell"><a class="pill topic-${i.category}" href="?category=${i.category}" data-filter="${i.category}">${esc(categoryLabel(i))}</a><span class="pill type-${i.type}">${esc(typeLabel(i))}</span></td><td><span class="author"><span class="avatar" aria-hidden="true">${esc([...i.author.name][0])}</span>${esc(i.author.name)}</span></td><td class="date">${i.updated_at ? esc(new Intl.DateTimeFormat(locale, { year: "numeric", month: "short" }).format(new Date(i.updated_at))) : "—"}</td></tr>`,
         )
         .join("");
-      const home = `<section class="intro"><h1>Cookbook</h1><p>${w.intro}</p></section>${filters}<section class="featured" aria-label="${locale === "zh-CN" ? "精选内容" : "Featured cookbooks"}">${cards}</section><section class="library"><div class="section-head"><h2>${w.all}</h2><span id="result-count" data-unit="${w.count}" aria-live="polite">${items.length} ${w.count}</span></div><table class="catalog"><thead><tr><th scope="col">${w.title}</th><th scope="col">${w.categories}</th><th scope="col">${w.author}</th><th scope="col">${w.date}</th></tr></thead><tbody>${rows}</tbody></table><div class="empty" hidden><p>${w.empty}</p><button id="reset">${w.reset}</button></div></section><section class="contribute"><h2>${w.contribute}</h2><p>${w.welcome}</p><a href="${sourceRoot}/CONTRIBUTING${locale === "zh-CN" ? ".zh-CN" : ""}.md">${w.guide} ↗</a></section>`;
+      const home = `<section class="intro"><h1>Cookbook</h1><p>${w.intro}</p></section>${filters}<section class="featured" aria-label="${locale === "zh-CN" ? "精选内容" : "Featured cookbooks"}">${cards}</section><section class="library"><div class="section-head"><h2 class="sr-only">${w.all}</h2><span id="result-count" data-unit="${w.count}" aria-live="polite">${items.length} ${w.count}</span></div><table class="catalog"><thead><tr><th scope="col">${w.title}</th><th scope="col">${w.categories}</th><th scope="col">${w.author}</th><th scope="col">${w.date}</th></tr></thead><tbody>${rows}</tbody></table><div class="empty" hidden><p>${w.empty}</p><button id="reset">${w.reset}</button></div></section><section class="contribute"><h2>${w.contribute}</h2><p>${w.welcome}</p><a href="${sourceRoot}/CONTRIBUTING${locale === "zh-CN" ? ".zh-CN" : ""}.md">${w.guide} ↗</a></section>`;
       await writeFile(
         path.join(dir, "index.html"),
         shell(locale, "../", "Cookbook", home, `../${other}/`),
