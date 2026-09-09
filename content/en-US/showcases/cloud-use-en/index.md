@@ -11,99 +11,65 @@ locale: "en-US"
 translation_of: "cloud-use"
 source_url: "https://docs.qoder.com/zh/cloud-agents/best-practices/cloud-use"
 ---
-
 ## Scenario and outcome
 
-Cloud work maps intent to specific resources and tool calls. Cloud Use brings identity, permissions, and tool observations into that process.
+A resource query is only the beginning of cloud analysis. A costly instance still needs utilization, workload timing, and dependency evidence before a useful recommendation can be made.
 
-[Open the documentation](https://docs.qoder.com/zh/cloud-agents/best-practices/cloud-use)
-
-Governed machine identities and tool interfaces support Agent-driven cloud resource inspection and operations.
-
-This account is based on showcase material contributed by QCA Cloud Use 团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
-
-![Cloud resource report](./assets/result-preview.png)
-
-Illustrative output based on this article’s example; synthetic data, not a product screenshot. Missing metrics require investigation, not deletion.
+The [official Cloud Use guide](https://docs.qoder.com/zh/cloud-agents/best-practices/cloud-use) describes OpenAPI MCP, OAuth credentials, and Skills. This article develops an independent reference workflow for a reviewable resource report; its fixtures are not observed account data.
 
 ## Implementation approach
 
-### How the work moves through the product
+### Define a question the report can answer
 
-Begin with read-only inventory and a bounded resource scope. Require explicit action targets and authorization for writes, and retain tool results for review.
+“Save money” omits scope and time. Start by inspecting a test project over an agreed window, separating adequately observed resources from evidence gaps, and drafting recommendations.
+
+Keep data access, analytical sufficiency, and execution suitability separate. A successful tool call establishes only the first.
+
+### Connect, then verify one read-only request
+
+Follow the official guide for account-side authorization, MCP OAuth credential configuration, and Agent/session association. Verify one scoped read-only query before expanding the workflow. Credentials should never be included in prompts or report content.
+
+### Turn evidence into a decision
+
+Missing evidence takes a follow-up branch instead of becoming low utilization.
 
 ```mermaid
 flowchart LR
-  N0["Scope identity"] --> N1
-  N1["Collect facts"] --> N2
-  N2["Generate candidates"] --> N3
-  N3["Review separately"]
+  A[Scope and time window] --> B[Resources and metrics]
+  B --> C{Evidence complete}
+  C -->|No| D[Record gaps and next query]
+  C -->|Yes| E[Check schedules and dependencies]
+  E --> F[Draft recommendation]
+  F --> G[Separate execution decision]
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
+| Synthetic resource | Evidence | Unresolved question | Useful report entry |
+|---|---|---|---|
+| demo-a | Low utilization in the window | Periodic workload? | Candidate requiring workload review |
+| demo-b | Resource exists, metrics unavailable | Actual load? | Evidence gap |
+| demo-c | Variable load, scheduled jobs | Peak capacity needs? | Analyze the relevant window |
 
-### Responsibilities and authoritative facts
+None establishes a savings amount. Pricing, discounts, configuration, and a proposed change are needed. Multiplying low utilization by a bill does not calculate achievable savings.
 
-| Component | Responsibility |
-|---|---|
-| Identity | Resource and action scope |
-| Agent | Interpret goals and organize calls |
-| Cloud tools | Resource observations and results |
+### Diagnose the layer that failed
 
-Separate observation, recommendation, and mutation. Resource identifiers, permissions, and tool results define execution boundaries.
+An empty-looking result can mean an authorization failure, wrong scope, absent metrics, or parser failure. These require different recovery actions.
 
-### Follow one concrete request
+| Observation | Investigate | Do not conclude |
+|---|---|---|
+| Authorization error | Credential and tool access | No resources exist |
+| Resource found, metrics absent | Collection and window | Usage is zero |
+| Metrics available, purpose unknown | Schedules and dependencies | Safe to stop |
+| Recommendation drafted | Execution record | Optimization completed |
 
-Inventory potentially idle resources in a test group, returning evidence without changing or deleting anything.
-
-1. **Scope identity.** Limit tool access to the intended resource group and read-only permissions.
-2. **Collect facts.** Query state and utilization over a defined interval rather than inferring from names.
-3. **Generate candidates.** Combine usage, dependencies, and missing metrics into a review list.
-4. **Review separately.** Require a separate authorized task for changes rather than treating the report as permission.
-
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
-
-### A result that can be checked
-
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
-
-```json
-{
-  "input": {
-    "cpu_metric": null,
-    "resource_exists": true
-  },
-  "expected": {
-    "idle": "undetermined",
-    "delete_recommended": false
-  }
-}
-```
-
-Missing metrics are not zero. Dependency and business context are also required; this fixture checks restraint when evidence is insufficient.
-
-### Try the workflow yourself
-
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
-
-> Inspect a test resource with its metric window, dependencies, and evidence gaps. Keep missing evidence unresolved and return recommendations as a draft.
-
-Compare a resource with metrics against one without them. Missing data is not zero usage. Idleness also depends on window length, periodic workloads, and dependencies; resource changes must remain separate from inspection.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Missing metrics**. Expected behavior: Report insufficient evidence rather than zero usage. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+Preserve the failure layer so the next request fills a specific gap rather than repeating the entire investigation.
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+First ask for scoped metrics, missing evidence, and next checks without resource changes. Then provide periodic-workload context for one candidate and request reevaluation. A useful system can revise or withdraw its first recommendation.
 
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Missing metrics | Report insufficient evidence rather than zero usage. |
-| Dependent resource | Expose the dependency before recommending action. |
-| Insufficient tool permissions | Report the limitation instead of widening privileges. |
+![Illustrative resource inspection outcome](./assets/result-preview.png)
+
+The synthetic illustration emphasizes unavailable metrics and unresolved judgment, not any real account’s condition.
+
+Validate identity, scope, provenance, missing-data handling, and independent action results before introducing scheduled or event-driven execution.

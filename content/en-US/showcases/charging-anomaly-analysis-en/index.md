@@ -10,107 +10,58 @@ author: {"name": "霄羽"}
 locale: "en-US"
 translation_of: "charging-anomaly-analysis"
 ---
-
 ## Scenario and outcome
 
-An anomalous charging order can involve equipment events, order state, and tariff rules. A single-system view can mistake missing evidence for a root cause.
+A disputed charging bill may involve order timing, equipment state, time-based rates, service fees, and discounts. Sequential handoffs between teams make it easy to repeat work or lose evidence.
 
-Specialized analyses of orders, equipment, billing, and trends contribute to a charging anomaly diagnosis.
+霄羽’s showcase uses a coordinating diagnostic Agent with order, equipment, billing, and trend specialists. The available material establishes that design and a historical demo, not production accuracy or measured resolution time. The investigation below is a synthetic worked example.
 
-This account is based on showcase material contributed by 霄羽. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
+![Historical charging diagnosis entry and specialist roles](./assets/showcase-view.jpg)
 
-### Result preview
-
-![Showcase view](./assets/showcase-view.jpg)
-
-Archived showcase demo: specialist roles organize charging anomaly analysis. This is a historical view. Source: original showcase material.
+Original showcase screenshot. It is historical material, not a live order or evidence of the service currently hosted at the old address.
 
 ## Implementation approach
 
-### How the work moves through the product
+### Agree on one investigation scope
 
-Use consistent time windows and identifiers. Attach evidence to each finding and separate observations from hypotheses. The original live address changed content, so this entry is documentation only.
+Before parallel work, identify the same order, device, and time window. An order-level bill, an all-day device alert, and a weekly trend cannot be merged without reconciling scope.
 
-```mermaid
-flowchart LR
-  N0["Fix the scope"] --> N1
-  N1["Analyze independently"] --> N2
-  N2["Align evidence"] --> N3
-  N3["Explain the result"]
-```
+Record the complaint, identifiers, expected versus actual behavior, and available material. A high charge is not automatically an incorrect charge.
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
+### Parallel evidence needs a shared contract
 
-### Responsibilities and authoritative facts
+The specialist roles come from the source; these output boundaries are a reference design.
 
-| Component | Responsibility |
-|---|---|
-| Coordinator | Scope the incident and synthesize findings |
-| Specialists | Order, device, billing, trend checks |
-| Data tools | Return records and timelines |
+| Specialist | Evidence | Output | Insufficient to establish |
+|---|---|---|---|
+| Order | Times, state, amounts, discounts | Transaction facts | Device failure |
+| Equipment | Relevant logs and interruptions | Observed anomalies | Full financial impact |
+| Billing | Rates, fees, rounding | Recalculation and difference | Missing fee values |
+| Trends | Comparable devices and periods | Baseline deviations | Causality |
 
-Order, device, and billing systems may disagree on time. Align identifiers and timezone semantics before analyzing in parallel.
+Attach provenance, window, and missing fields to every result. Majority agreement is not independent corroboration when all specialists rely on the same mistaken input.
 
-### Follow one concrete request
+### Reconcile before attributing
 
-Investigate an unexpectedly high synthetic charging bill by checking equipment events, duration, tariff versions, and order state.
+A synthetic order has one hour at rate 2 and half an hour at rate 4. Its bill is 5. These are exercise units, not an operating tariff.
 
-1. **Fix the scope.** Pin the order, station, time range, and question.
-2. **Analyze independently.** Inspect order state, device events, tariff calculations, and comparable-period context.
-3. **Align evidence.** Merge results on a common timeline and identify tariff transitions or missing events.
-4. **Explain the result.** Return a recalculation and unresolved checks without implicitly changing bills or issuing refunds.
+| Component | Calculation | Value |
+|---|---|---|
+| First interval | 1 × 2 | 2 |
+| Second interval | 0.5 × 4 | 2 |
+| Known subtotal | 2 + 2 | 4 |
+| Difference | 5 − 4 | 1 |
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+This establishes a difference between known components and the bill, not an overcharge. Request missing service-fee details. A fee of 1 could explain the difference only after confirming that it applies to this order.
 
-### A result that can be checked
+### Deliver an actionable unresolved report
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+A useful report states the verified subtotal, bill, missing fee breakdown, available device evidence, and next query. Missing logs must not become “device healthy.” It can help the next operator without claiming a root cause: arithmetic is complete and the unresolved evidence is explicit.
 
-```json
-{
-  "input": {
-    "segments": [
-      {
-        "hours": 1,
-        "rate": 2
-      },
-      {
-        "hours": 0.5,
-        "rate": 4
-      }
-    ],
-    "billed": 5
-  },
-  "expected": {
-    "calculated": 4,
-    "difference": 1,
-    "cause": "requires investigation"
-  }
-}
-```
-
-Recalculation establishes a discrepancy, not its root cause. Check other fee components before attributing the difference to equipment or billing defects.
-
-### Try the workflow yourself
-
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
-
-> Reconcile a test charging bill using interval rates. Separate order facts, equipment evidence, fee definitions, and missing records. Establish the discrepancy before assessing its cause.
-
-Separate energy charges, service fees, and discounts. The example computes 4 against a bill of 5, but omits service-fee detail. Request that evidence before treating the difference as an equipment or billing defect.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Tariff changes mid-session**. Expected behavior: Calculate segments with their respective versions. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+If timestamps disagree, reconcile timezones. If totals disagree, inspect fee components and effective versions. A broader trend may prioritize investigation but cannot replace order evidence. Preserve observations, inferences, and unresolved questions as distinct parts of the report.
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+Start with one test order whose answer is known. Remove service fees, device logs, or rate versions one at a time and verify that conclusions become appropriately limited. Check calculation agreement, shared scope, provenance, and whether the next operator can act on the report.
 
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Tariff changes mid-session | Calculate segments with their respective versions. |
-| Missing device events | Report the gap without inventing a failure. |
-| Aggregate and individual evidence disagree | Explain the specific order and sampling limits. |
+Measure evidence retrieval separately from model work. Additional specialists cannot remove an external data bottleneck. Treat source efficiency claims as targets to validate rather than measured results of this example.

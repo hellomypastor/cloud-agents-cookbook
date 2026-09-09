@@ -10,97 +10,58 @@ author: {"name": "Qoder Agents 团队"}
 locale: "en-US"
 translation_of: "design-knowledge-loop"
 ---
-
 ## Scenario and outcome
 
-Design assistance consumes rules while producing corrections, rejections, and expert judgments. This case returns those signals to a reviewed knowledge-update process.
+Design libraries accumulate documents but often lose the outcome of their advice. A designer revises a recommendation or an expert rejects a rule, yet the next task retrieves the same unchanged guidance.
 
-Design interactions produce knowledge proposals that pass evaluation and review before becoming a new knowledge version.
+The original showcase connects service outcomes to knowledge maintenance: detect gaps, propose changes, evaluate, review, and release narrowly. Evolution means controlled knowledge versioning, not automatic global rule changes after individual feedback.
 
-This account is based on showcase material contributed by Qoder Agents 团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
+![Eight-stage design service and knowledge maintenance loop](./assets/showcase-view.png)
 
-### Result preview
-
-![Showcase view](./assets/showcase-view.png)
-
-Original showcase concept diagram: design tasks, feedback, knowledge proposals, and expert review; not a runtime screenshot. Source: original showcase material.
+Original concept diagram, not a runtime screenshot. Service and maintenance connect through evidence from actual task outcomes.
 
 ## Implementation approach
 
-### How the work moves through the product
+### Separate service from publication
 
-Start with one design check. Preserve feedback evidence, separate proposals from published rules, evaluate against reference examples, and retain rollback versions.
+The current user needs an answer; maintainers need evidence that a change applies more broadly. Capture rule versions and outcomes during delivery, then process proposals separately. Generated candidates must not silently become the rules used by everyone.
 
-```mermaid
-flowchart LR
-  N0["Run the check"] --> N1
-  N1["Capture feedback"] --> N2
-  N2["Propose a revision"] --> N3
-  N3["Evaluate and release"]
-```
+| Stage | Output | Required connection |
+|---|---|---|
+| Task intake | Design and question | Scope and accessible material |
+| Retrieval | Rules, components, examples | Valid versions |
+| Interaction | Findings or recommendations | Rule and affected location |
+| Feedback | Acceptance, edits, review outcome | Original suggestion |
+| Gap detection | Conflict or missing knowledge | Task evidence |
+| Proposal | Change, rationale, scope | Examples and impact |
+| Evaluation and review | Comparisons and decision | Risk and counterexamples |
+| Narrow release | Scoped version | Metrics and rollback condition |
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
+The source assigns execution and synthesis to the Agent, consequential decisions to experts, and versioned inputs and outputs to the knowledge base. Acceptance rate alone cannot govern brand, design-system, or copyright-related rules.
 
-### Responsibilities and authoritative facts
+### Follow one spacing disagreement
 
-| Component | Responsibility |
+In this exercise, a campaign designer prefers tighter spacing than a general-page rule. The Agent identifies the difference; the designer retains the tighter layout specifically for the campaign.
+
+That does not establish a defective global rule. It supports a possible scoped exception. Preserve the base version, task, recommendation, final design, applicable project, rationale, affected pages, and reviewer. “The user disliked the spacing” is insufficient evidence for publication.
+
+### Evaluate fixes and regressions together
+
+| Reference design | Candidate behavior |
 |---|---|
-| QCA Agent | Assistance and feedback synthesis |
-| Expert | Review high-impact changes |
-| Knowledge base | Versions, release, rollback |
+| Campaign page | Recognize the scoped exception |
+| Ordinary page | Preserve valid existing checks |
+| Unspecified context | Ask rather than assume the exception |
+| Another project | Remain unaffected |
 
-Acceptance is not the only correctness signal. An accepted suggestion may reflect local preference; revisions need scope, counterexamples, and expert judgment.
+A candidate that improves the campaign while weakening ordinary checks should not broaden automatically. During a narrow rollout, inspect appropriateness and expert findings rather than clicks alone.
 
-### Follow one concrete request
+### Roll back versions without erasing learning
 
-Check a button against a test design rule, capture designer feedback, and produce a knowledge revision proposal.
-
-1. **Run the check.** Identify issues against a pinned rule version and retain component-level evidence.
-2. **Capture feedback.** Associate acceptance, modification, or rejection and its reason with the original task.
-3. **Propose a revision.** Describe the gap, proposed change, scope, and affected examples without publishing immediately.
-4. **Evaluate and release.** Replay reference designs, review differences, roll out narrowly, and retain a rollback version.
-
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
-
-### A result that can be checked
-
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
-
-```json
-{
-  "input": {
-    "feedback": "prefer tighter spacing",
-    "scope": "one campaign"
-  },
-  "expected": {
-    "proposal_scope": "one campaign",
-    "global_rule_changed": false
-  }
-}
-```
-
-A campaign preference does not justify changing a global rule. Scope the proposal before evaluation and expert review determine broader applicability.
-
-### Try the workflow yourself
-
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
-
-> Check a test button against a pinned spacing rule. Turn feedback into a scoped proposal with supporting examples, counterexamples, and review questions; do not change global policy.
-
-Preserve both the original recommendation and the designer’s revision. A preference for one campaign supports a local rule only. Replay ordinary and campaign pages before the rule owner decides whether to broaden its scope.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Local preference conflicts with policy**. Expected behavior: Keep it local rather than silently changing a global rule. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+Restore the prior applicable version if outcomes deteriorate, retaining proposals and evaluations. Deleting failed proposals discards counterexamples and encourages repeated mistakes. Version history also explains why the same question produced different advice over time.
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+Start with a frequent task whose final result is observable, such as button checks. Link rule citations, designer changes, and expert decisions to one task before attempting automatic synthesis.
 
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Local preference conflicts with policy | Keep it local rather than silently changing a global rule. |
-| New rule causes regressions | Block release and report failing reference cases. |
-| Quality declines after release | Roll back while retaining evaluation evidence. |
+Success means traceable proposals, locally scoped preferences, regression gates, and a working rollback. Expand into component recommendations only after these properties are demonstrated.

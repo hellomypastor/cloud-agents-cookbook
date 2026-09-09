@@ -10,100 +10,60 @@ author: {"name": "泡鲁达"}
 locale: "en-US"
 translation_of: "erp-quotation"
 ---
-
 ## Scenario and outcome
 
-Nonstandard purchasing requests rarely map directly to one part number. Quotations require reconciling materials, assemblies, alternatives, and price rules.
+Nonstandard quotation work starts before a price table. “Ten sets of spare parts” leaves product compatibility, kit contents, alternatives, and commercial terms unresolved.
 
-An ERP proof of concept connects conversational requirements to materials, bills of materials, pricing, and draft quotations.
-
-This account is based on showcase material contributed by 泡鲁达. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
-
-![Quotation draft](./assets/result-preview.png)
-
-Illustrative output based on this article’s example; synthetic data, not a product screenshot. Draft: tax basis is unresolved; the final total stays open.
+泡鲁达’s ERP POC connects material, BOM, pricing, and quotation capabilities through MCP. The available summary does not publish complete tool definitions, customer orders, or measured results. This synthetic exercise develops a reviewable draft without repeating unverified speed claims.
 
 ## Implementation approach
 
-### How the work moves through the product
+### Confirm the demand before pricing
 
-Use test catalogs first. Preserve quantity, units, price validity, and tax assumptions, and separate draft generation from submitting a binding quotation.
+Agree on product family, purpose, mandatory conditions, permitted alternatives, region, and currency. Ten sets does not define their contents. A requirement confirmation sheet can be the correct first deliverable; it prevents a misunderstood request from propagating into a BOM.
 
-```mermaid
-flowchart LR
-  N0["Clarify requirements"] --> N1
-  N1["Resolve materials"] --> N2
-  N2["Calculate prices"] --> N3
-  N3["Compare drafts"]
-```
+### Pass business identifiers between capabilities
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
+These are reference responsibilities, not original tool names or protocols.
 
-### Responsibilities and authoritative facts
+| Capability | Input | Output | Check |
+|---|---|---|---|
+| Material search | Confirmed constraints | Candidate IDs and attributes | Actual fit |
+| BOM expansion | Selected kit | Components, quantities, version | Units and validity |
+| Pricing | Material and quantity conditions | Price, currency, validity | Applicable tier and customer |
+| Draft creation | Confirmed lines and price references | Draft ID and details | Required terms and gaps |
 
-| Component | Responsibility |
-|---|---|
-| Agent | Clarify needs and assemble options |
-| ERP | Materials, assemblies, pricing facts |
-| Quote workflow | Calculation, approval, submission |
+Confirm a candidate before expanding its BOM. Keep price references with each line. Passing free-form generated descriptions between stages weakens traceability to ERP records.
 
-The model can interpret requirements but must not replace ERP pricing facts. Separate drafting from submission so users can inspect parts, quantities, taxes, and validity.
+### Compare two synthetic configurations
 
-### Follow one concrete request
+Assume a base kit costs 120 and an optional component costs 30, with ten of each where applicable. Taxes, discounts, and shipping are not provided.
 
-Generate standard and enhanced draft quotations for ten equipment spare-parts kits using a test catalog.
+| Configuration | Arithmetic | Known subtotal | Unresolved |
+|---|---|---|---|
+| Standard | 10 × 120 | 1,200 | Tax, shipping, lead time, validity |
+| Enhanced | 10 × 120 + 10 × 30 | 1,500 | Same, plus option compatibility |
 
-1. **Clarify requirements.** Extract use, quantity, delivery date, and constraints; ask about missing specifications.
-2. **Resolve materials.** Query candidate part numbers, bills of materials, and substitutes while retaining identifiers.
-3. **Calculate prices.** Use ERP prices, currency, validity, and tax treatment; calculate subtotals deterministically.
-4. **Compare drafts.** Show differences, unresolved conditions, and price sources without submitting a binding quote.
+The difference is an explicit material line, not an invented percentage surcharge. Real prices must come from business records; calculation should be deterministic.
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+### Preserve the reasoning in the draft
 
-### A result that can be checked
+Read the draft from requirements to differences, line items, price sources, and unresolved terms. The enhanced subtotal must resolve to its components and selection rationale.
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+A useful draft can state standard 1,200, enhanced 1,500, optional compatibility pending, and missing commercial terms. It supports discussion but is not a final commitment. An inconspicuous disclaimer does not replace explicit unresolved fields.
 
-```json
-{
-  "input": {
-    "part": "test-kit",
-    "quantity": 10,
-    "unit_price": 120,
-    "tax_basis": "excluded"
-  },
-  "expected": {
-    "subtotal": 1200,
-    "tax": "unresolved",
-    "state": "draft"
-  }
-}
-```
+### Handle changes and ambiguous retries
 
-The subtotal is known, but taxes remain unresolved. Do not invent a tax rate merely to complete the quotation.
+A quantity change can trigger tier pricing, so retrieve affected prices again. After a draft-creation timeout, look for the existing draft by request identity before creating another. Expired pricing requires refreshed references and review of changed lines.
 
-### Try the workflow yourself
-
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
-
-> Prepare a draft quote for ten test kits. Show item matches, quantities, price sources, and subtotals. Leave missing taxes, shipping, and validity unresolved; do not send a final quotation.
-
-Confirm what a kit contains before retrieving prices. Replacing a component requires recalculating its line, not applying a guessed percentage. The 1,200 example is a subtotal: a useful draft can be delivered while the final total remains open.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Ambiguous material name**. Expected behavior: Explain alternatives and request a selection. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+These paths determine whether the POC can support everyday work. A polished document demonstrates only the successful path.
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+Start with a simple BOM and an independently checked quote. Compare material, quantity, unit, price, and subtotal. Then test missing prices, conflicting models, changed quantities, and duplicate requests.
 
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Ambiguous material name | Explain alternatives and request a selection. |
-| Expired price | Refresh the price or mark it unresolved. |
-| Repeated generation request | Reuse the draft identifier rather than duplicate documents. |
+![Illustrative quotation draft with unresolved tax](./assets/result-preview.png)
+
+The synthetic preview illustrates a draft, not an ERP screenshot. Verify traceable line items, explicit missing terms, and distinct draft and sending states.
+
+Make each alternative independently calculable before comparing cost or delivery. Measure the complete business cycle, including confirmation and corrections, rather than only text generation time.

@@ -10,108 +10,67 @@ author: {"name": "蓝屿"}
 locale: "en-US"
 translation_of: "digital-assets"
 ---
-
 ## Scenario and outcome
 
-Finding a document does not guarantee a current, applicable answer. This case connects ingestion, retrieval, and feedback across scattered development knowledge.
+Team documentation is fragmented across API notes, incident knowledge, reviews, and FAQs. Searchability alone does not establish whether a result is current or applicable.
 
-Incremental ingestion and usage feedback maintain a shared organizational knowledge foundation.
-
-This account is based on showcase material contributed by 蓝屿. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
-
-### Result preview
-
-![Knowledge retrieval result](./assets/result-preview.png)
-
-Illustrative output based on this article’s example; synthetic data, not a product screenshot. Retain history while citing the current valid version.
+This case organizes ingestion, retrieval, and feedback as an asset lifecycle. The available showcase does not publish its index implementation or evaluation results. The two-version API exercise below is a reference design for current answers with historical traceability.
 
 ## Implementation approach
 
-### How the work moves through the product
+### Give assets identities beyond filenames
 
-Retain source, version, scope, and access boundaries for each asset. Treat corrections as reviewable updates rather than allowing model answers to overwrite source material.
+A file can move or change format without becoming a new logical asset. Separate identity, version, provenance, scope, and maintenance ownership.
+
+| Field | Example | Purpose |
+|---|---|---|
+| Identity | demo-api-guide | Stable references after moves |
+| Version/state | v2 current, v1 superseded | Current and historical use |
+| Scope | Test project, API B | Applicability |
+| Source location | Document and passage | Verifiable citations |
+| Maintainer | Documentation owner | Actionable corrections |
+
+### Update the kind of change that occurred
+
+Content changes may require re-extraction. A title change may only need metadata updates. Access revocation must affect retrieval promptly instead of waiting for a full rebuild.
+
+The reference lifecycle connects versioned ingestion to applicable retrieval and reviewable feedback.
 
 ```mermaid
 flowchart LR
-  N0["Define assets"] --> N1
-  N1["Ingest incrementally"] --> N2
-  N2["Serve queries"] --> N3
-  N3["Process feedback"]
+  A[Source changes] --> B[Identify asset and version]
+  B --> C[Extract and update index]
+  C --> D[Apply access and applicability]
+  D --> E[Answer with versioned citation]
+  E --> F[Create correction task]
+  F --> B
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
+### Test competing versions
 
-### Responsibilities and authoritative facts
+Let v1 prescribe parameter mode and v2 replace it with strategy. Make the old document richer in matching keywords, then ask about the current API. Similarity alone may prefer the obsolete document.
 
-| Component | Responsibility |
-|---|---|
-| Ingestion | Sources, versions, incremental changes |
-| Knowledge service | Scoped retrieval and citations |
-| Maintenance | Revision proposals and release history |
+The answer should cite the relevant v2 passage and state applicability to API B. A question about API A still needs historical evidence; deleting every old document is not a solution.
 
-Retrieval must address both discoverability and applicability. Provenance, version, and scope should accompany each result, not remain hidden in a catalog.
+| Question | Evidence | Response |
+|---|---|---|
+| Current parameter | v2 | strategy with citation |
+| Why an old project uses mode | v1 and version relationship | Explain the historical difference |
+| Version unspecified | Version metadata | Clarify or state the assumption |
+| Current material inaccessible | Authorized evidence only | Report the limit without disclosure |
 
-### Follow one concrete request
+### Route feedback to the actual problem
 
-Index a test project’s API notes, change records, and FAQs, then use a query to surface obsolete information.
+An obsolete citation requires version-selection repair. An incorrect source needs a maintainer change. Misinterpretation of a correct source needs retrieval or answer repair. Adding another paragraph to the library does not address every failure.
 
-1. **Define assets.** Assign stable identifiers, project scope, versions, provenance, and access boundaries.
-2. **Ingest incrementally.** Detect changes through content digests and update affected index units.
-3. **Serve queries.** Apply access scope before retrieval and cite the matching versions.
-4. **Process feedback.** Turn incorrect citations and missing knowledge into reviewed revision proposals.
-
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
-
-### A result that can be checked
-
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
-
-```json
-{
-  "input": {
-    "query": "current API",
-    "assets": [
-      {
-        "id": "a",
-        "version": 1,
-        "state": "superseded"
-      },
-      {
-        "id": "a",
-        "version": 2,
-        "state": "current"
-      }
-    ]
-  },
-  "expected": {
-    "selected_version": 2,
-    "citation": "a@2"
-  }
-}
-```
-
-Equal retrieval scores do not justify choosing a random version. Use historical versions only when the question calls for them and label their applicability.
-
-### Try the workflow yourself
-
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
-
-> Answer using the current API documentation and cite its version and location. Follow superseded documents to their replacements; report a gap if no valid source exists.
-
-Keep keyword-rich obsolete documentation alongside its replacement. Check retrieval ordering and that the answer cites v2. Then remove access to the current document: the answer should report unavailable evidence rather than cross access boundaries.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Unauthorized asset**. Expected behavior: Exclude it from retrieval and generated answers. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+Retain the question, selected version, disputed answer, correction, and outcome. Replay the failing question after publication together with a previously correct question to detect regressions.
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+Begin with one project and document family. Establish current-to-historical relationships before scaling ingestion. Judge the first release by whether an answer resolves to its source, version, and scope, not by asset count.
 
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Unauthorized asset | Exclude it from retrieval and generated answers. |
-| Superseded document | Prefer the current version and explain relevant changes. |
-| Unverified user feedback | Create a proposal instead of overwriting knowledge. |
+![Illustrative current-version selection and citation](./assets/result-preview.png)
+
+The synthetic outcome illustrates v2 selection. Test version changes, deletion, revoked access, and feedback replay as well.
+
+An index without provenance becomes harder to explain as it grows. A complete lifecycle for a small collection is a stronger foundation than an unversioned bulk import.

@@ -10,98 +10,86 @@ author: {"name": "蒲浦"}
 locale: "en-US"
 translation_of: "agent-cloud-accelerator"
 ---
-
 ## Scenario and outcome
 
-A successful local run does not establish cloud recovery. This adapter focuses on identity, persistent state, artifacts, and messaging around an existing Agent.
+Moving an Agent into a container preserves its code, but not all the assumptions around that code. Local directories, process memory, terminal progress, and manual file collection become explicit cloud responsibilities.
 
-A cloud adaptation layer adds identity, resumption, artifact archiving, and messaging around existing Agent workflows.
+蒲浦’s Little Pin showcase describes an adapter around multi-Pipeline, multi-Skill Agents: task identity, recovery, archiving, and IM delivery without replacing the core workflow. The available share material does not include an installable package, recovery traces, or measured reliability. The report workflow below is therefore a reference design for that boundary, not a reconstruction of proprietary implementation.
 
-This account is based on showcase material contributed by 蒲浦. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
+### The failure that exposes the missing layer
 
-### Result preview
-
-![Cloud task receipt](./assets/result-preview.png)
-
-Illustrative output based on this article’s example; synthetic data, not a product screenshot. Return results to the conversation with artifact references.
+A report task reads input, analyzes it, writes a report, then sends a message. If the last request times out, restarting everything duplicates computation. Treating an existing report as success can instead leave the user without a result. Computation and delivery need separate completion records.
 
 ## Implementation approach
 
-### How the work moves through the product
+### Four interfaces around the existing Pipeline
 
-Inventory local files, environment assumptions, and implicit state. Test restart and recovery protocols rather than validating only the first successful run.
+| Interface | Input | Output | Boundary to preserve |
+|---|---|---|---|
+| Admission | Request, originating conversation, input reference | Stable identity and input version | Repeated text is not necessarily a duplicate request |
+| Recovery | Task, checkpoint, artifact record | Next executable step | An existing file may belong to obsolete input |
+| Archiving | Local output and generation version | Durable readable reference | A temporary path is not a deliverable |
+| Delivery | Destination, artifact, receipt identity | Delivered or unresolved state | A timeout does not establish non-delivery |
+
+Begin by wrapping one existing entry point. Modifying every Skill at the same time makes it difficult to isolate adapter failures from business failures.
+
+### Separate durable computation from notification
+
+The sequence records artifact evidence before attempting notification. A notification failure should return to delivery, not analysis.
 
 ```mermaid
-flowchart LR
-  N0["Inventory dependencies"] --> N1
-  N1["Persist task state"] --> N2
-  N2["Archive artifacts"] --> N3
-  N3["Resume and notify"]
+sequenceDiagram
+  participant U as Request entry
+  participant S as Task store
+  participant P as Existing Pipeline
+  participant A as Artifact store
+  participant M as Message channel
+  U->>S: Persist task and input version
+  S->>P: Run business analysis
+  P->>A: Write and verify report
+  A->>S: Record artifact version and reference
+  S->>M: Deliver with receipt identity
+  M-->>S: Record receipt or unresolved status
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
+Advance a checkpoint after its evidence is durable. Marking a report complete before writing it can leave completion without an artifact. Writing first can leave an artifact without an updated checkpoint; recovery must reconcile its version and integrity.
 
-### Responsibilities and authoritative facts
+### A recovery record with meaningful fields
 
-| Component | Responsibility |
-|---|---|
-| Existing Agent | Existing business logic |
-| Adapter | Identity, checkpoints, recovery |
-| Delivery | Artifact archiving and notification |
-
-Cloud adaptation requires more than copying a script. Define recovery boundaries and artifact lifecycles; record non-idempotent effects or require intervention.
-
-### Follow one concrete request
-
-Move a local file-to-report Agent to a cloud worker, resume after interruption, and deliver exactly one correct report.
-
-1. **Inventory dependencies.** List paths, environment assumptions, tool versions, and implicit state.
-2. **Persist task state.** Store identity, input digest, phase, and checkpoints outside process memory.
-3. **Archive artifacts.** Store addressable artifacts with versions and completion state rather than temporary paths.
-4. **Resume and notify.** Reconcile completed steps before resuming, retrying notification independently.
-
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
-
-### A result that can be checked
-
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+This synthetic application record is not a QCA API payload.
 
 ```json
 {
-  "input": {
-    "checkpoint": "report-written",
-    "artifact_exists": true,
-    "notification": "failed"
-  },
-  "expected": {
-    "next_action": "retry-notification",
-    "recompute_report": false
-  }
+  "task_id": "report-demo-001",
+  "request_key": "demo-conversation/request-01",
+  "input_version": "dataset-v3",
+  "pipeline_version": "analysis-v2",
+  "compute_state": "completed",
+  "artifact": {"version": "dataset-v3/analysis-v2", "state": "verified"},
+  "delivery": {"receipt_key": "report-demo-001/result", "state": "unknown"}
 }
 ```
 
-Recovery begins by reconciling facts. A corrupt archive requires artifact recovery rather than simply retrying notification.
+The request key distinguishes redelivery from a new request. Input and Pipeline versions establish whether an artifact is reusable. Unknown delivery is intentional: a timed-out request may already have reached the recipient. Reconcile receipts or use channel-supported idempotency before retrying. Without either capability, duplicate delivery remains possible.
 
-### Try the workflow yourself
+### Choose recovery by failure location
 
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+| Failure location | Check first | Resume action |
+|---|---|---|
+| During analysis | Recoverable business checkpoint | Resume or explicitly recompute |
+| During report write | Integrity and version | Rebuild incomplete output |
+| After archive, before delivery | Readability and destination | Send the existing result |
+| Delivery timeout | Receipt or idempotency identity | Reconcile before retrying |
+| Concurrent recovery | Current execution ownership | Permit only the valid owner to commit |
 
-> Generate a report from a test file, archive it, and notify the original conversation. On recovery, reconcile checkpoints and artifacts before resuming. Retry notification independently.
-
-Interrupt after writing the report but before notification. Recovery must verify that the readable artifact belongs to the same input version before retrying delivery. Existence alone can select an old file; unconditional recomputation can duplicate outputs.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **Crash before archiving**. Expected behavior: Check artifact presence and integrity during recovery. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+A lease or conditional update can protect result submission. An in-memory flag cannot coordinate separate workers. These are adapter implementation choices, not guarantees established by the showcase.
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+Interrupt a test task after archiving and before notification. Restart it and compare identity, computation count, artifact version, and destination. Next change the input version and ensure recovery does not reuse the old report.
 
-| Failure or ambiguity | Required behavior |
-|---|---|
-| Crash before archiving | Check artifact presence and integrity during recovery. |
-| Two workers claim one task | Use a lease or equivalent to prevent competing writes. |
-| Notification failure | Do not repeat successful computation. |
+![Illustrative cloud task receipt](./assets/result-preview.png)
+
+This is an illustrative receipt. Verification requires the task record, archived file, and delivery evidence together; a completion card alone does not prove recovery.
+
+Measure first-run and recovery duration, repeated work, and duplicate notifications for one Pipeline before adding more Skills. Output equivalence before and after adaptation is the evidence that core behavior was preserved.

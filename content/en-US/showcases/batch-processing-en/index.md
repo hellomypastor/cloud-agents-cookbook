@@ -10,115 +10,85 @@ author: {"name": "Qoder Agents 团队"}
 locale: "en-US"
 translation_of: "batch-processing"
 ---
-
 ## Scenario and outcome
 
-Orders, support records, and forms rarely share a stable format. A batch system needs to interpret variation while keeping success, failure, and retry addressable per record.
+Batch workloads become difficult when business meaning crosses formats: a complaint changes diagnosis over a conversation, dealers use different quantity units, or an announcement splits facts across a web page and attachments.
 
-Managed sessions coordinate reading, parsing, computation, validation, and writeback for variable-format batch data.
+This case is based on the four-page original showcase document, QCA Batch Processing Best Practices, dated 2026-09-07. It explains integration patterns and example workloads, not measured production throughput or accuracy.
 
-This account is based on showcase material contributed by Qoder Agents 团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
+| Workload | Interpretation challenge | Deliverable |
+|---|---|---|
+| Support conversations | Initial login complaint later resolves to unpaid account | Final cause, resolution state, evidence |
+| Dealer normalization | Cases and pieces require packaging master data | Standard quantities and unresolved records |
+| Mixed-format extraction | Budget, deadline, and line items use different sources | Unified record with provenance and gaps |
 
-### Result preview
-
-![Batch processing manifest](./assets/result-preview.png)
-
-Illustrative output based on this article’s example; synthetic data, not a product screenshot. Invalid amount; accepted records are not duplicated.
+Stable formats and latency-sensitive arithmetic may be better served by ordinary data pipelines. Agents are useful here for interpreting variation and coordinating multiple processing steps.
 
 ## Implementation approach
 
-### How the work moves through the product
+### The boundary of managed execution
 
-Define record-level contracts and validation first. Add checkpoints, a failure queue, and idempotent writes so retries do not duplicate successful results.
+The source assigns multi-turn model and enabled-tool execution to Managed Sessions, and file or script operations to a sandbox. Business scheduling, custom tools, aggregation, and database writeback remain integration responsibilities.
+
+The application needs a business identifier, input version, Session mapping, and writeback state. The Session identifies execution; the business identifier identifies the record to update.
+
+### Submission is only the start
+
+Each input group needs independent business validation before writeback.
 
 ```mermaid
 flowchart LR
-  N0["Build a manifest"] --> N1
-  N1["Isolate parsing"] --> N2
-  N2["Validate records"] --> N3
-  N3["Write idempotently"]
+  A[Manifest and grouping] --> B[Create Session and send task]
+  B --> C[Read and parse]
+  C --> D[Compute and validate]
+  D --> E[Read complete result events]
+  E --> F{Business output valid}
+  F -->|Yes| G[Write by business identifier]
+  F -->|No| H[Keep reasons and retry scope]
 ```
 
-Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
+Creating a Session does not send the task. Read all relevant result events, and do not treat idle as proof of business success. Validate required fields, the input version, counts, and unresolved records.
 
-### Responsibilities and authoritative facts
+### Work through a dealer conversion
 
-| Component | Responsibility |
-|---|---|
-| Orchestrator | Batches, record identities, checkpoints |
-| Agent | Interpret formats and apply business rules |
-| Store | Validation, idempotent writes, failure queue |
+This synthetic exercise expands the source’s unit-conversion example.
 
-Batch size trades throughput against retry cost and diagnosis. Define independently verifiable records before tuning concurrency; do not make success depend on one final long-session response.
+| Dealer input | Master data | Standard result |
+|---|---|---|
+| SKU-A, 3 cases | 12 pieces per case | 36 pieces |
+| SKU-A, 8 pieces | Piece is the standard unit | 8 pieces |
+| SKU-B, 2 cases | Packaging missing | Unresolved |
 
-### Follow one concrete request
+The Agent can propose field correspondence, but arithmetic should execute deterministically. Packaging needs an effective version: applying today’s package size to an old order can produce numerically valid but incorrect business data.
 
-Normalize synthetic orders from three supplier formats into a stable contract for identifiers, currencies, amounts, and dates.
+The deliverable contains both the 44-piece known total and the unresolved SKU-B record. Decide in advance whether the consumer accepts partial completion. If it requires completeness, unresolved data blocks the group rather than disappearing from the report.
 
-1. **Build a manifest.** Assign stable record identifiers and content digests, with batch, source, and processing state.
-2. **Isolate parsing.** Process files or small batches independently, identifying formats before applying extraction rules.
-3. **Validate records.** Check required fields, amount types, and date formats. Route invalid records to a failure queue with input references.
-4. **Write idempotently.** Write using a record key and version. Checkpoint progress and retry only incomplete or failed inputs.
+### Keep writeback independent
 
-The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
+A valid result can still encounter a database timeout. That does not require reparsing the input. A business identifier plus input version can support application-level idempotency for retrying the same result.
 
-### A result that can be checked
+| Application state | Meaning | Next action |
+|---|---|---|
+| Pending submission | Input exists without execution | Submit and persist the mapping |
+| Processing | Task sent, result unvalidated | Continue reading progress |
+| Needs clarification | Missing business definition | Resolve affected inputs |
+| Pending writeback | Valid result, storage unresolved | Reconcile or retry writeback |
+| Completed | Result and storage confirmed | Retain provenance |
 
-The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
+These are reference application states, not QCA API enums. They separate execution, acceptance, and storage.
 
-```json
-{
-  "input": {
-    "records": [
-      {
-        "id": "a",
-        "amount": "12.50"
-      },
-      {
-        "id": "b",
-        "amount": "unknown"
-      }
-    ]
-  },
-  "expected": {
-    "accepted": [
-      {
-        "id": "a",
-        "amount": 12.5
-      }
-    ],
-    "rejected": [
-      {
-        "id": "b",
-        "reason": "invalid amount"
-      }
-    ]
-  }
-}
-```
+### Compare versions on the same inputs
 
-Both success and failure must be addressable. Reprocessing must not duplicate the accepted record, and the rejected record remains independently retryable.
+The source notes that Agent updates do not automatically change existing Sessions. Create separate runs for old and new versions on fixed representative inputs. Compare correctness, exception detection, output compatibility, and cost before changing subsequent batches.
 
-### Try the workflow yourself
-
-The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
-
-> Normalize supplier orders into validated identifiers, currencies, amounts, and dates. Return accepted records, failures with reasons, and the scope of the next retry.
-
-Start with one valid record and one invalid amount. Expect separate success and failure manifests. Rerun unchanged input and check for duplicates, then correct only the invalid record and retry it independently.
-
-### Read the outcome, then try a counterexample
-
-Change only one condition: **One malformed record**. Expected behavior: Continue other records and preserve the specific error. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
-
-
+Include missing packaging, conflicting fields, and mixed formats rather than validating only the easiest record. A format change may require a Skill update; missing product facts usually require master-data correction.
 
 ## Reuse guidance
 
-Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+Start with one dealer and establish a traceable chain from input identifier through execution, validation, and writeback. Add a second format only after recovery works. The source distinguishes text uploads from PDF and image retrieval, which require configured authorized readers and parsers.
 
-| Failure or ambiguity | Required behavior |
-|---|---|
-| One malformed record | Continue other records and preserve the specific error. |
-| Crash after writeback | Resume without producing a duplicate output. |
-| Changed input file | Version the new result while retaining provenance. |
+![Illustrative accepted and rejected record manifest](./assets/result-preview.png)
+
+The image illustrates an output manifest. Test independent retries, writeback failure, and version retention as well as the successful path.
+
+Compare costs on identical inputs and acceptance criteria, including retries and human review. The source mentions night-time commercial offers, but no unverified discount or savings percentage is reproduced here.
