@@ -2,9 +2,13 @@
 import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { buildCatalog } from "./build-catalog.mjs";
 import { createMarkdownParser, analyzeMarkdown } from "./lib/markdown.mjs";
+
+const styleVersion = createHash("sha256").update(readFileSync(new URL("../site/site.css", import.meta.url))).digest("hex").slice(0, 12);
 
 const repository =
   process.env.GITHUB_REPOSITORY ?? "hellomypastor/cloud-agents-cookbook";
@@ -96,7 +100,7 @@ function icon(type, slug = "") {
 }
 function shell(locale, prefix, title, content, alternate, article = false) {
   const w = words[locale];
-  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="${esc(w.intro)}"><script src="${prefix}theme.js"></script><title>${esc(title)} · Qoder Cookbook</title><link rel="stylesheet" href="${prefix}site.css"></head><body><a class="skip" href="#main">${locale === "zh-CN" ? "跳至正文" : "Skip to content"}</a><header class="topbar"><a class="brand" href="${prefix}${locale}/"><span class="brand-mark" aria-hidden="true">Q</span><strong>Qoder</strong><span>Cookbook</span></a><nav aria-label="${locale === "zh-CN" ? "主导航" : "Main navigation"}"><a href="https://qoder.com/cloud/quickstart">${locale === "zh-CN" ? "文档" : "Docs"}</a><a href="${repo}">GitHub ↗</a><a class="language" href="${alternate}" lang="${locale === "zh-CN" ? "en" : "zh"}">${locale === "zh-CN" ? "English" : "中文"}</a><button class="theme-toggle" id="theme-toggle" aria-label="${locale === "zh-CN" ? "切换深色主题" : "Toggle dark theme"}" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M12 17v4m-4 0h8"/></svg></button></nav></header><main id="main" class="${article ? "article-main" : "home"}">${content}</main><footer><span>Qoder Cloud Agents Cookbook</span><a href="${sourceRoot}/LICENSE">CC BY 4.0 / Apache 2.0</a></footer>${article ? `<script src="${prefix}mermaid.min.js"></script>` : ""}<script src="${prefix}site.js" defer></script></body></html>`;
+  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="${esc(w.intro)}"><script src="${prefix}theme.js"></script><title>${esc(title)} · Qoder Cookbook</title><link rel="stylesheet" href="${prefix}site.css?v=${styleVersion}"></head><body><a class="skip" href="#main">${locale === "zh-CN" ? "跳至正文" : "Skip to content"}</a><header class="topbar"><a class="brand" href="${prefix}${locale}/"><span class="brand-mark" aria-hidden="true">Q</span><strong>Qoder</strong><span>Cookbook</span></a><nav aria-label="${locale === "zh-CN" ? "主导航" : "Main navigation"}"><a href="https://qoder.com/cloud/quickstart">${locale === "zh-CN" ? "文档" : "Docs"}</a><a href="${repo}">GitHub ↗</a><a class="language" href="${alternate}" lang="${locale === "zh-CN" ? "en" : "zh"}">${locale === "zh-CN" ? "English" : "中文"}</a><button class="theme-toggle" id="theme-toggle" aria-label="${locale === "zh-CN" ? "切换深色主题" : "Toggle dark theme"}" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M12 17v4m-4 0h8"/></svg></button></nav></header><main id="main" class="${article ? "article-main" : "home"}">${content}</main><footer><span>Qoder Cloud Agents Cookbook</span><a href="${sourceRoot}/LICENSE">CC BY 4.0 / Apache 2.0</a></footer>${article ? `<script src="${prefix}mermaid.min.js"></script>` : ""}<script src="${prefix}site.js" defer></script></body></html>`;
 }
 export async function buildSite(root = process.cwd(), options = {}) {
   const contractRoot = options.contractRoot ?? root;
