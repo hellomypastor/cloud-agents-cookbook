@@ -13,80 +13,52 @@ translation_of: "maqu-ai-studio"
 
 ## Scenario and outcome
 
-**Case document** · This page provides the scenario and reusable method without requiring access to the original internal or video entry.
+A short film requires alignment across script, shots, images, and sound. Maqu divides the work among roles and reunites it through shared artifacts and versions.
 
 A cloud film studio coordinates writing, storyboards, art, performance, music, and editing.
 
-This editorial overview is based on the supplied showcase material, attributed to 何傲. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by 何傲. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Give each role an explicit artifact contract and dependencies. Track versions and revision requests across sessions, with human approval of the final cut.
 
-### Worked implementation exercise
-
-Produce a thirty-second test film with explicit duration, style, and asset constraints across writing, storyboards, art, performance, music, and editing.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Freeze the brief
-
-Record audience, duration, style, and prohibited assets; route scope changes through the coordinator.
-
-#### 2. Define role outputs
-
-Use scene scripts, shot lists, identified assets, and explicit edit versions.
-
-#### 3. Coordinate dependencies
-
-Parallelize independent assets, gate script-dependent work, and revise affected shots only.
-
-#### 4. Review the film
-
-Check duration, continuity, audio, and provenance before human approval of a final version.
-
-### Input and output record
-
-```json
-{
-  "production": "demo-short",
-  "brief_version": "v1",
-  "duration_seconds": 30,
-  "shot_manifest": [
-    {
-      "shot": "s01",
-      "script": "script-v2",
-      "asset": "asset-v3"
-    }
-  ],
-  "final_approval": "pending"
-}
+```mermaid
+flowchart LR
+  N0["Freeze the brief"] --> N1
+  N1["Define role outputs"] --> N2
+  N2["Coordinate dependencies"] --> N3
+  N3["Review the film"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Coordinator | Brief, dependencies, revisions |
+| Specialists | Script, shots, images, sound |
+| Edit and review | Assemble assets and approve the film |
 
 Parallelism works where dependencies are clear. More roles require shared manifests and version contracts, or generation savings are lost to rework.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| Script revision | Invalidate affected shots and assets. |
-| Late role deliverable | Show dependency blockage rather than fill with an unexplained gap. |
-| Unclear asset provenance | Resolve or replace the asset before finalization. |
+Produce a thirty-second test film with explicit duration, style, and asset constraints across writing, storyboards, art, performance, music, and editing.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Freeze the brief.** Record audience, duration, style, and prohibited assets; route scope changes through the coordinator.
+2. **Define role outputs.** Use scene scripts, shot lists, identified assets, and explicit edit versions.
+3. **Coordinate dependencies.** Parallelize independent assets, gate script-dependent work, and revise affected shots only.
+4. **Review the film.** Check duration, continuity, audio, and provenance before human approval of a final version.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -109,3 +81,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 An existing asset is not automatically ready for editing. Check it against the approved script before reuse, regeneration, or review.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| Script revision | Invalidate affected shots and assets. |
+| Late role deliverable | Show dependency blockage rather than fill with an unexplained gap. |
+| Unclear asset provenance | Resolve or replace the asset before finalization. |

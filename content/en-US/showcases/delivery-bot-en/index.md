@@ -118,52 +118,13 @@ Implement intake → independent task → test repository build → result deliv
 
 The reusable contribution is clear ownership, persistent task state, and evidence-based delivery. Make one task complete and reviewable before expanding the number of routes or the scope of automation.
 
-### Worked implementation exercise
+### Verify the delivery boundary
 
-Run a test repository build and simulate notification failure to verify that recovery does not repeat execution.
+This exercise verifies separation of execution and delivery without requiring a production deployment.
 
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Create the task
-
-Persist message deduplication and source identifiers.
-
-#### 2. Run the build
-
-Track the real build identifier to completion.
-
-#### 3. Interrupt delivery
-
-Keep execution complete while notification awaits retry.
-
-#### 4. Recover delivery
-
-Confirm one final result reaches the original conversation.
-
-### Input and output record
-
-```json
-{
-  "execution": "succeeded",
-  "notification": "retry-pending",
-  "rerun_business_action": false
-}
-```
-
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
-
-### Failure and acceptance checks
-
-| Test condition | Expected result |
+| Check | Expected behavior |
 |---|---|
 | Duplicate message | Reuse the task. |
 | Notification failure | Retry only delivery. |
 | Concurrent tasks | Preserve source isolation. |
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
-
-### Design tradeoff
-
-This exercise verifies separation of execution and delivery without requiring a production deployment.

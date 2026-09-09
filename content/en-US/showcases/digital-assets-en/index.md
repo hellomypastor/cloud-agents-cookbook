@@ -13,75 +13,52 @@ translation_of: "digital-assets"
 
 ## Scenario and outcome
 
-**Case document** · This page provides the scenario and reusable method without requiring access to the original internal or video entry.
+Finding a document does not guarantee a current, applicable answer. This case connects ingestion, retrieval, and feedback across scattered development knowledge.
 
 Incremental ingestion and usage feedback maintain a shared organizational knowledge foundation.
 
-This editorial overview is based on the supplied showcase material, attributed to 蓝屿. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by 蓝屿. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Retain source, version, scope, and access boundaries for each asset. Treat corrections as reviewable updates rather than allowing model answers to overwrite source material.
 
-### Worked implementation exercise
-
-Index a test project’s API notes, change records, and FAQs, then use a query to surface obsolete information.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Define assets
-
-Assign stable identifiers, project scope, versions, provenance, and access boundaries.
-
-#### 2. Ingest incrementally
-
-Detect changes through content digests and update affected index units.
-
-#### 3. Serve queries
-
-Apply access scope before retrieval and cite the matching versions.
-
-#### 4. Process feedback
-
-Turn incorrect citations and missing knowledge into reviewed revision proposals.
-
-### Input and output record
-
-```json
-{
-  "asset_id": "api-notes-demo",
-  "version": "v2",
-  "source": "authorized-test-document",
-  "scope": "demo-project",
-  "status": "published",
-  "supersedes": "v1"
-}
+```mermaid
+flowchart LR
+  N0["Define assets"] --> N1
+  N1["Ingest incrementally"] --> N2
+  N2["Serve queries"] --> N3
+  N3["Process feedback"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Ingestion | Sources, versions, incremental changes |
+| Knowledge service | Scoped retrieval and citations |
+| Maintenance | Revision proposals and release history |
 
 Retrieval must address both discoverability and applicability. Provenance, version, and scope should accompany each result, not remain hidden in a catalog.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| Unauthorized asset | Exclude it from retrieval and generated answers. |
-| Superseded document | Prefer the current version and explain relevant changes. |
-| Unverified user feedback | Create a proposal instead of overwriting knowledge. |
+Index a test project’s API notes, change records, and FAQs, then use a query to surface obsolete information.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Define assets.** Assign stable identifiers, project scope, versions, provenance, and access boundaries.
+2. **Ingest incrementally.** Detect changes through content digests and update affected index units.
+3. **Serve queries.** Apply access scope before retrieval and cite the matching versions.
+4. **Process feedback.** Turn incorrect citations and missing knowledge into reviewed revision proposals.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -108,3 +85,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 Equal retrieval scores do not justify choosing a random version. Use historical versions only when the question calls for them and label their applicability.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| Unauthorized asset | Exclude it from retrieval and generated answers. |
+| Superseded document | Prefer the current version and explain relevant changes. |
+| Unverified user feedback | Create a proposal instead of overwriting knowledge. |

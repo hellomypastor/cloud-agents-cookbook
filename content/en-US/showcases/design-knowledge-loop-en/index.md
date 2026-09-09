@@ -13,77 +13,52 @@ translation_of: "design-knowledge-loop"
 
 ## Scenario and outcome
 
-**Case document** · This page provides the scenario and reusable method without requiring access to the original internal or video entry.
+Design assistance consumes rules while producing corrections, rejections, and expert judgments. This case returns those signals to a reviewed knowledge-update process.
 
 Design interactions produce knowledge proposals that pass evaluation and review before becoming a new knowledge version.
 
-This editorial overview is based on the supplied showcase material, attributed to Qoder Agents 团队. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by Qoder Agents 团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Start with one design check. Preserve feedback evidence, separate proposals from published rules, evaluate against reference examples, and retain rollback versions.
 
-### Worked implementation exercise
-
-Check a button against a test design rule, capture designer feedback, and produce a knowledge revision proposal.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Run the check
-
-Identify issues against a pinned rule version and retain component-level evidence.
-
-#### 2. Capture feedback
-
-Associate acceptance, modification, or rejection and its reason with the original task.
-
-#### 3. Propose a revision
-
-Describe the gap, proposed change, scope, and affected examples without publishing immediately.
-
-#### 4. Evaluate and release
-
-Replay reference designs, review differences, roll out narrowly, and retain a rollback version.
-
-### Input and output record
-
-```json
-{
-  "proposal_id": "design-rule-demo",
-  "base_version": "v1",
-  "rule": "button-spacing",
-  "evidence": [
-    "feedback-01"
-  ],
-  "state": "review-required",
-  "rollout": "test-project"
-}
+```mermaid
+flowchart LR
+  N0["Run the check"] --> N1
+  N1["Capture feedback"] --> N2
+  N2["Propose a revision"] --> N3
+  N3["Evaluate and release"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| QCA Agent | Assistance and feedback synthesis |
+| Expert | Review high-impact changes |
+| Knowledge base | Versions, release, rollback |
 
 Acceptance is not the only correctness signal. An accepted suggestion may reflect local preference; revisions need scope, counterexamples, and expert judgment.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| Local preference conflicts with policy | Keep it local rather than silently changing a global rule. |
-| New rule causes regressions | Block release and report failing reference cases. |
-| Quality declines after release | Roll back while retaining evaluation evidence. |
+Check a button against a test design rule, capture designer feedback, and produce a knowledge revision proposal.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Run the check.** Identify issues against a pinned rule version and retain component-level evidence.
+2. **Capture feedback.** Associate acceptance, modification, or rejection and its reason with the original task.
+3. **Propose a revision.** Describe the gap, proposed change, scope, and affected examples without publishing immediately.
+4. **Evaluate and release.** Replay reference designs, review differences, roll out narrowly, and retain a rollback version.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -99,3 +74,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 A campaign preference does not justify changing a global rule. Scope the proposal before evaluation and expert review determine broader applicability.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| Local preference conflicts with policy | Keep it local rather than silently changing a global rule. |
+| New rule causes regressions | Block release and report failing reference cases. |
+| Quality declines after release | Roll back while retaining evaluation evidence. |

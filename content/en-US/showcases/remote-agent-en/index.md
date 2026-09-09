@@ -14,78 +14,54 @@ source_url: "https://qoder.com/agents/session/new"
 
 ## Scenario and outcome
 
+Users expect a submitted goal to survive closing the page. Remote Agent exposes cloud execution, persistent state, and artifact delivery through a task interface.
+
 [Open the online entry](https://qoder.com/agents/session/new)
 
 A web task interface exposes cloud execution, progress, and artifacts without requiring the local device to stay connected.
 
-This editorial overview is based on the supplied showcase material, attributed to Qoder Agents 团队. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by Qoder Agents 团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Start with an explicit file deliverable. Verify reconnect behavior, persistent task state, artifact retrieval, and whether cancellation actually stops execution.
 
-### Worked implementation exercise
-
-Submit a comparison report over three test documents, leave the page, and return to verify task and artifact continuity.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Specify the goal
-
-Define input documents, output format, and completion criteria.
-
-#### 2. Prepare execution
-
-Make inputs available and record tool scope, reporting missing files explicitly.
-
-#### 3. Run persistently
-
-Keep task state independent of the browser, exposing running, waiting, and failed stages.
-
-#### 4. Deliver artifacts
-
-Provide a downloadable report and citations that remain associated with the same task after reconnection.
-
-### Input and output record
-
-```json
-{
-  "task_id": "comparison-demo",
-  "inputs": [
-    "document-a",
-    "document-b",
-    "document-c"
-  ],
-  "deliverable": "comparison-report",
-  "state": "running",
-  "browser_connection": "optional"
-}
+```mermaid
+flowchart LR
+  N0["Specify the goal"] --> N1
+  N1["Prepare execution"] --> N2
+  N2["Run persistently"] --> N3
+  N3["Deliver artifacts"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Task UI | Goals, progress, artifact access |
+| Agent and environment | Planning and execution |
+| Task store | Persistent state and artifact links |
 
 Persistent execution needs observable state rather than an indefinite spinner. Explain current work, dependencies, and artifact availability.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| Browser closed | Preserve the task and expose state after reconnection. |
-| Task cancelled | Stop execution or report that cancellation is pending. |
-| Empty report artifact | Fail content validation despite file presence. |
+Submit a comparison report over three test documents, leave the page, and return to verify task and artifact continuity.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Specify the goal.** Define input documents, output format, and completion criteria.
+2. **Prepare execution.** Make inputs available and record tool scope, reporting missing files explicitly.
+3. **Run persistently.** Keep task state independent of the browser, exposing running, waiting, and failed stages.
+4. **Deliver artifacts.** Provide a downloadable report and citations that remain associated with the same task after reconnection.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -101,3 +77,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 Browser connection state is separate from task state. Reconnect to the same task instead of resubmitting and creating duplicate work.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| Browser closed | Preserve the task and expose state after reconnection. |
+| Task cancelled | Stop execution or report that cancellation is pending. |
+| Empty report artifact | Fail content validation despite file presence. |

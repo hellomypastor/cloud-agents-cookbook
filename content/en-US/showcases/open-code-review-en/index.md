@@ -13,83 +13,52 @@ translation_of: "open-code-review"
 
 ## Scenario and outcome
 
-**Case document** · This page provides the scenario and reusable method without requiring access to the original internal or video entry.
+Review asks both which changes were examined and which findings merit action. Open Code Review joins scope, rules, and defect analysis in a review workflow.
 
 Code review combines deterministic scope calculation, project rules, model analysis, and coverage evidence.
 
-This editorial overview is based on the supplied showcase material, attributed to 曲径/安辰. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by 曲径/安辰. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Pin base and target revisions. Distinguish unchecked files from checked files without findings, and evaluate both known defects and false positives.
 
-### Worked implementation exercise
-
-Review a test change containing a deliberate boundary bug and deliver actionable findings with coverage evidence.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Pin the scope
-
-Record base and target revisions, changed code, context, and excluded files.
-
-#### 2. Load relevant rules
-
-Apply project rules and necessary context without overwhelming defects with style comments.
-
-#### 3. Validate findings
-
-Provide trigger, location, impact, and evidence; do not present speculation as a confirmed defect.
-
-#### 4. Report coverage
-
-Distinguish checked, unchecked, and inconclusive areas before summarizing findings.
-
-### Input and output record
-
-```json
-{
-  "base_revision": "demo-base",
-  "target_revision": "demo-head",
-  "mode": "read-only",
-  "finding_fields": [
-    "location",
-    "trigger",
-    "impact",
-    "evidence"
-  ],
-  "coverage": [
-    "checked",
-    "excluded",
-    "inconclusive"
-  ]
-}
+```mermaid
+flowchart LR
+  N0["Pin the scope"] --> N1
+  N1["Load relevant rules"] --> N2
+  N2["Validate findings"] --> N3
+  N3["Report coverage"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Scope logic | Revisions and exclusions |
+| Model | Code understanding and defect analysis |
+| Reporting | Finding evidence and coverage |
 
 Coverage and finding quality are separate. Use known-bug and clean examples to evaluate missed defects and false positives independently.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| File exceeds context capacity | Report incomplete coverage. |
-| Repeated instances | Group the root cause and affected locations. |
-| No findings | State the reviewed scope without claiming universal correctness. |
+Review a test change containing a deliberate boundary bug and deliver actionable findings with coverage evidence.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Pin the scope.** Record base and target revisions, changed code, context, and excluded files.
+2. **Load relevant rules.** Apply project rules and necessary context without overwhelming defects with style comments.
+3. **Validate findings.** Provide trigger, location, impact, and evidence; do not present speculation as a confirmed defect.
+4. **Report coverage.** Distinguish checked, unchecked, and inconclusive areas before summarizing findings.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -116,3 +85,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 No findings applies only to reviewed scope. Expose unchecked files instead of presenting an empty finding list as comprehensive assurance.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| File exceeds context capacity | Report incomplete coverage. |
+| Repeated instances | Group the root cause and affected locations. |
+| No findings | State the reviewed scope without claiming universal correctness. |

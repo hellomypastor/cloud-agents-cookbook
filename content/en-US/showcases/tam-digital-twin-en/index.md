@@ -13,78 +13,52 @@ translation_of: "tam-digital-twin"
 
 ## Scenario and outcome
 
-**Case document** · This page provides the scenario and reusable method without requiring access to the original internal or video entry.
+Industry troubleshooting combines accumulated expertise with current resource observations. The support twin connects a collaboration entry point, specialized knowledge, and diagnostics.
 
 A persistent support entry routes industry troubleshooting tasks to specialized knowledge and resource diagnostics.
 
-This editorial overview is based on the supplied showcase material, attributed to 俊行. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by 俊行. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Use a shared incident timeline and resource identifiers. Separate retrieved guidance from current tool observations, and authorize remediation independently.
 
-### Worked implementation exercise
-
-Investigate a test cloud instance connection timeout using guidance, resource observations, and an incident timeline.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Capture the incident
-
-Collect resource identifiers, symptoms, onset time, and scope.
-
-#### 2. Delegate diagnostics
-
-Separate network, configuration, and knowledge checks under the same incident scope.
-
-#### 3. Inspect current state
-
-Timestamp read-only observations and distinguish them from historical guidance.
-
-#### 4. Recommend next steps
-
-Rank candidate causes with supporting and missing evidence; authorize remediation separately.
-
-### Input and output record
-
-```json
-{
-  "incident_id": "incident-demo",
-  "resource": "test-instance",
-  "window_minutes": 30,
-  "mode": "diagnose-only",
-  "checks": [
-    "network",
-    "configuration",
-    "recent-events"
-  ]
-}
+```mermaid
+flowchart LR
+  N0["Capture the incident"] --> N1
+  N1["Delegate diagnostics"] --> N2
+  N2["Inspect current state"] --> N3
+  N3["Recommend next steps"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Coordinator | Incident context and routing |
+| Specialists | Retrieval and specialized diagnostics |
+| Tools | Current observations and call status |
 
 Parallel diagnostics require shared incident context. More Agents cannot compensate for missing identifiers or timestamps; standardize evidence before parallelizing.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| One diagnostic tool fails | Retain findings and identify the missing check. |
-| Conflicting findings | Reconcile resource identifiers and observation times. |
-| Similar historical incident | Treat it as a candidate, not proof of root cause. |
+Investigate a test cloud instance connection timeout using guidance, resource observations, and an incident timeline.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Capture the incident.** Collect resource identifiers, symptoms, onset time, and scope.
+2. **Delegate diagnostics.** Separate network, configuration, and knowledge checks under the same incident scope.
+3. **Inspect current state.** Timestamp read-only observations and distinguish them from historical guidance.
+4. **Recommend next steps.** Rank candidate causes with supporting and missing evidence; authorize remediation separately.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -103,3 +77,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 An observed timeout is not a diagnosed root cause. A useful report requests the next check when configuration evidence is missing.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| One diagnostic tool fails | Retain findings and identify the missing check. |
+| Conflicting findings | Reconcile resource identifiers and observation times. |
+| Similar historical incident | Treat it as a candidate, not proof of root cause. |

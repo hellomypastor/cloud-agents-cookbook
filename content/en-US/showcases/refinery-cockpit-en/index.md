@@ -14,75 +14,54 @@ source_url: "https://hao2-lzsh-refinery.vercel.app"
 
 ## Scenario and outcome
 
+A refinery overview brings units, material flow, trends, and alerts into a readable surface. This demonstration guides readers from global changes to individual metrics.
+
 [Open the online entry](https://hao2-lzsh-refinery.vercel.app)
 
 A refinery cockpit organizes unit loads, material flow, trends, and safety indicators using demonstration data.
 
-This editorial overview is based on the supplied showcase material, attributed to 何傲. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by 何傲. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Label static context, simulated readings, and live data separately. The public page is a cockpit demonstration, not evidence of a production integration.
 
-### Worked implementation exercise
-
-Inspect a simulated unit-load change from overview to trend and alert timeline, focusing on clear data semantics.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Separate data sources
-
-Distinguish public background facts, simulated readings, and future live inputs.
-
-#### 2. Create a hierarchy
-
-Use overview for location, trends for timing, and details for values and units.
-
-#### 3. Explain alerts
-
-Attach thresholds, windows, and observations rather than relying on color alone.
-
-#### 4. Verify navigation
-
-Replay a fixed simulated event and reconcile overview with detail.
-
-### Input and output record
-
-```json
-{
-  "unit": "demo-unit",
-  "data_mode": "simulation",
-  "metric": "load_percent",
-  "value": 72,
-  "observed_at": "2026-08-01T09:00:00Z",
-  "unit_of_measure": "percent"
-}
+```mermaid
+flowchart LR
+  N0["Separate data sources"] --> N1
+  N1["Create a hierarchy"] --> N2
+  N2["Explain alerts"] --> N3
+  N3["Verify navigation"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Data | Source, units, timestamps |
+| Cockpit | Overview, trends, details |
+| Explanation | Alert evidence and data identity |
 
 The public cockpit is a demonstration. If an Agent explains its values, preserve the simulation label so the report cannot be mistaken for production evidence.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| Stale feed | Display staleness instead of a live indicator. |
-| Mixed units | Label units and avoid ambiguous axes. |
-| Alert clears | Retain occurrence and resolution times. |
+Inspect a simulated unit-load change from overview to trend and alert timeline, focusing on clear data semantics.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Separate data sources.** Distinguish public background facts, simulated readings, and future live inputs.
+2. **Create a hierarchy.** Use overview for location, trends for timing, and details for values and units.
+3. **Explain alerts.** Attach thresholds, windows, and observations rather than relying on color alone.
+4. **Verify navigation.** Replay a fixed simulated event and reconcile overview with detail.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -98,3 +77,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 Preserve data identity across overview, detail, and exports rather than relying on a single footer label.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| Stale feed | Display staleness instead of a live indicator. |
+| Mixed units | Label units and avoid ambiguous axes. |
+| Alert clears | Retain occurrence and resolution times. |

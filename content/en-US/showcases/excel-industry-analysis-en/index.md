@@ -13,79 +13,52 @@ translation_of: "excel-industry-analysis"
 
 ## Scenario and outcome
 
-**Case document** · This page provides the scenario and reusable method without requiring access to the original internal or video entry.
+The same sales question can require new field, unit, and metric interpretations for each workbook. This case connects that confirmation step to natural-language analysis.
 
 A mapper interprets spreadsheet fields while an analyzer produces constrained aggregation configurations for deterministic execution.
 
-This editorial overview is based on the supplied showcase material, attributed to 阿米. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by 阿米. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Test aliases, missing values, mixed units, and duplicates using synthetic sheets. Confirm mappings, version them, and compute results with a deterministic engine.
 
-### Worked implementation exercise
-
-Use a synthetic sales workbook to calculate monthly net revenue by region, including refunds, aliases, and duplicate orders. Separate metric agreement from arithmetic.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Inspect structure
-
-Read sheet names, headers, and samples. Establish row granularity before interpreting an amount column.
-
-#### 2. Confirm mappings
-
-Propose canonical fields, units, and missing-value policies. Resolve ambiguous mappings before freezing a version.
-
-#### 3. Compile the question
-
-Produce dimensions, measures, filters, and aggregations. The executor accepts only supported fields and operations.
-
-#### 4. Compute and reconcile
-
-Filter, deduplicate, and aggregate deterministically. Return excluded-row counts and cite computed results.
-
-### Input and output record
-
-```json
-{
-  "dataset": "synthetic-sales",
-  "mapping_version": "v1",
-  "group_by": [
-    "region"
-  ],
-  "measure": {
-    "operation": "sum",
-    "field": "net_amount"
-  },
-  "deduplicate_by": "order_id"
-}
+```mermaid
+flowchart LR
+  N0["Inspect structure"] --> N1
+  N1["Confirm mappings"] --> N2
+  N2["Compile the question"] --> N3
+  N3["Compute and reconcile"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Mapper | Field, unit, and metric mappings |
+| Analyzer | Question to constrained aggregation |
+| Executor | Deterministic computation and validation |
 
 The two roles separate schema interpretation from question compilation, not duplicate arithmetic. A single role may suffice for stable small tables; split responsibilities when mappings and definitions need independent reuse.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| Tax-inclusive and exclusive amounts | Require an explicit metric definition before combining values. |
-| Duplicates and missing regions | Reconcile exclusion counts and totals against a reference sheet. |
-| Unsupported metric | Ask for clarification instead of inventing a value. |
+Use a synthetic sales workbook to calculate monthly net revenue by region, including refunds, aliases, and duplicate orders. Separate metric agreement from arithmetic.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Inspect structure.** Read sheet names, headers, and samples. Establish row granularity before interpreting an amount column.
+2. **Confirm mappings.** Propose canonical fields, units, and missing-value policies. Resolve ambiguous mappings before freezing a version.
+3. **Compile the question.** Produce dimensions, measures, filters, and aggregations. The executor accepts only supported fields and operations.
+4. **Compute and reconcile.** Filter, deduplicate, and aggregate deterministically. Return excluded-row counts and cite computed results.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -113,3 +86,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 Deduplicate orders, subtract refunds per row, then sum by region. This fixture uses one currency; mixed currencies must not be summed without a conversion policy.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| Tax-inclusive and exclusive amounts | Require an explicit metric definition before combining values. |
+| Duplicates and missing regions | Reconcile exclusion counts and totals against a reference sheet. |
+| Unsupported metric | Ask for clarification instead of inventing a value. |

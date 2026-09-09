@@ -13,80 +13,52 @@ translation_of: "information-station"
 
 ## Scenario and outcome
 
-**Case document** · This page provides the scenario and reusable method without requiring access to the original internal or video entry.
+The station receives a continuous stream rather than a single question. It identifies events across repeated coverage, retains sources, and edits relevant changes into a brief.
 
 Scheduled collection and editorial synthesis turn incoming technology news into a recurring brief.
 
-This editorial overview is based on the supplied showcase material, attributed to 信息站共创团队. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by 信息站共创团队. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Separate collection, deduplication, topic grouping, and editing. Retain original sources and timestamps so readers can trace each conclusion.
 
-### Worked implementation exercise
-
-Produce a morning brief from ten public test articles, linking every conclusion to its source and distinguishing events from signals.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Collect and archive
-
-Retain source URLs, publication and retrieval times, and stable content keys.
-
-#### 2. Cluster and deduplicate
-
-Group syndicated coverage by event while retaining supplemental sources.
-
-#### 3. Edit by relevance
-
-Organize major events, ongoing topics, and weak signals with evidence and uncertainty.
-
-#### 4. Deliver on schedule
-
-Check dates and links, preserve the issue manifest, and allow short issues when little changed.
-
-### Input and output record
-
-```json
-{
-  "issue_id": "demo-morning-brief",
-  "source_ids": [
-    "article-01",
-    "article-02"
-  ],
-  "sections": [
-    "events",
-    "follow-up",
-    "signals"
-  ],
-  "delivery_state": "draft"
-}
+```mermaid
+flowchart LR
+  N0["Collect and archive"] --> N1
+  N1["Cluster and deduplicate"] --> N2
+  N2["Edit by relevance"] --> N3
+  N3["Deliver on schedule"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Collection | Sources and original content |
+| Editor | Clustering, selection, summary |
+| Publishing | Issue identity, timing, delivery |
 
 Editorial selection and traceability matter more than filling a quota. Begin with known sources and explicit editing rules before expanding coverage.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| Three syndicated copies | Produce one event with multiple sources. |
-| Old news republished | Distinguish event time from repost time. |
-| Source temporarily unavailable | Report a coverage gap rather than reuse stale material as new. |
+Produce a morning brief from ten public test articles, linking every conclusion to its source and distinguishing events from signals.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Collect and archive.** Retain source URLs, publication and retrieval times, and stable content keys.
+2. **Cluster and deduplicate.** Group syndicated coverage by event while retaining supplemental sources.
+3. **Edit by relevance.** Organize major events, ongoing topics, and weak signals with evidence and uncertainty.
+4. **Deliver on schedule.** Check dates and links, preserve the issue manifest, and allow short issues when little changed.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -128,3 +100,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 Count events rather than links while preserving both sources for the first event. Deduplication should not discard corroborating evidence.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| Three syndicated copies | Produce one event with multiple sources. |
+| Old news republished | Distinguish event time from repost time. |
+| Source temporarily unavailable | Report a coverage gap rather than reuse stale material as new. |

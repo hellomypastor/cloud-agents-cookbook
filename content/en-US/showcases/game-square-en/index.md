@@ -14,78 +14,54 @@ source_url: "https://hao2-games.vercel.app"
 
 ## Scenario and outcome
 
+After opening a browser game, users need playable rules and coherent matches. This collection turns Agent-assisted development into directly usable software.
+
 [Open the online entry](https://hao2-games.vercel.app)
 
 A browser game collection demonstrates playable frontend artifacts delivered with Agent assistance.
 
-This editorial overview is based on the supplied showcase material, attributed to 何傲. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by 何傲. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Separate game rules, state transitions, and presentation. Test illegal moves, win conditions, and restarting; browser gameplay does not imply live Agent inference on every move.
 
-### Worked implementation exercise
-
-Use a reproducible test match to distinguish a loading game from a correct game, checking legal moves, scoring, and restart behavior.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Define the rules
-
-Pin the game variant, turns, win conditions, and illegal-action behavior.
-
-#### 2. Model transitions
-
-Drive presentation from a coherent state machine rather than independent UI mutations.
-
-#### 3. Add a computer player
-
-Validate computer actions through the same rules as human actions.
-
-#### 4. Verify delivery
-
-Test touch input, end states, and restart using reproducible seeds or action traces.
-
-### Input and output record
-
-```json
-{
-  "game": "test-card-game",
-  "rules_version": "v1",
-  "seed": 42,
-  "state": "in-progress",
-  "action_trace": [
-    "deal",
-    "player-move",
-    "computer-move"
-  ]
-}
+```mermaid
+flowchart LR
+  N0["Define the rules"] --> N1
+  N1["Model transitions"] --> N2
+  N2["Add a computer player"] --> N3
+  N3["Verify delivery"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Rules | Legal actions and win conditions |
+| State | Turns, scores, restart |
+| Interface | Input and match presentation |
 
 The artifact is browser software. Agent-assisted development does not imply runtime model inference, and deterministic rule checks remain appropriate.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| Repeated action clicks | Accept one valid action per turn. |
-| Illegal computer action | Reject it and select a valid fallback. |
-| Restart after completion | Reset scores and pending timers. |
+Use a reproducible test match to distinguish a loading game from a correct game, checking legal moves, scoring, and restart behavior.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Define the rules.** Pin the game variant, turns, win conditions, and illegal-action behavior.
+2. **Model transitions.** Drive presentation from a coherent state machine rather than independent UI mutations.
+3. **Add a computer player.** Validate computer actions through the same rules as human actions.
+4. **Verify delivery.** Test touch input, end states, and restart using reproducible seeds or action traces.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -101,3 +77,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 A finished game rejects ordinary moves while allowing an explicit restart. Enforce this in rules, not just by hiding buttons.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| Repeated action clicks | Accept one valid action per turn. |
+| Illegal computer action | Reject it and select a valid fallback. |
+| Restart after completion | Reset scores and pending timers. |

@@ -106,58 +106,13 @@ No third-party source code or images are redistributed here. Check the original 
 - [Reviewed revision: server-side proxy](https://github.com/kunlun322/portal-rag-assistant/blob/eb1afef05af0565231e16e4bb3a6fc9da8d402b2/lib/qoder.js)
 - [Reviewed revision: chat client](https://github.com/kunlun322/portal-rag-assistant/blob/eb1afef05af0565231e16e4bb3a6fc9da8d402b2/customer-service.js)
 
-### Worked implementation exercise
+### Verify the delivery boundary
 
-Exercise two independent visitor sessions on a test portal, checking streaming, reconnection, and error handling without cross-session content.
+Define precedence between streamed and final content, and verify visible output rather than HTTP success alone.
 
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Configure a test environment
-
-Keep credentials on the server and use non-customer test knowledge.
-
-#### 2. Create isolated sessions
-
-Track separate visitor messages and streams.
-
-#### 3. Reconnect a stream
-
-Check that replayed deltas do not duplicate visible text.
-
-#### 4. Reconcile completion
-
-Align the final answer and expose timeout and server errors.
-
-### Input and output record
-
-```json
-{
-  "visitors": [
-    "visitor-a",
-    "visitor-b"
-  ],
-  "checks": [
-    "session-isolation",
-    "stream-reconnect",
-    "final-message"
-  ]
-}
-```
-
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
-
-### Failure and acceptance checks
-
-| Test condition | Expected result |
+| Check | Expected behavior |
 |---|---|
 | Replayed event | No duplicated text. |
 | Proxy error | Stop waiting and explain failure. |
 | Hostile message content | Render safely without executing markup. |
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
-
-### Design tradeoff
-
-Define precedence between streamed and final content, and verify visible output rather than HTTP success alone.

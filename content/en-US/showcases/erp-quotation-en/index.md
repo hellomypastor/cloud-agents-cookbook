@@ -13,78 +13,52 @@ translation_of: "erp-quotation"
 
 ## Scenario and outcome
 
-**Case document** · This page provides the scenario and reusable method without requiring access to the original internal or video entry.
+Nonstandard purchasing requests rarely map directly to one part number. Quotations require reconciling materials, assemblies, alternatives, and price rules.
 
 An ERP proof of concept connects conversational requirements to materials, bills of materials, pricing, and draft quotations.
 
-This editorial overview is based on the supplied showcase material, attributed to 泡鲁达. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by 泡鲁达. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Use test catalogs first. Preserve quantity, units, price validity, and tax assumptions, and separate draft generation from submitting a binding quotation.
 
-### Worked implementation exercise
-
-Generate standard and enhanced draft quotations for ten equipment spare-parts kits using a test catalog.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Clarify requirements
-
-Extract use, quantity, delivery date, and constraints; ask about missing specifications.
-
-#### 2. Resolve materials
-
-Query candidate part numbers, bills of materials, and substitutes while retaining identifiers.
-
-#### 3. Calculate prices
-
-Use ERP prices, currency, validity, and tax treatment; calculate subtotals deterministically.
-
-#### 4. Compare drafts
-
-Show differences, unresolved conditions, and price sources without submitting a binding quote.
-
-### Input and output record
-
-```json
-{
-  "request_id": "quote-demo",
-  "quantity": 10,
-  "currency": "CNY",
-  "price_list_version": "test-v1",
-  "status": "draft",
-  "options": [
-    "standard",
-    "enhanced"
-  ]
-}
+```mermaid
+flowchart LR
+  N0["Clarify requirements"] --> N1
+  N1["Resolve materials"] --> N2
+  N2["Calculate prices"] --> N3
+  N3["Compare drafts"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Agent | Clarify needs and assemble options |
+| ERP | Materials, assemblies, pricing facts |
+| Quote workflow | Calculation, approval, submission |
 
 The model can interpret requirements but must not replace ERP pricing facts. Separate drafting from submission so users can inspect parts, quantities, taxes, and validity.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| Ambiguous material name | Explain alternatives and request a selection. |
-| Expired price | Refresh the price or mark it unresolved. |
-| Repeated generation request | Reuse the draft identifier rather than duplicate documents. |
+Generate standard and enhanced draft quotations for ten equipment spare-parts kits using a test catalog.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Clarify requirements.** Extract use, quantity, delivery date, and constraints; ask about missing specifications.
+2. **Resolve materials.** Query candidate part numbers, bills of materials, and substitutes while retaining identifiers.
+3. **Calculate prices.** Use ERP prices, currency, validity, and tax treatment; calculate subtotals deterministically.
+4. **Compare drafts.** Show differences, unresolved conditions, and price sources without submitting a binding quote.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -103,3 +77,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 The subtotal is known, but taxes remain unresolved. Do not invent a tax rate merely to complete the quotation.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| Ambiguous material name | Explain alternatives and request a selection. |
+| Expired price | Refresh the price or mark it unresolved. |
+| Repeated generation request | Reuse the draft identifier rather than duplicate documents. |

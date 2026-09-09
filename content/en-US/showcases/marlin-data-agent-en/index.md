@@ -13,81 +13,52 @@ translation_of: "marlin-data-agent"
 
 ## Scenario and outcome
 
-**Case document** · This page provides the scenario and reusable method without requiring access to the original internal or video entry.
+A business question leads through metric clarification, data discovery, queries, interpretation, and reporting. Marlin organizes that chain as a persistent analysis service.
 
 Marlin connects metric definitions, SQL, data questions, analysis, and experiment reports in a knowledge-backed workflow.
 
-This editorial overview is based on the supplied showcase material, attributed to 权栩. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by 权栩. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Start with one domain and authorized data. Preserve metric definitions, query versions, and time ranges alongside reports so conclusions remain reproducible.
 
-### Worked implementation exercise
-
-Investigate a conversion-rate decline using synthetic event tables and deliver a report with metric definitions, query results, and evidence limits.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Agree on definitions
-
-Specify new-user eligibility, conversion events, deduplication entity, timezone, numerator, and denominator.
-
-#### 2. Select data
-
-Use metadata and analysis procedures to identify joins, permissions, and the relevant time range.
-
-#### 3. Execute analysis
-
-Constrain read-only queries and retain SQL versions, result tables, and segment comparisons.
-
-#### 4. Deliver a report
-
-Separate observations, hypotheses, and proposed experiments, linking the report to query evidence.
-
-### Input and output record
-
-```json
-{
-  "question": "conversion decline",
-  "metric_version": "conversion-v1",
-  "time_range": [
-    "2026-08-01",
-    "2026-08-07"
-  ],
-  "query_mode": "read-only",
-  "deliverables": [
-    "query",
-    "result-table",
-    "report"
-  ]
-}
+```mermaid
+flowchart LR
+  N0["Agree on definitions"] --> N1
+  N1["Select data"] --> N2
+  N2["Execute analysis"] --> N3
+  N3["Deliver a report"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Knowledge | Metadata, metrics, and procedures |
+| Agent | Compose queries and explanations |
+| Data tools | Execute queries and retain results |
 
 Reproducibility depends on data versions and definitions rather than report length. Retrieval supplies methods, query tools supply facts, and the model explains their scope.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| Conflicting definitions | Resolve the metric definition before querying. |
-| Empty result | Report missing data rather than a trend. |
-| Correlation presented as causation | Label hypotheses and propose a verification experiment. |
+Investigate a conversion-rate decline using synthetic event tables and deliver a report with metric definitions, query results, and evidence limits.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Agree on definitions.** Specify new-user eligibility, conversion events, deduplication entity, timezone, numerator, and denominator.
+2. **Select data.** Use metadata and analysis procedures to identify joins, permissions, and the relevant time range.
+3. **Execute analysis.** Constrain read-only queries and retain SQL versions, result tables, and segment comparisons.
+4. **Deliver a report.** Separate observations, hypotheses, and proposed experiments, linking the report to query evidence.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -110,3 +81,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 The report can establish a five-percentage-point decline. Without channel, cohort, or experiment data, it cannot attribute the change to a product release.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| Conflicting definitions | Resolve the metric definition before querying. |
+| Empty result | Report missing data rather than a trend. |
+| Correlation presented as causation | Label hypotheses and propose a verification experiment. |

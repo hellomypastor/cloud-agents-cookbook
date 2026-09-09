@@ -13,77 +13,52 @@ translation_of: "minecraft-agent"
 
 ## Scenario and outcome
 
-**Case document** · This page provides the scenario and reusable method without requiring access to the original internal or video entry.
+In Minecraft, players expect an Agent to act in the shared world. Position, obstacles, and player behavior continuously change its task context.
 
 An embodied Agent shares a Minecraft world with players and responds through in-world actions.
 
-This editorial overview is based on the supplied showcase material, attributed to 残风. It describes the presented approach; it does not establish production deployment or independently measured performance.
+This account is based on showcase material contributed by 残风. The diagram and responsibility table organize that material; the worked example below is suggested implementation guidance, not a production measurement.
 
 ## Implementation approach
 
+### How the work moves through the product
+
 Start with one task such as following or navigation. Record state before and after each action, separating model intent from actual execution and environmental feedback.
 
-### Worked implementation exercise
-
-Use following a player to a target area as a minimal exercise. The video illustrates interaction; this sequence is guidance for a similar implementation.
-
-The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
-
-### Step-by-step implementation
-
-#### 1. Observe the world
-
-Read position, target, and nearby obstacles within the task scope.
-
-#### 2. Choose an action
-
-Translate the goal into bounded move, stop, and replan actions.
-
-#### 3. Observe execution
-
-Wait for game feedback and update state after obstacles instead of assuming arrival.
-
-#### 4. Finish or recover
-
-Stop on arrival and handle player disconnects, unreachable paths, and cancellation explicitly.
-
-### Input and output record
-
-```json
-{
-  "goal": "follow-player",
-  "target": "demo-player",
-  "allowed_actions": [
-    "move",
-    "stop",
-    "replan"
-  ],
-  "completion": "within target area"
-}
+```mermaid
+flowchart LR
+  N0["Observe the world"] --> N1
+  N1["Choose an action"] --> N2
+  N2["Observe execution"] --> N3
+  N3["Finish or recover"]
 ```
 
-Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+Each transition should carry its input and result forward. This lets the next step use a specific artifact or observation rather than a conversational claim that work is complete.
 
-## Reuse guidance
+### Responsibilities and authoritative facts
 
-
-### Design tradeoff
+| Component | Responsibility |
+|---|---|
+| Game interface | Observe state and execute actions |
+| Agent | Choose the next action for a goal |
+| State control | Stop, recovery, action bounds |
 
 The world changes during inference. Short action horizons with state checks are easier to recover than long fixed plans; add long-term goals after the basic loop works.
 
-### Failure and acceptance checks
+### Follow one concrete request
 
-| Test condition | Expected result |
-|---|---|
-| Target moves | Replan from the new observation. |
-| Blocked path | Avoid repeated ineffective actions and report the obstruction. |
-| Stop request | Stop execution, not just the conversation. |
+Use following a player to a target area as a minimal exercise. The video illustrates interaction; this sequence is guidance for a similar implementation.
 
-Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+1. **Observe the world.** Read position, target, and nearby obstacles within the task scope.
+2. **Choose an action.** Translate the goal into bounded move, stop, and replan actions.
+3. **Observe execution.** Wait for game feedback and update state after obstacles instead of assuming arrival.
+4. **Finish or recover.** Stop on arrival and handle player disconnects, unreachable paths, and cancellation explicitly.
 
-### A concrete acceptance fixture
+The result needs to preserve the evidence used along the way. When a step lacks data or fails, keep that state visible rather than letting the next step treat it as a successful result.
 
-The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+### A result that can be checked
+
+The following synthetic example makes the expected result concrete. It is an application-level example, not a QCA API request or an observed production record.
 
 ```json
 {
@@ -100,3 +75,13 @@ The following synthetic fixture specifies expected behavior, not an observed pro
 ```
 
 This simplified distance check verifies stopping on arrival. Navigation in complex terrain requires independent environment tests.
+
+## Reuse guidance
+
+Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
+
+| Failure or ambiguity | Required behavior |
+|---|---|
+| Target moves | Replan from the new observation. |
+| Blocked path | Avoid repeated ineffective actions and report the obstruction. |
+| Stop request | Stop execution, not just the conversation. |
