@@ -24,6 +24,20 @@ This case is based on the four-page original showcase document, QCA Batch Proces
 
 Stable formats and latency-sensitive arithmetic may be better served by ordinary data pipelines. Agents are useful here for interpreting variation and coordinating multiple processing steps.
 
+### Original practice document
+
+![Original document, page 3: the three source scenarios.](./assets/batch-source-page-3.png)
+
+Original document, page 3: the three source scenarios.
+
+![Original document, page 4: integration and version maintenance.](./assets/batch-source-page-4.png)
+
+Original document, page 4: integration and version maintenance.
+
+[Read the original four-page PDF](https://github.com/hellomypastor/cloud-agents-cookbook/blob/codex/cookbook-pages/site/media/qca-batch-processing-best-practices.pdf)
+
+These are rendered pages from the supplied source, not screenshots of a running product. The source itself labels the business scenarios as illustrative.
+
 ## Implementation approach
 
 ### The boundary of managed execution
@@ -49,20 +63,6 @@ flowchart LR
 
 Creating a Session does not send the task. Read all relevant result events, and do not treat idle as proof of business success. Validate required fields, the input version, counts, and unresolved records.
 
-### Work through a dealer conversion
-
-This synthetic exercise expands the source’s unit-conversion example.
-
-| Dealer input | Master data | Standard result |
-|---|---|---|
-| SKU-A, 3 cases | 12 pieces per case | 36 pieces |
-| SKU-A, 8 pieces | Piece is the standard unit | 8 pieces |
-| SKU-B, 2 cases | Packaging missing | Unresolved |
-
-The Agent can propose field correspondence, but arithmetic should execute deterministically. Packaging needs an effective version: applying today’s package size to an old order can produce numerically valid but incorrect business data.
-
-The deliverable contains both the 44-piece known total and the unresolved SKU-B record. Decide in advance whether the consumer accepts partial completion. If it requires completeness, unresolved data blocks the group rather than disappearing from the report.
-
 ### Keep writeback independent
 
 A valid result can still encounter a database timeout. That does not require reparsing the input. A business identifier plus input version can support application-level idempotency for retrying the same result.
@@ -86,9 +86,5 @@ Include missing packaging, conflicting fields, and mixed formats rather than val
 ## Reuse guidance
 
 Start with one dealer and establish a traceable chain from input identifier through execution, validation, and writeback. Add a second format only after recovery works. The source distinguishes text uploads from PDF and image retrieval, which require configured authorized readers and parsers.
-
-![Illustrative accepted and rejected record manifest](./assets/result-preview.png)
-
-The image illustrates an output manifest. Test independent retries, writeback failure, and version retention as well as the successful path.
 
 Compare costs on identical inputs and acceptance criteria, including retries and human review. The source mentions night-time commercial offers, but no unverified discount or savings percentage is reproduced here.

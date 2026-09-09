@@ -42,7 +42,6 @@ flowchart LR
   I --> F
 ```
 
-
 ### Separate discovery from the game loop
 
 Entry cards explain games and lead into play. Within a game, users need state, turn, valid actions, and restart controls.
@@ -66,17 +65,6 @@ Cancel obsolete work or reject actions with an old game identity. Verify scores,
 Touch interactions can fail where mouse controls work. Check target clarity, visible state, orientation changes, and continuity.
 
 Explain rejected actions in terms of current rules instead of a generic failure message.
-
-### Finish-to-restart acceptance
-
-This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
-
-| Item | Evidence or condition | Decision |
-|---|---|---|
-| Finished | Outcome established | Reject ordinary moves |
-| Restart | User starts a fresh game | Create new game state |
-| Old callback | Previous opponent action arrives | Do not mutate the new game |
-| New action | Belongs to current game | Validate against current rules |
 
 ## Reuse guidance
 

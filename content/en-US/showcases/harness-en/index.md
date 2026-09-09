@@ -13,13 +13,11 @@ translation_of: "harness"
 
 ## Scenario and outcome
 
+> **Source material incomplete.** The original interface contains internal project data; publishable task graphs, code changes, and verification records are missing.
+
 Engineering moves through clarification, planning, implementation, verification, and release, with changes and failures along the way. A long conversation can obscure completed work and obsolete conclusions.
 
 The Harness showcase assigns stages, dependencies, rollback, and human decisions to a Graph, with Agents executing within nodes. The following input-validation task is a reference graph. Internal project screenshots are not reproduced.
-
-![Task graph delivery view](./assets/result-preview.png)
-
-Illustrative output based on this article’s example; synthetic data, not a product screenshot. Retry the affected stage while preserving earlier evidence.
 
 ## Implementation approach
 
@@ -41,18 +39,11 @@ flowchart TD
   H[Requirement changes] --> A
 ```
 
-
 ### Define node completion before execution
 
 For “accept integers from 1 to 100,” the requirement node delivers bounds, error behavior, and examples. Planning identifies affected areas; implementation produces a revision; verification produces results bound to it.
 
 A done message is insufficient. Code, version-specific checks, and deployed revision evidence establish different kinds of completion.
-
-### Use dependencies to invalidate stale work
-
-Suppose implementation and tests pass against v1, then the allowed range changes to 1–50 in v2. The old implementation and verification become stale. Repeating old tests does not establish compliance with the new requirement.
-
-Invalidate along dependency edges while preserving unrelated work. This avoids both full reruns and invalid reuse.
 
 ### Return actionable failure evidence
 
@@ -65,17 +56,6 @@ An unavailable test environment is an infrastructure blocker, not evidence of a 
 Approval applies to a specific requirement or revision, not future changes. Retain attempt identity so a late result from an old attempt cannot replace the current result.
 
 Record node, input version, and attempt. The Graph owns state transitions; the Agent explains and performs the work.
-
-### Node states after a requirement change
-
-This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
-
-| Item | Evidence or condition | Decision |
-|---|---|---|
-| Requirement | v1 replaced by v2 | Confirm the revised range |
-| Implementation | Still based on v1 | Invalidate and update affected code |
-| Verification | Old tests passed | Test revised bounds on new code |
-| Release | No v2 verification evidence | Do not reuse old approval |
 
 ## Reuse guidance
 

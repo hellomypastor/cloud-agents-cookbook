@@ -86,3 +86,23 @@ test("site renders real bilingual articles with resolvable static links and filt
     await rm(outDir, { recursive: true, force: true });
   }
 });
+
+test("case media uses traceable original assets instead of synthetic result cards", async () => {
+  const { createHash } = await import("node:crypto");
+  const provenance = JSON.parse(await readFile(path.join(root, "site/media-provenance.json"), "utf8"));
+  assert.ok(provenance.assets.length > 0);
+  for (const record of provenance.assets) {
+    const bytes = await readFile(path.join(root, record.asset));
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), record.sha256, record.asset);
+    await access(path.join(root, record.source));
+    assert.ok(record.time || record.page, `Missing source position: ${record.asset}`);
+  }
+  for (const locale of ["zh-CN", "en-US"]) {
+    const dir = path.join(root, "content", locale, "showcases");
+    for (const entry of await readdir(dir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const markdown = await readFile(path.join(dir, entry.name, "index.md"), "utf8");
+      assert.ok(!markdown.includes("result-preview.png"), `Synthetic result card in ${entry.name}`);
+    }
+  }
+});

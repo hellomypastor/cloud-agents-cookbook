@@ -13,13 +13,11 @@ translation_of: "information-station"
 
 ## Scenario and outcome
 
+> **Source material incomplete.** The entry is internal; a publishable complete issue and editorial screenshots are missing.
+
 Information Station delivers an edited briefing rather than a search-result list. Its showcase describes ongoing collection, structuring, and aggregation, with an 08:30 briefing covering major items, follow-ups, weak signals, and product trends.
 
-The source describes the workflow without publishing collectors or evaluations. The synthetic source exercise below develops an event-based editorial method.
-
-![News digest](./assets/result-preview.png)
-
-Illustrative output based on this article’s example; synthetic data, not a product screenshot. Deduplicate events while preserving original sources.
+The source describes the workflow without publishing collectors or evaluations. Source descriptions and editorial reuse advice are distinguished below.
 
 ## Implementation approach
 
@@ -39,7 +37,6 @@ flowchart LR
   F --> G[Delivery]
   G -->|Retry same version| G
 ```
-
 
 ### Define an issue boundary
 
@@ -64,17 +61,6 @@ One release does not establish an industry trend. State uncertainty and what to 
 Link summaries to sources and separate facts from editorial interpretation. Record corrections to prior issues when source details change.
 
 A delivery timeout should retry the saved issue, not regenerate a different briefing under the same identity.
-
-### From three sources to one issue
-
-This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
-
-| Item | Evidence or condition | Decision |
-|---|---|---|
-| Source A | Covers release X | Retain original time |
-| Source B | Adds details about X | Merge into X, keep citation |
-| Source C | Covers separate release Y | Create a separate event |
-| Issue | Two events, three sources | Check gaps before delivery |
 
 ## Reuse guidance
 

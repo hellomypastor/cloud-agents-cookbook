@@ -14,7 +14,7 @@ translation_of: "charging-anomaly-analysis"
 
 A disputed charging bill may involve order timing, equipment state, time-based rates, service fees, and discounts. Sequential handoffs between teams make it easy to repeat work or lose evidence.
 
-霄羽’s showcase uses a coordinating diagnostic Agent with order, equipment, billing, and trend specialists. The available material establishes that design and a historical demo, not production accuracy or measured resolution time. The investigation below is a synthetic worked example.
+霄羽’s showcase uses a coordinating diagnostic Agent with order, equipment, billing, and trend specialists. The available material establishes that design and a historical demo, not production accuracy or measured resolution time. The historical interface and documented specialist roles are retained below.
 
 ![Historical charging diagnosis entry and specialist roles](./assets/showcase-view.jpg)
 
@@ -40,25 +40,6 @@ The specialist roles come from the source; these output boundaries are a referen
 | Trends | Comparable devices and periods | Baseline deviations | Causality |
 
 Attach provenance, window, and missing fields to every result. Majority agreement is not independent corroboration when all specialists rely on the same mistaken input.
-
-### Reconcile before attributing
-
-A synthetic order has one hour at rate 2 and half an hour at rate 4. Its bill is 5. These are exercise units, not an operating tariff.
-
-| Component | Calculation | Value |
-|---|---|---|
-| First interval | 1 × 2 | 2 |
-| Second interval | 0.5 × 4 | 2 |
-| Known subtotal | 2 + 2 | 4 |
-| Difference | 5 − 4 | 1 |
-
-This establishes a difference between known components and the bill, not an overcharge. Request missing service-fee details. A fee of 1 could explain the difference only after confirming that it applies to this order.
-
-### Deliver an actionable unresolved report
-
-A useful report states the verified subtotal, bill, missing fee breakdown, available device evidence, and next query. Missing logs must not become “device healthy.” It can help the next operator without claiming a root cause: arithmetic is complete and the unresolved evidence is explicit.
-
-If timestamps disagree, reconcile timezones. If totals disagree, inspect fee components and effective versions. A broader trend may prioritize investigation but cannot replace order evidence. Preserve observations, inferences, and unresolved questions as distinct parts of the report.
 
 ## Reuse guidance
 

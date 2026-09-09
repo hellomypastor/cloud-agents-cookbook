@@ -43,7 +43,6 @@ flowchart LR
   E --> H[Export with data mode]
 ```
 
-
 ### Design a reading order before adding metrics
 
 An overview should identify what needs attention, then support tracing units, neighbors, and change over time. Equal-sized metrics obscure priority; color alone does not explain it.
@@ -67,17 +66,6 @@ Carry simulation labeling into detail and exports. A footer-only label is easily
 An alert needs object, time, rule or threshold, and current validity. Otherwise users cannot distinguish an active issue, history, and an animation.
 
 Use domain-approved rules for a real implementation; generated descriptions are not automatic control instructions.
-
-### Reading one material path
-
-This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
-
-| Item | Evidence or condition | Decision |
-|---|---|---|
-| Node | Unit load percentage | Identify unit and time |
-| Edge | Material flow | Retain flow units |
-| Trend | Change over a window | Align with overview window |
-| Export | Report outside the page | Preserve simulated-data label |
 
 ## Reuse guidance
 

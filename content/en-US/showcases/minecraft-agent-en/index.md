@@ -21,6 +21,18 @@ A video does not establish the navigation algorithm or control protocol. The app
 
 Original demo frame: the agent appears as a character in the player’s world. Source: original showcase material.
 
+### Frames from the original video
+
+![00:12: the Agent character, terrain, trees, and player inventory from the original demo.](./assets/minecraft-12.jpg)
+
+00:12: the Agent character, terrain, trees, and player inventory from the original demo.
+
+![00:32: a later frame showing the character and player in the same visible scene.](./assets/minecraft-32.jpg)
+
+00:32: a later frame showing the character and player in the same visible scene.
+
+These are frames from the original recording, not reconstructed interfaces. Use the video at the top of this page to view the surrounding sequence.
+
 ## Implementation approach
 
 ### Use a bounded world-action interface
@@ -39,7 +51,6 @@ flowchart TD
   F --> G[Observe actual movement]
   G --> B
 ```
-
 
 ### Translate a goal into observable conditions
 
@@ -64,17 +75,6 @@ Report location and attempted actions when unreachable. Discard obsolete plans r
 Use the video to inspect shared presence and understandable interaction. Latency and long-run stability need measurements beyond selected footage.
 
 Reuse outcome verification across environments, while treating real-device control as a different capability boundary.
-
-### Three observations while approaching
-
-This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
-
-| Item | Evidence or condition | Decision |
-|---|---|---|
-| Far from target | Outside agreed range | Perform one bounded action |
-| Within range | Distance 1, threshold 2 | Stop movement |
-| Blocked path | No movement after action | Reassess the route |
-| Target changed | Player specifies a new target | Invalidate the old plan |
 
 ## Reuse guidance
 

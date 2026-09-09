@@ -14,13 +14,11 @@ source_url: "https://qoder.com/agents/session/new"
 
 ## Scenario and outcome
 
+> **Source material incomplete.** The product entry is retained, but screenshots and final artifacts from a public test task are missing.
+
 Remote Agent turns cloud execution into an end-user product: submit a goal, let work continue, and return to its progress and artifacts. The showcase describes work independent of a continuously connected local computer.
 
-The report example below examines persistent task identity and recovery. Its application states are reference design, not claims about the public service’s internals.
-
-![Remote task state](./assets/result-preview.png)
-
-Illustrative output based on this article’s example; synthetic data, not a product screenshot. Reconnect to the original task rather than resubmitting it.
+The discussion below examines persistent task identity and recovery. Its application states are reference design, not claims about the public service’s internals.
 
 ## Implementation approach
 
@@ -43,7 +41,6 @@ sequenceDiagram
   U->>T: Query original task
   T-->>U: Current state and result reference
 ```
-
 
 ### Make submission recoverable
 
@@ -68,17 +65,6 @@ Distinguish a preview error from absent output. Do not present an empty link as 
 Cancel requests a stop and may leave partial artifacts. Retry repeats failed work. Continue supplies information to the existing task. Controls should reflect these differences.
 
 Track which completed outputs a changed requirement invalidates, such as a revised report window.
-
-### Interpreting a reconnected task
-
-This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
-
-| Item | Evidence or condition | Decision |
-|---|---|---|
-| Running | Current state of original task | Observe without resubmitting |
-| Waiting | Task requests clarification | Answer within the same task |
-| Artifact ready | Output matches this task | Check readability and deliver |
-| Failed | Failure stage is known | Retry by stage |
 
 ## Reuse guidance
 

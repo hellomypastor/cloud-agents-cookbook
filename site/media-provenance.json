@@ -1,0 +1,89 @@
+{
+  "description": "New original-source visuals added while removing fabricated effect images. Existing showcase-view/cover assets retain their original captions.",
+  "assets": [
+    {
+      "asset": "content/zh-CN/showcases/minecraft-agent/assets/minecraft-12.jpg",
+      "source": "site/media/minecraft-agent.mp4",
+      "time": "12 seconds",
+      "sha256": "3516db3acd9b5ace3641c2ca7e821a9f51ab9a4d11bb650e152214f7fad67315",
+      "method": "ffmpeg frame extraction; no visual edits"
+    },
+    {
+      "asset": "content/zh-CN/showcases/minecraft-agent/assets/minecraft-32.jpg",
+      "source": "site/media/minecraft-agent.mp4",
+      "time": "32 seconds",
+      "sha256": "3c9e6aa4dd914ae008692d45b54f4433536fac46f1d78fd059c6b323538ddf5c",
+      "method": "ffmpeg frame extraction; no visual edits"
+    },
+    {
+      "asset": "content/en-US/showcases/minecraft-agent-en/assets/minecraft-12.jpg",
+      "source": "site/media/minecraft-agent.mp4",
+      "time": "12 seconds",
+      "sha256": "3516db3acd9b5ace3641c2ca7e821a9f51ab9a4d11bb650e152214f7fad67315",
+      "method": "ffmpeg frame extraction; no visual edits"
+    },
+    {
+      "asset": "content/en-US/showcases/minecraft-agent-en/assets/minecraft-32.jpg",
+      "source": "site/media/minecraft-agent.mp4",
+      "time": "32 seconds",
+      "sha256": "3c9e6aa4dd914ae008692d45b54f4433536fac46f1d78fd059c6b323538ddf5c",
+      "method": "ffmpeg frame extraction; no visual edits"
+    },
+    {
+      "asset": "content/zh-CN/showcases/maqu-ai-studio/assets/maqu-90.jpg",
+      "source": "site/media/maqu-finished-film.mp4",
+      "time": "90 seconds",
+      "sha256": "f977aedcaf6344e221bcce76e841e0a8dc28a7471a9ca2030663a0c881f56b57",
+      "method": "ffmpeg frame extraction; no visual edits"
+    },
+    {
+      "asset": "content/zh-CN/showcases/maqu-ai-studio/assets/maqu-210.jpg",
+      "source": "site/media/maqu-finished-film.mp4",
+      "time": "210 seconds",
+      "sha256": "61cfaa870f5aee3dec687fc3784d632cd3d3b51d85ba073048e6be815ea777af",
+      "method": "ffmpeg frame extraction; no visual edits"
+    },
+    {
+      "asset": "content/en-US/showcases/maqu-ai-studio-en/assets/maqu-90.jpg",
+      "source": "site/media/maqu-finished-film.mp4",
+      "time": "90 seconds",
+      "sha256": "f977aedcaf6344e221bcce76e841e0a8dc28a7471a9ca2030663a0c881f56b57",
+      "method": "ffmpeg frame extraction; no visual edits"
+    },
+    {
+      "asset": "content/en-US/showcases/maqu-ai-studio-en/assets/maqu-210.jpg",
+      "source": "site/media/maqu-finished-film.mp4",
+      "time": "210 seconds",
+      "sha256": "61cfaa870f5aee3dec687fc3784d632cd3d3b51d85ba073048e6be815ea777af",
+      "method": "ffmpeg frame extraction; no visual edits"
+    },
+    {
+      "asset": "content/zh-CN/showcases/batch-processing/assets/batch-source-page-3.png",
+      "source": "site/media/qca-batch-processing-best-practices.pdf",
+      "page": 3,
+      "sha256": "fd88b1d935f4af4b77c22b45669773175f84ab43f2114f508a61b1c127f73113",
+      "method": "PDFKit rasterization of original page; not a product screenshot"
+    },
+    {
+      "asset": "content/zh-CN/showcases/batch-processing/assets/batch-source-page-4.png",
+      "source": "site/media/qca-batch-processing-best-practices.pdf",
+      "page": 4,
+      "sha256": "9d0058307708c9685848c84dd9529b9f992c6e39d29f16a96e8932a20339e5d6",
+      "method": "PDFKit rasterization of original page; not a product screenshot"
+    },
+    {
+      "asset": "content/en-US/showcases/batch-processing-en/assets/batch-source-page-3.png",
+      "source": "site/media/qca-batch-processing-best-practices.pdf",
+      "page": 3,
+      "sha256": "fd88b1d935f4af4b77c22b45669773175f84ab43f2114f508a61b1c127f73113",
+      "method": "PDFKit rasterization of original page; not a product screenshot"
+    },
+    {
+      "asset": "content/en-US/showcases/batch-processing-en/assets/batch-source-page-4.png",
+      "source": "site/media/qca-batch-processing-best-practices.pdf",
+      "page": 4,
+      "sha256": "9d0058307708c9685848c84dd9529b9f992c6e39d29f16a96e8932a20339e5d6",
+      "method": "PDFKit rasterization of original page; not a product screenshot"
+    }
+  ]
+}

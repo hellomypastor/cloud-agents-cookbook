@@ -13,13 +13,11 @@ translation_of: "tam-digital-twin"
 
 ## Scenario and outcome
 
+> **Source material incomplete.** The detailed source article is inaccessible; redacted cases, diagnostic traces, and post-action verification are missing.
+
 Technical support combines customer descriptions, team knowledge, configuration checks, and current resource state. Handoffs can lose context and repeat questions.
 
 The TAM digital-twin showcase describes a messaging-based coordinator routing to specialists with knowledge, Skills, memory, credentials, and diagnostics. This timeout exercise explains the handoffs without claiming measured resolution improvements.
-
-![Diagnostic evidence report](./assets/result-preview.png)
-
-Illustrative output based on this article’s example; synthetic data, not a product screenshot. Collect configuration evidence before claiming a cause.
 
 ## Implementation approach
 
@@ -44,7 +42,6 @@ flowchart TD
   I --> J[Separate action decision]
 ```
 
-
 ### Build an investigation context
 
 “Cannot connect” needs a target, window, symptom, recent changes, and prior checks. Distinguish customer reports from tool observations.
@@ -68,17 +65,6 @@ Repeating a timeout can establish persistence without explaining cause. Prefer c
 Record scope, completed checks, excluded and open hypotheses, next action, and owner. The next operator should know what remains valid and what needs rechecking after a change.
 
 Separate recommendations from actions. After an action, observe whether the original symptom disappeared instead of closing on tool success alone.
-
-### Evidence states in a timeout investigation
-
-This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
-
-| Item | Evidence or condition | Decision |
-|---|---|---|
-| User report | Connection unavailable | Record scope and time |
-| Tool observation | Network check timed out | Establish symptom, not cause |
-| Evidence gap | Configuration check missing | Obtain configuration evidence |
-| New evidence | Configuration result available | Revise or withdraw the hypothesis |
 
 ## Reuse guidance
 

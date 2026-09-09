@@ -39,12 +39,6 @@ The current user needs an answer; maintainers need evidence that a change applie
 
 The source assigns execution and synthesis to the Agent, consequential decisions to experts, and versioned inputs and outputs to the knowledge base. Acceptance rate alone cannot govern brand, design-system, or copyright-related rules.
 
-### Follow one spacing disagreement
-
-In this exercise, a campaign designer prefers tighter spacing than a general-page rule. The Agent identifies the difference; the designer retains the tighter layout specifically for the campaign.
-
-That does not establish a defective global rule. It supports a possible scoped exception. Preserve the base version, task, recommendation, final design, applicable project, rationale, affected pages, and reviewer. “The user disliked the spacing” is insufficient evidence for publication.
-
 ### Evaluate fixes and regressions together
 
 | Reference design | Candidate behavior |

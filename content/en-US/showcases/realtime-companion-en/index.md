@@ -45,7 +45,6 @@ sequenceDiagram
   C->>G: Handle second turn
 ```
 
-
 ### Make voice states understandable
 
 A topic selection does not mean the microphone is listening. Connection, permission, and actual input are distinct steps with distinct failures.
@@ -69,17 +68,6 @@ Visible privacy guidance is useful but does not establish backend retention or p
 Ending should stop input, playback, and pending work for the turn. After disconnection, make recovery explicit instead of unexpectedly playing an old answer.
 
 Test ending during listening, thinking, and speaking, not only after a normal response finishes.
-
-### Four channels to check on interruption
-
-This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
-
-| Item | Evidence or condition | Decision |
-|---|---|---|
-| Input | User starts turn two | Associate speech with the new turn |
-| Generation | Turn one still emits output | Cancel or ignore old results |
-| Playback | Old audio remains queued | Stop and clear the old queue |
-| Captions | Old text arrives late | Do not append to the new turn |
 
 ## Reuse guidance
 

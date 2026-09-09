@@ -13,6 +13,8 @@ translation_of: "delivery-bot"
 
 ## Scenario and outcome
 
+> **Source material incomplete.** The original delivery record contains internal project and conversation data; source architecture is retained, but a publishable delivery screenshot is missing.
+
 A request such as “resolve this release conflict” can require inspecting code, editing files, waiting for a build, and checking an environment. A chat transcript alone makes it difficult to distinguish actual completion from an unsupported completion message.
 
 Canfeng’s Delivery Bot uses a messaging entry point, QCA routing, specialized sessions, and a BYOC Worker with access to enterprise development tools. Results return to the conversation that started the task.
@@ -29,12 +31,6 @@ The supplied case material shows conflict identification, code changes, build an
 | Where can I inspect it? | An authorized artifact or result location |
 
 A narrative summary explains these facts; it does not replace them.
-
-### Result preview
-
-![Delivery receipt](./assets/result-preview.png)
-
-Illustrative output based on this article’s example; synthetic data, not a product screenshot. Example receipt: review the evidence before release.
 
 ## Implementation approach
 

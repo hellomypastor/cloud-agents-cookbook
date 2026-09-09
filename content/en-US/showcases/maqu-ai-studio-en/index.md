@@ -21,6 +21,18 @@ The videos show different things: coordination and final audiovisual output. A f
 
 A frame from the original showcase film; the videos on this page show the full result. Source: original showcase material.
 
+### Frames from the original video
+
+![01:30: the finished film shows the character writing at a desk.](./assets/maqu-90.jpg)
+
+01:30: the finished film shows the character writing at a desk.
+
+![03:30: the character holds a wooden basket; compare character design and scene continuity with the earlier frame.](./assets/maqu-210.jpg)
+
+03:30: the character holds a wooden basket; compare character design and scene continuity with the earlier frame.
+
+These are frames from the original recording, not reconstructed interfaces. Use the video at the top of this page to view the surrounding sequence.
+
 ## Implementation approach
 
 ### Exchange artifacts between specialist conversations
@@ -43,7 +55,6 @@ flowchart TD
   I -->|Targeted revision| C
 ```
 
-
 ### Approve the story before parallel production
 
 Script work establishes story, characters, scenes, and dialogue; storyboarding turns that into shots. Premature asset generation can amplify rework when the story changes.
@@ -56,28 +67,26 @@ A shot handoff needs identity, script version, character reference, scene, actio
 
 File existence is only one check. Verify usability, version, and creative fit before editing.
 
-### Propagate a script revision
-
-In the fixture, script v2 is approved while shot s01 uses a v1 asset. Review it before editing. A dialogue change may allow picture reuse; an action change may not.
-
-Rework by impact instead of regenerating everything or accepting every old asset. Retain the decision rationale.
-
 ### Review the film across shot boundaries
 
 Attractive individual shots can still fail as a sequence. Review character continuity, transitions, synchronization, music, and pacing across the film.
 
 Final human review addresses creative coherence. Bind feedback to shots and versions for focused revision.
 
-### Asset checks after script v2
+### The production roles recorded in the source
 
-This synthetic walkthrough specifies what to inspect; it is not a recorded production run.
+The showcase names script, storyboard, art, performance, music, and editing specialists, plus a coordinator: seven long-running conversations. This describes organization, not a claim that every role executes in parallel throughout production.
 
-| Item | Evidence or condition | Decision |
-|---|---|---|
-| Dialogue | Lines changed | Revise or review audio |
-| Action | Character action changed | Review picture suitability |
-| Music | Shot duration changed | Recheck timing |
-| Editing | Old-version shots remain | Review versions before final assembly |
+| Role | Production stage |
+|---|---|
+| Script | Iterative story development |
+| Storyboard | Shot organization |
+| Art | Scene and visual assets |
+| Performance | Character portrayal |
+| Music | Score |
+| Editing | Assembly of the finished film |
+
+The retained collaboration clip lasts about 64 seconds and the film about 5 minutes 45 seconds, measured from the provided files. Watch them together: collaboration and final output are different evidence. The new 01:30 and 03:30 frames can be located directly in the film and are not generated replacements.
 
 ## Reuse guidance
 
