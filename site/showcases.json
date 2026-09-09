@@ -1,0 +1,116 @@
+{
+  "featured": [
+    "littlememeworld-qca-showcase",
+    "product-experience-officer",
+    "portal-rag-assistant",
+    "hao2-digital-workforce",
+    "llm2cad-pipeline",
+    "welllog-ai"
+  ],
+  "cases": [
+    {
+      "title": "Information Station 信息站",
+      "slug": "information-station"
+    },
+    {
+      "title": "交付机器人",
+      "slug": "delivery-bot"
+    },
+    {
+      "title": "Harness",
+      "slug": "harness"
+    },
+    {
+      "title": "数字化资产",
+      "slug": "digital-assets"
+    },
+    {
+      "title": "数字分身",
+      "slug": "littlememeworld-qca-showcase"
+    },
+    {
+      "title": "产品体验官",
+      "slug": "product-experience-officer"
+    },
+    {
+      "title": "企业官网知识库助手",
+      "slug": "portal-rag-assistant"
+    },
+    {
+      "title": "Minecraft 世界 Agent",
+      "slug": "minecraft-agent"
+    },
+    {
+      "title": "星语 · 实时陪伴 Agent",
+      "slug": "realtime-companion"
+    },
+    {
+      "title": "马趣 · 云端 AI 剧组",
+      "slug": "maqu-ai-studio"
+    },
+    {
+      "title": "游戏广场",
+      "slug": "game-square"
+    },
+    {
+      "title": "充电异常分析",
+      "slug": "charging-anomaly-analysis"
+    },
+    {
+      "title": "智能摄像头 Agent",
+      "slug": "smart-camera-agent"
+    },
+    {
+      "title": "LLM2CAD 管道构件建模",
+      "slug": "llm2cad-pipeline"
+    },
+    {
+      "title": "兰州石化智能炼厂",
+      "slug": "refinery-cockpit"
+    },
+    {
+      "title": "测井智能解释",
+      "slug": "welllog-ai"
+    },
+    {
+      "title": "Cloud Use",
+      "slug": "cloud-use"
+    },
+    {
+      "title": "QCA 批处理最佳实践",
+      "slug": "batch-processing"
+    },
+    {
+      "title": "Remote Agent",
+      "slug": "remote-agent"
+    },
+    {
+      "title": "Open Code Review",
+      "slug": "open-code-review"
+    },
+    {
+      "title": "Marlin 数据分析 Agent",
+      "slug": "marlin-data-agent"
+    },
+    {
+      "title": "智驾 TAM 数字分身",
+      "slug": "tam-digital-twin"
+    },
+    {
+      "title": "行业 Excel 智能分析",
+      "slug": "excel-industry-analysis"
+    },
+    {
+      "title": "ERP 智能报价",
+      "slug": "erp-quotation"
+    },
+    {
+      "title": "小别针 Agent 上云加速器",
+      "slug": "agent-cloud-accelerator"
+    },
+    {
+      "title": "设计知识自进化",
+      "slug": "design-knowledge-loop"
+    }
+  ]
+}

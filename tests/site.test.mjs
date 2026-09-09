@@ -43,6 +43,11 @@ test("site renders real bilingual articles with resolvable static links and filt
     );
     dom.window.eval(await readFile(path.join(root, "site/site.js"), "utf8"));
     const doc = dom.window.document;
+    const selection = JSON.parse(await readFile(path.join(root, "site/showcases.json"), "utf8"));
+    assert.equal(selection.cases.length, 26);
+    assert.equal(new Set(selection.cases.map((i) => i.slug)).size, 26);
+    assert.deepEqual([...doc.querySelectorAll(".feature")].map((el) => el.getAttribute("href")), selection.featured.map((slug) => `./${slug}/`));
+    for (const entry of selection.cases) assert.ok(doc.querySelector(`.entry-title[href="./${entry.slug}/"]`), entry.title);
     const initialCount = doc.querySelectorAll("[data-entry]").length;
     const showcaseCount = doc.querySelectorAll('[data-entry][data-type="showcase"]').length;
     assert.ok(initialCount > 0 && showcaseCount > 0);

@@ -80,3 +80,9 @@ npm run dev
 正文源码与投稿链接使用构建时的 `GITHUB_REPOSITORY` 和 `GITHUB_SHA`，指向实际构建仓库和版本。发布目录不含 Demo 源码。回退时可将发布分支 revert 到已验证版本并推送，触发重新部署。
 
 独立域名为 `cookbook.anchen.me`，DNS 需要添加 `CNAME cookbook → hellomypastor.github.io`。GitHub Pages 设置中的 Custom domain 使用 `cookbook.anchen.me`，DNS 生效且证书签发后启用 Enforce HTTPS。此设置不更改个人主站 `anchen.me`。
+
+### 首页精选与案例覆盖
+
+`site/showcases.json` 固定首页六张精选卡片，并维护原 showcase 的 26 个案例映射。构建会检查中英文页面是否完整，避免新增内容挤掉精选或遗漏案例。下方目录同时保留指南与全部案例，支持搜索和类型筛选。
+
+原入口为内网、视频或失效地址的案例，使用站内场景说明与复用方法；不发布内部地址、运行数据或未经核实的收益数字。新案例需要同步维护两个语言版本。

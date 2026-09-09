@@ -23,7 +23,7 @@ const words = {
     search: "搜索指南、案例、标签…",
     category: "全部主题",
     type: "全部类型",
-    all: "全部内容",
+    all: "全部案例与指南",
     title: "标题",
     categories: "分类",
     author: "作者",
@@ -45,7 +45,7 @@ const words = {
     search: "Search guides, cases, and tags…",
     category: "All topics",
     type: "All types",
-    all: "All cookbooks",
+    all: "All cases and guides",
     title: "Title",
     categories: "Categories",
     author: "Author",
@@ -105,6 +105,7 @@ export async function buildSite(root = process.cwd(), options = {}) {
     const governance = JSON.parse(
       await readFile(path.join(bundle, "governance.json"), "utf8"),
     );
+    const showcaseSelection = JSON.parse(await readFile(path.join(contractRoot, "site/showcases.json"), "utf8"));
     await rm(outDir, { recursive: true, force: true });
     await mkdir(outDir, { recursive: true });
     for (const name of ["site.css", "site.js", "theme.js"])
@@ -140,10 +141,15 @@ export async function buildSite(root = process.cwd(), options = {}) {
             (b.updated_at ?? "").localeCompare(a.updated_at ?? "") ||
             a.slug.localeCompare(b.slug),
         );
-      const selected = governance.featured.slugs
+      const selected = showcaseSelection.featured
         .map((s) => items.find((i) => i.slug === s || i.translation_of === s))
         .filter(Boolean);
-      const featured = selected.length ? selected : items.slice(0, 6);
+      if (selected.length !== 6) throw new Error(`Expected six curated showcases for ${locale}`);
+      for (const entry of showcaseSelection.cases) {
+        if (!items.some((i) => i.slug === entry.slug || i.translation_of === entry.slug))
+          throw new Error(`Missing showcase ${entry.slug} for ${locale}`);
+      }
+      const featured = selected;
       const dir = path.join(outDir, locale);
       await mkdir(dir, { recursive: true });
       const filters = `<div class="filters"><label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><input type="search" id="search" aria-label="${w.search}" placeholder="${w.search}"><kbd>/</kbd></label><select id="category" aria-label="${w.category}"><option value="">${w.category}</option>${governance.taxonomy.categories.map((c) => `<option value="${c.id}">${esc(c.labels[locale])}</option>`).join("")}</select><select id="type" aria-label="${w.type}"><option value="">${w.type}</option>${Object.entries(
@@ -166,7 +172,7 @@ export async function buildSite(root = process.cwd(), options = {}) {
             `<tr data-entry data-category="${i.category}" data-type="${i.type}" data-search="${esc([i.title, i.summary, i.author.name, ...i.tags, categoryLabel(i), typeLabel(i)].join(" ").toLowerCase())}"><td><a class="entry-title" href="./${i.slug}/">${esc(i.title)}</a><p>${esc(i.summary)}</p></td><td class="category-cell"><a class="pill topic-${i.category}" href="?category=${i.category}" data-filter="${i.category}">${esc(categoryLabel(i))}</a><span class="pill type-${i.type}">${esc(typeLabel(i))}</span></td><td><span class="author"><span class="avatar" aria-hidden="true">${esc([...i.author.name][0])}</span>${esc(i.author.name)}</span></td><td class="date">${i.updated_at ? esc(new Intl.DateTimeFormat(locale, { year: "numeric", month: "short" }).format(new Date(i.updated_at))) : "—"}</td></tr>`,
         )
         .join("");
-      const home = `<section class="intro"><h1>Cookbook</h1><p>${w.intro}</p></section>${filters}<section class="featured" aria-label="${locale === "zh-CN" ? "精选内容" : "Featured cookbooks"}">${cards}</section><section class="library"><div class="section-head"><h2 class="sr-only">${w.all}</h2><span id="result-count" data-unit="${w.count}" aria-live="polite">${items.length} ${w.count}</span></div><table class="catalog"><thead><tr><th scope="col">${w.title}</th><th scope="col">${w.categories}</th><th scope="col">${w.author}</th><th scope="col">${w.date}</th></tr></thead><tbody>${rows}</tbody></table><div class="empty" hidden><p>${w.empty}</p><button id="reset">${w.reset}</button></div></section><section class="contribute"><h2>${w.contribute}</h2><p>${w.welcome}</p><a href="${sourceRoot}/CONTRIBUTING${locale === "zh-CN" ? ".zh-CN" : ""}.md">${w.guide} ↗</a></section>`;
+      const home = `<section class="intro"><h1>Cookbook</h1><p>${w.intro}</p></section>${filters}<section class="featured" aria-label="${locale === "zh-CN" ? "精选内容" : "Featured cookbooks"}">${cards}</section><section class="library"><div class="section-head"><h2>${w.all}</h2><span id="result-count" data-unit="${w.count}" aria-live="polite">${items.length} ${w.count}</span></div><table class="catalog"><thead><tr><th scope="col">${w.title}</th><th scope="col">${w.categories}</th><th scope="col">${w.author}</th><th scope="col">${w.date}</th></tr></thead><tbody>${rows}</tbody></table><div class="empty" hidden><p>${w.empty}</p><button id="reset">${w.reset}</button></div></section><section class="contribute"><h2>${w.contribute}</h2><p>${w.welcome}</p><a href="${sourceRoot}/CONTRIBUTING${locale === "zh-CN" ? ".zh-CN" : ""}.md">${w.guide} ↗</a></section>`;
       await writeFile(
         path.join(dir, "index.html"),
         shell(locale, "../", "Cookbook", home, `../${other}/`),
