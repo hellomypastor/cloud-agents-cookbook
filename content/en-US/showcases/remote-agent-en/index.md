@@ -24,6 +24,80 @@ This editorial overview is based on the supplied showcase material, attributed t
 
 Start with an explicit file deliverable. Verify reconnect behavior, persistent task state, artifact retrieval, and whether cancellation actually stops execution.
 
+### Worked implementation exercise
+
+Submit a comparison report over three test documents, leave the page, and return to verify task and artifact continuity.
+
+The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
+
+### Step-by-step implementation
+
+#### 1. Specify the goal
+
+Define input documents, output format, and completion criteria.
+
+#### 2. Prepare execution
+
+Make inputs available and record tool scope, reporting missing files explicitly.
+
+#### 3. Run persistently
+
+Keep task state independent of the browser, exposing running, waiting, and failed stages.
+
+#### 4. Deliver artifacts
+
+Provide a downloadable report and citations that remain associated with the same task after reconnection.
+
+### Input and output record
+
+```json
+{
+  "task_id": "comparison-demo",
+  "inputs": [
+    "document-a",
+    "document-b",
+    "document-c"
+  ],
+  "deliverable": "comparison-report",
+  "state": "running",
+  "browser_connection": "optional"
+}
+```
+
+Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+
 ## Reuse guidance
 
-Start with a bounded task, explicit inputs, and a reviewable output. Preserve the source context and execution evidence so another person can check the result. Validate the scenario with authorized or synthetic data before expanding its scope.
+
+### Design tradeoff
+
+Persistent execution needs observable state rather than an indefinite spinner. Explain current work, dependencies, and artifact availability.
+
+### Failure and acceptance checks
+
+| Test condition | Expected result |
+|---|---|
+| Browser closed | Preserve the task and expose state after reconnection. |
+| Task cancelled | Stop execution or report that cancellation is pending. |
+| Empty report artifact | Fail content validation despite file presence. |
+
+Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+
+### A concrete acceptance fixture
+
+The following synthetic fixture specifies expected behavior, not an observed production result. Use it as a baseline, then add the failure cases above.
+
+```json
+{
+  "input": {
+    "task": "running",
+    "browser": "disconnected"
+  },
+  "expected": {
+    "task": "running",
+    "resume_ui": "query same task"
+  }
+}
+```
+
+Browser connection state is separate from task state. Reconnect to the same task instead of resubmitting and creating duplicate work.

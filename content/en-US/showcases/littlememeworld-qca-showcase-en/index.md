@@ -106,3 +106,58 @@ What the two loops exchange is structured facts and version evidence. The kitten
 ## Reuse guidance
 
 The conclusion this LittleMemeWorld practice left us is direct: the runtime loop of a long-lived Agent and the software evolution loop can share one QCA foundation; the two loops exchange results through structured facts and version evidence while each keeps its own Identity, Session, tools, and permissions. This structure lets the product keep living, and it also lets the software keep evolving within clear boundaries.
+
+### Worked implementation exercise
+
+Use a test character for an offline trip and a feedback-driven change proposal, evaluating product behavior separately from software changes.
+
+The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
+
+### Step-by-step implementation
+
+#### 1. Pin character context
+
+Scope personality and memory to the test character.
+
+#### 2. Trigger an activity
+
+Associate schedules with story artifacts without duplicate events.
+
+#### 3. Submit test feedback
+
+Convert feedback into a scoped issue with acceptance criteria.
+
+#### 4. Review the change
+
+Inspect code, verification, and user experience before acceptance.
+
+### Input and output record
+
+```json
+{
+  "character": "test-cat",
+  "activity": "demo-trip",
+  "feedback": "test-feedback",
+  "acceptance": [
+    "memory-scope",
+    "single-delivery",
+    "verified-change"
+  ]
+}
+```
+
+Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+
+### Failure and acceptance checks
+
+| Test condition | Expected result |
+|---|---|
+| Duplicate trigger | Avoid duplicate activity delivery. |
+| Deleted memory | Do not reuse deleted information. |
+| Ambiguous feedback | Clarify before changing behavior. |
+
+Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+
+### Design tradeoff
+
+Character continuity and software evolution are distinct validation targets; a successful story does not validate a change pipeline.

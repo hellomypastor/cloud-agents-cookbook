@@ -79,3 +79,62 @@ For other industrial analysis tasks, retain the sequence of selecting data, comp
 For evaluation, have domain experts establish reference conclusions on synthetic or authorized data. Cover intervals spanning layers, missing curves, anomalous values, and endpoint failures. Assess numerical calculations, evidence use, and interpretation quality separately; producing a complete-looking report is not sufficient evidence of success.
 
 Operational suggestions such as perforation or well testing require professional review. The reusable contribution is an industry workspace with explicit selection, visible evidence, and transparent failure handling.
+
+### Worked implementation exercise
+
+Compare interpretations for a single-layer interval and a cross-layer interval to examine information lost in aggregation.
+
+The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
+
+### Step-by-step implementation
+
+#### 1. Choose intervals
+
+Pin synthetic data and record the comparison rationale.
+
+#### 2. Verify features
+
+Recompute the aggregates passed to interpretation.
+
+#### 3. Request reports
+
+Associate each report with its interval and request.
+
+#### 4. Review with expertise
+
+Check evidence use and distinguish observations from interpretations.
+
+### Input and output record
+
+```json
+{
+  "data": "synthetic-X-1",
+  "intervals": [
+    [
+      2040,
+      2075
+    ],
+    [
+      2030,
+      2090
+    ]
+  ],
+  "review": "evidence-grounding"
+}
+```
+
+Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+
+### Failure and acceptance checks
+
+| Test condition | Expected result |
+|---|---|
+| Rapid selection change | Old responses do not overwrite the current request. |
+| Similar cross-layer averages | Explain aggregation limits. |
+| Endpoint failure | Label rule-based fallback clearly. |
+
+Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+
+### Design tradeoff
+
+Evaluate arithmetic, grounding, and geological conclusions separately.

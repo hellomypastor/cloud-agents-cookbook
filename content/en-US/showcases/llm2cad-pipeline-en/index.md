@@ -76,3 +76,56 @@ Start with a few component families. Define a parameter schema, units, and allow
 Preserve the request, final parameters, tool versions, check reports, and artifact associations for every task. Acceptance should cover dimensional agreement and reopening exported files. A failed run must not deliver an older artifact as its own result.
 
 The reusable pattern is request → parameters → geometry → checks → files. A QCA implementation would additionally need task execution, artifact storage, and failure recovery; those capabilities have not been established by inspecting this public viewer.
+
+### Worked implementation exercise
+
+Select the long-radius elbow, record its parameters, and reopen the exported model in an independent viewer.
+
+The following is a suggested implementation exercise, not a claim that the demonstration exposes this backend or that these checks have already passed. Use synthetic or authorized inputs. The JSON is an application-level record sketch, not a QCA API request.
+
+### Step-by-step implementation
+
+#### 1. Record the request
+
+Capture sample parameters and reported checks, noting that the sample is precomputed.
+
+#### 2. Inspect the preview
+
+Check solid and wireframe views and synchronized sample changes.
+
+#### 3. Inspect exports
+
+Reopen the STEP and STL and compare component identity.
+
+#### 4. Record discrepancies
+
+Separate unreadable exports, parameter mismatches, and geometric differences.
+
+### Input and output record
+
+```json
+{
+  "sample": "elbow_dn150_lr",
+  "artifacts": [
+    "STEP",
+    "STL"
+  ],
+  "generation_mode": "precomputed"
+}
+```
+
+Keep this record with the generated artifact or report. It should identify which input and version produced the result; keep sensitive credentials outside the record. If an input changes, do not silently reuse a result from the earlier version.
+
+### Failure and acceptance checks
+
+| Test condition | Expected result |
+|---|---|
+| Stale download link | Detect sample-artifact mismatch. |
+| Preview without export | Do not count it as artifact delivery. |
+| Reported check passes | Engineering acceptance remains separate. |
+
+Run each check with a reproducible input and retain actual observations. A plausible narrative is insufficient: compare the returned artifact, state, or numerical result with the expected behavior. Record incomplete checks rather than treating them as passes.
+
+### Design tradeoff
+
+This exercise checks artifact consistency, not arbitrary natural-language generation or engineering compliance.
