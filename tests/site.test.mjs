@@ -48,6 +48,11 @@ test("site renders real bilingual articles with resolvable static links and filt
     assert.equal(new Set(selection.cases.map((i) => i.slug)).size, 26);
     assert.deepEqual([...doc.querySelectorAll(".feature")].map((el) => el.getAttribute("href")), selection.featured.map((slug) => `./${slug}/`));
     for (const entry of selection.cases) assert.ok(doc.querySelector(`.entry-title[href="./${entry.slug}/"]`), entry.title);
+    assert.equal(doc.querySelectorAll(".catalog .resource-live").length, 9);
+    assert.equal(doc.querySelectorAll(".catalog .resource-video").length, 4);
+    const film = new JSDOM(await readFile(path.join(outDir, "zh-CN/maqu-ai-studio/index.html"), "utf8"));
+    assert.equal(film.window.document.querySelectorAll("video[controls] source[type='video/mp4']").length, 2);
+    film.window.close();
     const initialCount = doc.querySelectorAll("[data-entry]").length;
     const showcaseCount = doc.querySelectorAll('[data-entry][data-type="showcase"]').length;
     assert.ok(initialCount > 0 && showcaseCount > 0);

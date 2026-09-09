@@ -108,6 +108,7 @@ export async function buildSite(root = process.cwd(), options = {}) {
     const showcaseSelection = JSON.parse(await readFile(path.join(contractRoot, "site/showcases.json"), "utf8"));
     await rm(outDir, { recursive: true, force: true });
     await mkdir(outDir, { recursive: true });
+    await cp(path.join(contractRoot, "site/media"), path.join(outDir, "media"), { recursive: true });
     for (const name of ["site.css", "site.js", "theme.js"])
       await cp(path.join(contractRoot, "site", name), path.join(outDir, name));
     await cp(
@@ -160,16 +161,23 @@ export async function buildSite(root = process.cwd(), options = {}) {
             `<option value="${key}">${esc(t.labels[locale])}</option>`,
         )
         .join("")}</select></div>`;
+      const resourcesFor = (i) => showcaseSelection.cases.find((c) => c.slug === (i.translation_of ?? i.slug))?.resources ?? [];
+      const resourceLabel = (kind) => ({live: locale === "zh-CN" ? "在线体验" : "Live demo", video: locale === "zh-CN" ? "演示视频" : "Video", document: locale === "zh-CN" ? "公开文档" : "Documentation"})[kind];
+      const resourceLinks = (i, article = false) => `<div class="case-resources">${resourcesFor(i).map((r) => `<a class="resource-link resource-${r.kind}" href="${esc(r.kind === "video" ? (article ? "#case-videos" : `./${i.slug}/#case-videos`) : r.url)}"${r.kind === "video" ? "" : ' target="_blank" rel="noopener noreferrer"'}>${resourceLabel(r.kind)} ${r.kind === "video" ? "▷" : "↗"}</a>`).filter((v, n, a) => a.indexOf(v) === n).join("")}${article ? "" : `<a class="resource-link" href="./${i.slug}/">${locale === "zh-CN" ? "案例文档" : "Case study"} →</a>`}</div>`;
+      const mediaSection = (i) => {
+        const videos = resourcesFor(i).filter((r) => r.kind === "video");
+        return videos.length ? `<section class="case-videos" id="case-videos"><h2>${resourceLabel("video")}</h2>${videos.map((r) => `<figure><figcaption>${esc(r.title[locale])}</figcaption><video controls playsinline preload="none" poster="../../media/${esc(r.file.replace(/\.mp4$/, ".jpg"))}" aria-label="${esc(r.title[locale])}"><source src="../../media/${esc(r.file)}" type="video/mp4"></video><a href="../../media/${esc(r.file)}">${locale === "zh-CN" ? "单独打开视频" : "Open video"} ↗</a></figure>`).join("")}</section>` : "";
+      };
       const cards = featured
         .map(
           (i) =>
-            `<a class="feature" href="./${i.slug}/">${icon(i.type, i.slug)}<h2>${esc(i.title)}</h2><p>${esc(i.summary)}</p></a>`,
+            `<a class="feature" href="./${i.slug}/">${icon(i.type, i.slug)}<h2>${esc(i.title)}</h2><p>${esc(i.summary)}</p><span class="resource-badges">${[...new Set(resourcesFor(i).map((r) => resourceLabel(r.kind)))].join(" · ") || (locale === "zh-CN" ? "案例文档" : "Case study")}</span></a>`,
         )
         .join("");
       const rows = items
         .map(
           (i) =>
-            `<tr data-entry data-category="${i.category}" data-type="${i.type}" data-search="${esc([i.title, i.summary, i.author.name, ...i.tags, categoryLabel(i), typeLabel(i)].join(" ").toLowerCase())}"><td><a class="entry-title" href="./${i.slug}/">${esc(i.title)}</a><p>${esc(i.summary)}</p></td><td class="category-cell"><a class="pill topic-${i.category}" href="?category=${i.category}" data-filter="${i.category}">${esc(categoryLabel(i))}</a><span class="pill type-${i.type}">${esc(typeLabel(i))}</span></td><td><span class="author"><span class="avatar" aria-hidden="true">${esc([...i.author.name][0])}</span>${esc(i.author.name)}</span></td><td class="date">${i.updated_at ? esc(new Intl.DateTimeFormat(locale, { year: "numeric", month: "short" }).format(new Date(i.updated_at))) : "—"}</td></tr>`,
+            `<tr data-entry data-category="${i.category}" data-type="${i.type}" data-search="${esc([i.title, i.summary, i.author.name, ...i.tags, categoryLabel(i), typeLabel(i)].join(" ").toLowerCase())}"><td><a class="entry-title" href="./${i.slug}/">${esc(i.title)}</a><p>${esc(i.summary)}</p>${resourceLinks(i)}</td><td class="category-cell"><a class="pill topic-${i.category}" href="?category=${i.category}" data-filter="${i.category}">${esc(categoryLabel(i))}</a><span class="pill type-${i.type}">${esc(typeLabel(i))}</span></td><td><span class="author"><span class="avatar" aria-hidden="true">${esc([...i.author.name][0])}</span>${esc(i.author.name)}</span></td><td class="date">${i.updated_at ? esc(new Intl.DateTimeFormat(locale, { year: "numeric", month: "short" }).format(new Date(i.updated_at))) : "—"}</td></tr>`,
         )
         .join("");
       const home = `<section class="intro"><h1>Cookbook</h1><p>${w.intro}</p></section>${filters}<section class="featured" aria-label="${locale === "zh-CN" ? "精选内容" : "Featured cookbooks"}">${cards}</section><section class="library"><div class="section-head"><h2>${w.all}</h2><span id="result-count" data-unit="${w.count}" aria-live="polite">${items.length} ${w.count}</span></div><table class="catalog"><thead><tr><th scope="col">${w.title}</th><th scope="col">${w.categories}</th><th scope="col">${w.author}</th><th scope="col">${w.date}</th></tr></thead><tbody>${rows}</tbody></table><div class="empty" hidden><p>${w.empty}</p><button id="reset">${w.reset}</button></div></section><section class="contribute"><h2>${w.contribute}</h2><p>${w.welcome}</p><a href="${sourceRoot}/CONTRIBUTING${locale === "zh-CN" ? ".zh-CN" : ""}.md">${w.guide} ↗</a></section>`;
@@ -236,7 +244,7 @@ export async function buildSite(root = process.cwd(), options = {}) {
             i.locale === other &&
             (i.slug === item.translation_of || i.translation_of === item.slug),
         );
-        const body = `<a class="back" href="../">← ${w.back}</a><div class="article-layout"><article><header class="article-header"><div class="article-tags"><span class="pill topic-${item.category}">${esc(categoryLabel(item))}</span><span>${esc(typeLabel(item))}</span></div><h1>${esc(item.title)}</h1><p class="summary">${esc(item.summary)}</p><div class="byline"><span class="author"><span class="avatar">${esc([...item.author.name][0])}</span>${esc(item.author.name)}</span><span>${item.reading_time_minutes} ${w.read}</span></div><div class="article-actions"><button id="copy-markdown">${w.copy}</button><a href="${sourceRoot}/${item.source_path}">${w.source} ↗</a><a href="./index.md" download>Markdown ↓</a></div></header><div class="prose">${md.render(article.body)}</div><div class="article-end"><a href="../">← ${w.back}</a></div></article><nav class="toc" aria-label="${w.toc}"><strong>${w.toc}</strong>${item.toc.map((h) => `<a class="depth-${h.depth}" href="#${esc(h.id)}">${esc(h.text)}</a>`).join("")}</nav></div>`;
+        const body = `<a class="back" href="../">← ${w.back}</a><div class="article-layout"><article><header class="article-header"><div class="article-tags"><span class="pill topic-${item.category}">${esc(categoryLabel(item))}</span><span>${esc(typeLabel(item))}</span></div><h1>${esc(item.title)}</h1><p class="summary">${esc(item.summary)}</p><div class="byline"><span class="author"><span class="avatar">${esc([...item.author.name][0])}</span>${esc(item.author.name)}</span><span>${item.reading_time_minutes} ${w.read}</span></div><div class="article-actions"><button id="copy-markdown">${w.copy}</button><a href="${sourceRoot}/${item.source_path}">${w.source} ↗</a><a href="./index.md" download>Markdown ↓</a></div>${resourceLinks(item, true)}</header>${mediaSection(item)}<div class="prose">${md.render(article.body)}</div><div class="article-end"><a href="../">← ${w.back}</a></div></article><nav class="toc" aria-label="${w.toc}"><strong>${w.toc}</strong>${item.toc.map((h) => `<a class="depth-${h.depth}" href="#${esc(h.id)}">${esc(h.text)}</a>`).join("")}</nav></div>`;
         await writeFile(
           path.join(articleDir, "index.html"),
           shell(

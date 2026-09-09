@@ -1122,3 +1122,19 @@ footer {
     width: 33%;
   }
 }
+
+/* Case entry points remain visible before opening an article. */
+.case-resources { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 4px; }
+.resource-link { display:inline-flex; align-items:center; gap:4px; padding:4px 9px; border:1px solid var(--line); border-radius:6px; font-size:12px; color:var(--muted); text-decoration:none; }
+.resource-link:hover { background:var(--soft); color:var(--text); }
+.resource-live { color:#31715a; }
+.resource-video { color:#786248; }
+.resource-badges { display:block; margin-top:9px; font-size:11px; color:var(--muted); }
+.case-videos { scroll-margin-top:80px; margin:24px 0 36px; }
+.case-videos h2 { font-size:22px; }
+.case-videos figure { margin:20px 0; }
+.case-videos figcaption { margin-bottom:8px; font-weight:550; }
+.case-videos video { display:block; width:100%; max-height:520px; background:#161616; border-radius:10px; }
+.case-videos figure > a { display:inline-block; margin-top:8px; font-size:12px; }
+
+.case-videos video { aspect-ratio:16/9; object-fit:contain; }
