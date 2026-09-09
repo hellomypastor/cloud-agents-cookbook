@@ -82,6 +82,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 Recovery begins by reconciling facts. A corrupt archive requires artifact recovery rather than simply retrying notification.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Generate a report from a test file, archive it, and notify the original conversation. On recovery, reconcile checkpoints and artifacts before resuming. Retry notification independently.
+
+Interrupt after writing the report but before notification. Recovery must verify that the readable artifact belongs to the same input version before retrying delivery. Existence alone can select an old file; unconditional recomputation can duplicate outputs.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Crash before archiving**. Expected behavior: Check artifact presence and integrity during recovery. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

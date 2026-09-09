@@ -84,6 +84,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 Preserve data identity across overview, detail, and exports rather than relying on a single footer label.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Inspect unit loads and material flow in the demo cockpit, tracing one unit’s neighbors. Explain units and data mode without presenting simulated readings as measured production data.
+
+Trace one complete material path and distinguish load percentages from flow units. They cannot be summed as if they were the same measure. The screenshot illustrates organization; simulation identity should survive detail views and report exports.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Stale feed**. Expected behavior: Display staleness instead of a live indicator. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

@@ -82,6 +82,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 Passing tests validate the old requirement version only. Reassess implementation and test relevance after requirements change.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Create requirement, implementation, and verification nodes for input validation. Record input versions and completion evidence. Invalidate affected outputs when requirements change; passing tests must not trigger release.
+
+Complete implementation and verification against v1, then change the accepted input range in v2. Preserve the old passing result to check that dependent nodes become stale. Old tests may still pass without establishing compliance with the new requirement.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Requirements change after coding**. Expected behavior: Invalidate affected downstream nodes. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

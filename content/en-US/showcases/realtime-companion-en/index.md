@@ -84,6 +84,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 Content appropriateness and turn-state correctness are separate checks. First ensure that obsolete speech is not mixed with the new turn.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Run a short voice conversation. Stop the old response when interrupted and handle the new utterance. Close input and playback when the conversation ends.
+
+Interrupt while the first response is playing. Check audio stopping, queue clearing, and transcript isolation. Cancelling generation alone does not remove audio already queued for playback; generation, playback, and captions need turn identity.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **User interrupts**. Expected behavior: Stop old playback and isolate the new turn. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

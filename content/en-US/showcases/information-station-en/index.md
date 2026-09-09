@@ -107,6 +107,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 Count events rather than links while preserving both sources for the first event. Deduplication should not discard corroborating evidence.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Produce an event-based digest. Merge syndicated reports while preserving sources and event times, and distinguish confirmed information from topics under investigation.
+
+Use two reports of one release plus a separate release. Expect two events with both sources retained for the first. Add an old story reposted today and check that retrieval time does not turn it into a new event.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Three syndicated copies**. Expected behavior: Produce one event with multiple sources. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

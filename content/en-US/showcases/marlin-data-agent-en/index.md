@@ -88,6 +88,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 The report can establish a five-percentage-point decline. Without channel, cohort, or experiment data, it cannot attribute the change to a product release.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Compare new-user conversion across two periods. Confirm eligibility, conversion events, and denominators first. Separate observations, hypotheses, and next queries, with calculation evidence.
+
+Check that eligibility and observation windows match. An unfinished period is not directly comparable. The five-point decline is an observation; investigate causes with channel or cohort data instead of asking for a more confident narrative.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Conflicting definitions**. Expected behavior: Resolve the metric definition before querying. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

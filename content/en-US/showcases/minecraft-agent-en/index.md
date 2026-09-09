@@ -82,6 +82,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 This simplified distance check verifies stopping on arrival. Navigation in complex terrain requires independent environment tests.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Approach a target in a test world and stop at the agreed distance. Observe after each action and report unreachable targets or player stop requests.
+
+Test approach and stopping in an open area before adding obstacles. Inspect actual position after actions rather than accepting a verbal success claim. Stop within the threshold and preserve location and failure state when the target cannot be reached.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Target moves**. Expected behavior: Replan from the new observation. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

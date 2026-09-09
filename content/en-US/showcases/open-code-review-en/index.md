@@ -92,6 +92,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 No findings applies only to reviewed scope. Expose unchecked files instead of presenting an empty finding list as comprehensive assurance.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Review a pinned revision range. Give location, triggering input, observed behavior, impact, and evidence for each finding. Report unchecked files separately from findings.
+
+Use a small change with one known boundary bug and one clean file. Check for reproducible findings without generic style noise. Make one file unreadable and verify that coverage changes independently of the findings list.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **File exceeds context capacity**. Expected behavior: Report incomplete coverage. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

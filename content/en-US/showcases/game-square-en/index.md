@@ -84,6 +84,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 A finished game rejects ordinary moves while allowing an explicit restart. Enforce this in rules, not just by hiding buttons.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Exercise start, legal moves, finish, and restart in the demo. Check whether ordinary moves are accepted after completion and whether restart clears previous state.
+
+Finish a short game, repeat the last action, then restart. Hiding controls is not enough: rules must reject post-finish moves. Restart should create fresh state instead of inheriting scores or queued actions.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Repeated action clicks**. Expected behavior: Accept one valid action per turn. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

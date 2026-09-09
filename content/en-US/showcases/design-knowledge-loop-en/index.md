@@ -81,6 +81,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 A campaign preference does not justify changing a global rule. Scope the proposal before evaluation and expert review determine broader applicability.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Check a test button against a pinned spacing rule. Turn feedback into a scoped proposal with supporting examples, counterexamples, and review questions; do not change global policy.
+
+Preserve both the original recommendation and the designer’s revision. A preference for one campaign supports a local rule only. Replay ordinary and campaign pages before the rule owner decides whether to broaden its scope.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Local preference conflicts with policy**. Expected behavior: Keep it local rather than silently changing a global rule. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

@@ -88,6 +88,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 An existing asset is not automatically ready for editing. Check it against the approved script before reuse, regeneration, or review.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Organize shot assets against the approved script. Check script versions, characters, and shot requirements before identifying editable and rework assets.
+
+Create a shot list and intentionally attach an old-script asset. A playable file may still contradict the approved story. Review versions before editing and decide whether to reuse or regenerate; the film is useful for pacing, not a substitute for shot-level validation.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Script revision**. Expected behavior: Invalidate affected shots and assets. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

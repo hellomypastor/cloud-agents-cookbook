@@ -84,6 +84,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 The subtotal is known, but taxes remain unresolved. Do not invent a tax rate merely to complete the quotation.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Prepare a draft quote for ten test kits. Show item matches, quantities, price sources, and subtotals. Leave missing taxes, shipping, and validity unresolved; do not send a final quotation.
+
+Confirm what a kit contains before retrieving prices. Replacing a component requires recalculating its line, not applying a guessed percentage. The 1,200 example is a subtotal: a useful draft can be delivered while the final total remains open.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Ambiguous material name**. Expected behavior: Explain alternatives and request a selection. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

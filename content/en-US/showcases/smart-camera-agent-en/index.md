@@ -81,6 +81,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 A sharp image is not necessarily current. Preserve the stale-frame label if recapture fails.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Check capture time and freshness before describing a test frame. Recapture stale input; if that fails, do not infer the current scene state.
+
+Use a sharp five-minute-old frame with a thirty-second freshness limit. Expect recapture before any current-scene claim. Simulate recapture failure and ensure the retained observation is visibly stale.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Occluded view**. Expected behavior: Report uncertainty instead of absence. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

@@ -84,6 +84,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 Browser connection state is separate from task state. Reconnect to the same task instead of resubmitting and creating duplicate work.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Start a test reporting task and retain its identifier. Reopen the same task after closing the page and verify history, state, and artifacts without resubmitting.
+
+Disconnect only after confirming the task was submitted. Reopen by identifier and display its current state. A browser disconnection is not a reason to rerun; retry requires a known task failure and supported recovery path.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Browser closed**. Expected behavior: Preserve the task and expose state after reconnection. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

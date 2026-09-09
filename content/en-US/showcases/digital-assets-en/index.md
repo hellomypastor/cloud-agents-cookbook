@@ -92,6 +92,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 Equal retrieval scores do not justify choosing a random version. Use historical versions only when the question calls for them and label their applicability.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Answer using the current API documentation and cite its version and location. Follow superseded documents to their replacements; report a gap if no valid source exists.
+
+Keep keyword-rich obsolete documentation alongside its replacement. Check retrieval ordering and that the answer cites v2. Then remove access to the current document: the answer should report unavailable evidence rather than cross access boundaries.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Unauthorized asset**. Expected behavior: Exclude it from retrieval and generated answers. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

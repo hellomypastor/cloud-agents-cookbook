@@ -84,6 +84,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 Missing metrics are not zero. Dependency and business context are also required; this fixture checks restraint when evidence is insufficient.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Inspect a test resource with its metric window, dependencies, and evidence gaps. Keep missing evidence unresolved and return recommendations as a draft.
+
+Compare a resource with metrics against one without them. Missing data is not zero usage. Idleness also depends on window length, periodic workloads, and dependencies; resource changes must remain separate from inspection.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **Missing metrics**. Expected behavior: Report insufficient evidence rather than zero usage. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.

@@ -84,6 +84,20 @@ The following synthetic example makes the expected result concrete. It is an app
 
 An observed timeout is not a diagnosed root cause. A useful report requests the next check when configuration evidence is missing.
 
+### Try the workflow yourself
+
+The following is a reproduction exercise using test data. It illustrates the application workflow, not a claim about undocumented internals of the original product.
+
+> Investigate a test connection timeout. Separate symptoms, performed checks, missing evidence, and next checks without presenting a hypothesis as an established cause.
+
+Provide a timeout result without configuration evidence. Expect a symptom report and a discriminating next check. Add configuration evidence and check that the diagnosis updates rather than preserving its initial guess.
+
+### Read the outcome, then try a counterexample
+
+Change only one condition: **One diagnostic tool fails**. Expected behavior: Retain findings and identify the missing check. Keep the original run alongside the changed run so you can distinguish a changed decision from a missing output.
+
+
+
 ## Reuse guidance
 
 Start by reproducing the request above with a known input. Check the resulting state or artifact against the expected output, then add the following failure cases before widening the task scope.
