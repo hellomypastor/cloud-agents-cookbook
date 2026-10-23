@@ -34,12 +34,12 @@
    npm pack
    ```
 
-   得到 `dsh-subagent-qoder-cloud-agents-0.5.3.tgz`。把它放到一个固定目录（例如 `~/dsh-plugins/`），profile 里记录的是这个路径。
+   得到 `dsh-subagent-qoder-cloud-agents-0.1.0.tgz`。把它放到一个固定目录（例如 `~/dsh-plugins/`），profile 里记录的是这个路径。
 
 2. 安装到 dsh 的 web profile（其他 profile 换成对应名字），路径必须是绝对路径：
 
    ```bash
-   dsh plugin --profile web add ~/dsh-plugins/dsh-subagent-qoder-cloud-agents-0.5.3.tgz
+   dsh plugin --profile web add ~/dsh-plugins/dsh-subagent-qoder-cloud-agents-0.1.0.tgz
    ```
 
    Mac / Windows 客户端：在侧边栏「插件」→ 安装插件，填 tgz 的绝对路径。
