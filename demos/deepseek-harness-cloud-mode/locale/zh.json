@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Qoder Cloud 子代理",
+    "description": "把任务委派到 Qoder Cloud Agents 云端沙箱执行；云端 Agent 克隆当前仓库的 origin，并把改动推送到新分支。"
+  }
+}
