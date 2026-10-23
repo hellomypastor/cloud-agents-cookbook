@@ -57,7 +57,7 @@ sequenceDiagram
 cd demos/deepseek-harness-cloud-mode
 npm ci
 npm pack
-dsh plugin --profile web add "$PWD/dsh-subagent-qoder-cloud-agents-0.5.2.tgz"
+dsh plugin --profile web add "$PWD/dsh-subagent-qoder-cloud-agents-0.5.3.tgz"
 ```
 
 把令牌写进 `~/.dsh/.env`。`QODER_GIT_TOKEN` 用于云端克隆私有仓库和 `git push`，公开仓库、只读任务可以不配：

@@ -7,7 +7,7 @@
     "url": "git+https://github.com/QoderAI/cloud-agents-cookbook.git",
     "directory": "demos/deepseek-harness-cloud-mode"
   },
-  "version": "0.5.2",
+  "version": "0.5.3",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Qoder Cloud subagent",
-    "description": "Delegate one task to a Qoder Cloud Agents sandbox; the cloud agent clones your git origin and pushes its changes to a new branch."
+    "title": "Qoder Cloud Agents cloud mode",
+    "description": "Turn on cloud mode in a new session to run every turn in a Qoder Cloud Agents sandbox, with follow-ups in the same sandbox and changes pushed to a new branch. Also adds a subagent tool for delegating single tasks."
   }
 }
