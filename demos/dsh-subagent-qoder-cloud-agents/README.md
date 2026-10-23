@@ -13,7 +13,7 @@
 ## 对应文章
 
 - 标题：在 DeepSeek Harness 里用云端模式把任务交给 Qoder Cloud Agents
-- Slug：`deepseek-harness-cloud-mode`
+- Slug：`dsh-subagent-qoder-cloud-agents`
 
 ## 前置条件
 

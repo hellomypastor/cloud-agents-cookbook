@@ -1,6 +1,6 @@
 ---
 schema_version: 1
-slug: deepseek-harness-cloud-mode
+slug: dsh-subagent-qoder-cloud-agents
 title: 在 DeepSeek Harness 里用云端模式把任务交给 Qoder Cloud Agents
 summary: 为 DeepSeek Harness 装一个插件，新会话打开「云端模式」后，每一轮都在 Qoder Cloud 沙箱里执行，可连续追问，改动推到新分支后拿回本地。适合想把本地 Agent 客户端接到云端执行的开发者。
 type: recipe
@@ -54,7 +54,7 @@ sequenceDiagram
 从 Demo 源码构建安装包并装进 dsh 的 web profile，路径必须是绝对路径：
 
 ```bash
-cd demos/deepseek-harness-cloud-mode
+cd demos/dsh-subagent-qoder-cloud-agents
 npm ci
 npm pack
 dsh plugin --profile web add "$PWD/dsh-subagent-qoder-cloud-agents-0.1.0.tgz"
@@ -117,7 +117,7 @@ git log --oneline -3
 
 完整的配置项、子代理工具与斜杠命令说明、清理步骤和安全提示见 Demo README。
 
-[查看 Demo 源码](https://github.com/QoderAI/cloud-agents-cookbook/tree/main/demos/deepseek-harness-cloud-mode)
+[查看 Demo 源码](https://github.com/QoderAI/cloud-agents-cookbook/tree/main/demos/dsh-subagent-qoder-cloud-agents)
 
 ## 验证结果
 
