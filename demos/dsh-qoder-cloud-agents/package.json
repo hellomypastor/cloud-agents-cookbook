@@ -1,11 +1,11 @@
 {
-  "name": "dsh-subagent-qoder-cloud-agents",
+  "name": "dsh-qoder-cloud-agents",
   "description": "DeepSeek Harness plugin that runs sessions and delegated tasks on Qoder Cloud Agents sandboxes",
-  "homepage": "https://github.com/QoderAI/cloud-agents-cookbook/tree/main/demos/dsh-subagent-qoder-cloud-agents",
+  "homepage": "https://github.com/QoderAI/cloud-agents-cookbook/tree/main/demos/dsh-qoder-cloud-agents",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/QoderAI/cloud-agents-cookbook.git",
-    "directory": "demos/dsh-subagent-qoder-cloud-agents"
+    "directory": "demos/dsh-qoder-cloud-agents"
   },
   "version": "0.1.0",
   "type": "module",

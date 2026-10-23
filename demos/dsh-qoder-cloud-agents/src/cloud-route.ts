@@ -10,7 +10,7 @@
  * cloud route afterwards, so the persona line ("powered by the {{model}} model")
  * changed between turns and the trace logged a spurious 「系统提示词已更新」.
  *
- * @module dsh-subagent-qoder-cloud-agents/cloud-route
+ * @module dsh-qoder-cloud-agents/cloud-route
  */
 
 import type { Context } from '@deepseek-ai/cordis'

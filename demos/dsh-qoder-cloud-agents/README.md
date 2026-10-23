@@ -1,6 +1,6 @@
 # DeepSeek Harness 云端模式插件 Demo
 
-`dsh-subagent-qoder-cloud-agents` 是一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）插件，把任务交给 Qoder Cloud Agents 在云端沙箱里执行。它提供三个入口：
+`dsh-qoder-cloud-agents` 是一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）插件，把任务交给 Qoder Cloud Agents 在云端沙箱里执行。它提供三个入口：
 
 | 入口 | 用法 | 适合 |
 |---|---|---|
@@ -13,7 +13,7 @@
 ## 对应文章
 
 - 标题：在 DeepSeek Harness 里用云端模式把任务交给 Qoder Cloud Agents
-- Slug：`dsh-subagent-qoder-cloud-agents`
+- Slug：`dsh-qoder-cloud-agents`
 
 ## 前置条件
 
@@ -34,12 +34,12 @@
    npm pack
    ```
 
-   得到 `dsh-subagent-qoder-cloud-agents-0.1.0.tgz`。把它放到一个固定目录（例如 `~/dsh-plugins/`），profile 里记录的是这个路径。
+   得到 `dsh-qoder-cloud-agents-0.1.0.tgz`。把它放到一个固定目录（例如 `~/dsh-plugins/`），profile 里记录的是这个路径。
 
 2. 安装到 dsh 的 web profile（其他 profile 换成对应名字），路径必须是绝对路径：
 
    ```bash
-   dsh plugin --profile web add ~/dsh-plugins/dsh-subagent-qoder-cloud-agents-0.1.0.tgz
+   dsh plugin --profile web add ~/dsh-plugins/dsh-qoder-cloud-agents-0.1.0.tgz
    ```
 
    Mac / Windows 客户端：在侧边栏「插件」→ 安装插件，填 tgz 的绝对路径。
@@ -52,11 +52,11 @@
    chmod 600 ~/.dsh/.env
    ```
 
-4. 通用 Git（GitHub 跳过）：打开 `~/.dsh/profiles/web/cordis.patch.yml`，加上用户名。文件里已有 `id: subagent-qoder-cloud-agents` 时只在它的 `config` 下补字段；文件只有一行 `[]` 时先删掉它：
+4. 通用 Git（GitHub 跳过）：打开 `~/.dsh/profiles/web/cordis.patch.yml`，加上用户名。文件里已有 `id: qoder-cloud-agents` 时只在它的 `config` 下补字段；文件只有一行 `[]` 时先删掉它：
 
    ```yaml
-   - id: subagent-qoder-cloud-agents
-     name: dsh-subagent-qoder-cloud-agents
+   - id: qoder-cloud-agents
+     name: dsh-qoder-cloud-agents
      config:
        gitUsername: your-git-user
    ```
@@ -64,8 +64,8 @@
 5. 其他可选配置也写在同一段 `config` 下（patch 会整体替换 `config`，已有字段要一起保留）：
 
    ```yaml
-   - id: subagent-qoder-cloud-agents
-     name: dsh-subagent-qoder-cloud-agents
+   - id: qoder-cloud-agents
+     name: dsh-qoder-cloud-agents
      config:
        baseURL: https://api.qoder.com/api/v1/cloud
        environmentId: env_xxx        # 不填：首次使用时弹窗选择并记住
@@ -138,7 +138,7 @@ npm test
 
 - 云端 session：子代理工具在配置 `archiveOnFinish: true` 时会自动归档；云端模式和默认配置下 session 保留在 Qoder 控制台，可在控制台归档或删除。
 - 结果分支：不需要时删除远端分支，例如 `git push origin --delete qoder-cloud-agents/xxxxxxxx`。
-- 插件：`dsh plugin --profile web remove dsh-subagent-qoder-cloud-agents`，然后重启 dsh。`cordis.patch.yml` 里保存的 `environmentId`、`agentId`、`gitUsername` 不会随卸载删除，不需要时手动删掉那一段。
+- 插件：`dsh plugin --profile web remove dsh-qoder-cloud-agents`，然后重启 dsh。`cordis.patch.yml` 里保存的 `environmentId`、`agentId`、`gitUsername` 不会随卸载删除，不需要时手动删掉那一段。
 - 令牌：从 `~/.dsh/.env` 删除 `QODER_PAT`、`QODER_GIT_TOKEN`，并在 Qoder 与 Git 平台吊销不再使用的令牌。
 - 本地构建产物：删除本目录下的 `node_modules/`、`lib/` 和生成的 `.tgz`。
 

@@ -1,6 +1,6 @@
 ---
 schema_version: 1
-slug: dsh-subagent-qoder-cloud-agents
+slug: dsh-qoder-cloud-agents
 title: 在 DeepSeek Harness 里用云端模式把任务交给 Qoder Cloud Agents
 summary: 为 DeepSeek Harness 装一个插件，新会话打开「云端模式」后，每一轮都在 Qoder Cloud 沙箱里执行，可连续追问，改动推到新分支后拿回本地。适合想把本地 Agent 客户端接到云端执行的开发者。
 type: recipe
@@ -19,7 +19,7 @@ cover: ./assets/cloud-mode-switch.png
 
 ## 目标与适用场景
 
-[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）是一个"万物皆插件"的本地 Agent 客户端。这篇 Recipe 用一个开源插件 `dsh-subagent-qoder-cloud-agents`，让 dsh 的会话直接跑在 Qoder Cloud Agents 的托管沙箱里：
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）是一个"万物皆插件"的本地 Agent 客户端。这篇 Recipe 用一个开源插件 `dsh-qoder-cloud-agents`，让 dsh 的会话直接跑在 Qoder Cloud Agents 的托管沙箱里：
 
 - 新会话打开「云端模式」开关，这个会话的每一轮都交给云端 Agent 执行，工具调用和回复实时回到对话；
 - 继续输入就是追问，始终在同一个云端沙箱里，上一轮的改动都还在；
@@ -54,10 +54,10 @@ sequenceDiagram
 从 Demo 源码构建安装包并装进 dsh 的 web profile，路径必须是绝对路径：
 
 ```bash
-cd demos/dsh-subagent-qoder-cloud-agents
+cd demos/dsh-qoder-cloud-agents
 npm ci
 npm pack
-dsh plugin --profile web add "$PWD/dsh-subagent-qoder-cloud-agents-0.1.0.tgz"
+dsh plugin --profile web add "$PWD/dsh-qoder-cloud-agents-0.1.0.tgz"
 ```
 
 把令牌写进 `~/.dsh/.env`。`QODER_GIT_TOKEN` 用于云端克隆私有仓库和 `git push`，公开仓库、只读任务可以不配：
@@ -78,8 +78,8 @@ chmod 600 ~/.dsh/.env
 通用 Git 还要在 `~/.dsh/profiles/web/cordis.patch.yml` 里写上用户名：
 
 ```yaml
-- id: subagent-qoder-cloud-agents
-  name: dsh-subagent-qoder-cloud-agents
+- id: qoder-cloud-agents
+  name: dsh-qoder-cloud-agents
   config:
     gitUsername: your-git-user
 ```
@@ -117,7 +117,7 @@ git log --oneline -3
 
 完整的配置项、子代理工具与斜杠命令说明、清理步骤和安全提示见 Demo README。
 
-[查看 Demo 源码](https://github.com/QoderAI/cloud-agents-cookbook/tree/main/demos/dsh-subagent-qoder-cloud-agents)
+[查看 Demo 源码](https://github.com/QoderAI/cloud-agents-cookbook/tree/main/demos/dsh-qoder-cloud-agents)
 
 ## 验证结果
 

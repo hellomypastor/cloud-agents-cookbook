@@ -9,7 +9,7 @@
  *   /qoder-cloud-agents agent <id|name>  use an agent; `new` uses the plugin-managed one
  *   /qoder-cloud-agents reset            forget both; the next delegation asks again
  *
- * @module dsh-subagent-qoder-cloud-agents/command
+ * @module dsh-qoder-cloud-agents/command
  */
 
 import type { CommandDefinition } from '@deepseek-ai/dsh-commands'

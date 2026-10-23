@@ -8,7 +8,7 @@
  * interactive delegation asks the user and saves the answer to the profile
  * (see ./target.ts), and `/qoder-cloud-agents` changes it later.
  *
- * @module dsh-subagent-qoder-cloud-agents
+ * @module dsh-qoder-cloud-agents
  */
 
 import type { Context, Volatile } from '@deepseek-ai/cordis'
@@ -38,13 +38,13 @@ export { detectRepository, httpsRemote } from './git.ts'
 export { SelectionRequiredError } from './target.ts'
 export { CLOUD_MODEL, CLOUD_PRESET_ID, CLOUD_PROVIDER, QoderCloudAdapter } from './cloud-mode.ts'
 
-export const name = 'subagent-qoder-cloud-agents'
+export const name = 'qoder-cloud-agents'
 export const inject = ['subagents']
 
 const DEFAULT_PROVIDER_NAME = 'qoder-cloud-agents'
 const DEFAULT_AGENT_NAME = 'dsh-qoder-cloud-delegate'
 /** Row id this package's bundle patch inserts; fallback when no Loader entry is known. */
-const DEFAULT_ENTRY_ID = 'subagent-qoder-cloud-agents'
+const DEFAULT_ENTRY_ID = 'qoder-cloud-agents'
 const MAX_TIMER_DELAY_MS = 2_147_483_647
 
 const DEFAULT_SYSTEM = [
@@ -183,9 +183,9 @@ class QoderCloudProvider implements SubagentProvider {
   ) {}
 
   async start(request: ResolvedSubagentStartRequest) {
-    const cwd = assertUsableCwd('subagent-qoder-cloud-agents', 'child cwd', requestCwd(this.ctx, request))
+    const cwd = assertUsableCwd('qoder-cloud-agents', 'child cwd', requestCwd(this.ctx, request))
     const client = await this.client()
-    if (typeof client === 'string') throw new Error(`subagent-qoder-cloud-agents: ${client}`)
+    if (typeof client === 'string') throw new Error(`qoder-cloud-agents: ${client}`)
     const questions = this.ctx.get('userQuestions')
     const asker: Asker | undefined = questions === undefined
       ? undefined
@@ -211,7 +211,7 @@ class QoderCloudProvider implements SubagentProvider {
       archiveOnFinish: this.config.archiveOnFinish,
       timeoutMs: this.config.timeoutMs,
       onError: (error, stopReason) => {
-        this.ctx.logger.warn(`subagent-qoder-cloud-agents "${this.name}": run failed (${stopReason}): %o`, error)
+        this.ctx.logger.warn(`qoder-cloud-agents "${this.name}": run failed (${stopReason}): %o`, error)
       },
     })
   }
@@ -224,14 +224,14 @@ class QoderCloudProvider implements SubagentProvider {
  */
 export function apply(ctx: Context, config: Config): void {
   const resolved = config as ResolvedConfig
-  assertPositiveFinite('subagent-qoder-cloud-agents', 'timeoutMs', resolved.timeoutMs)
+  assertPositiveFinite('qoder-cloud-agents', 'timeoutMs', resolved.timeoutMs)
   if (resolved.timeoutMs > MAX_TIMER_DELAY_MS) {
-    throw new Error(`subagent-qoder-cloud-agents: timeoutMs must be no greater than ${MAX_TIMER_DELAY_MS}`)
+    throw new Error(`qoder-cloud-agents: timeoutMs must be no greater than ${MAX_TIMER_DELAY_MS}`)
   }
   try {
     new URL(resolved.baseURL)
   } catch {
-    throw new Error(`subagent-qoder-cloud-agents: baseURL is not a valid URL: ${resolved.baseURL}`)
+    throw new Error(`qoder-cloud-agents: baseURL is not a valid URL: ${resolved.baseURL}`)
   }
 
   const loaderEntryId = (ctx.fiber as { entry?: { options?: { id?: string } } }).entry?.options?.id
@@ -254,7 +254,7 @@ export function apply(ctx: Context, config: Config): void {
       await settings.mutate(entryId, ops)
       return true
     } catch (error: unknown) {
-      ctx.logger.warn('subagent-qoder-cloud-agents: could not save the selection to the profile: %o', error)
+      ctx.logger.warn('qoder-cloud-agents: could not save the selection to the profile: %o', error)
       return false
     }
   }

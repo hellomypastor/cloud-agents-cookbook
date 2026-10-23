@@ -4,7 +4,7 @@
  * silently, so a private repository without a usable token would otherwise
  * surface only as a missing directory inside the sandbox.
  *
- * @module dsh-subagent-qoder-cloud-agents/github
+ * @module dsh-qoder-cloud-agents/github
  */
 
 /** Outcome of the pre-flight check. */
@@ -55,7 +55,7 @@ export async function checkGitHubAccess(
     response = await fetchImpl(`https://api.github.com/repos/${slug.owner}/${slug.repo}`, {
       headers: {
         Accept: 'application/vnd.github+json',
-        'User-Agent': 'dsh-subagent-qoder-cloud-agents',
+        'User-Agent': 'dsh-qoder-cloud-agents',
         ...token === undefined ? {} : { Authorization: `Bearer ${token}` },
       },
       signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)]),

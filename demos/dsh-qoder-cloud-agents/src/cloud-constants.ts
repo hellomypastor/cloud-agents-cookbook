@@ -2,7 +2,7 @@
  * Identifiers shared by the cloud-mode adapter, the preset route plugin and
  * the Web toggle (which repeats them in client.js).
  *
- * @module dsh-subagent-qoder-cloud-agents/cloud-constants
+ * @module dsh-qoder-cloud-agents/cloud-constants
  */
 
 /** LLM provider route served by the Qoder Cloud adapter. */

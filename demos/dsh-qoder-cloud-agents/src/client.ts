@@ -3,7 +3,7 @@
  * (`https://api.qoder.com/api/v1/cloud`): environments, agents, sessions,
  * session events and the session SSE stream.
  *
- * @module dsh-subagent-qoder-cloud-agents/client
+ * @module dsh-qoder-cloud-agents/client
  */
 
 import { randomUUID } from 'node:crypto'

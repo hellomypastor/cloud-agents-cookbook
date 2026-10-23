@@ -3,7 +3,7 @@
  * mount the same repository. The cloud agent never sees local files: only
  * what is reachable on the remote (pushed commits) travels.
  *
- * @module dsh-subagent-qoder-cloud-agents/git
+ * @module dsh-qoder-cloud-agents/git
  */
 
 import { execFile } from 'node:child_process'

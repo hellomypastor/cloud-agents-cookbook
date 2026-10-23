@@ -4,7 +4,7 @@
  * follow the session SSE stream until the turn settles, and map the outcome
  * onto the shared subagent result.
  *
- * @module dsh-subagent-qoder-cloud-agents/run
+ * @module dsh-qoder-cloud-agents/run
  */
 
 import { randomUUID } from 'node:crypto'
@@ -73,12 +73,12 @@ export function textTask(prompt: readonly ContentBlock[]): string {
   const texts: string[] = []
   for (const block of prompt) {
     if (block.type !== 'text') {
-      throw new Error('subagent-qoder-cloud-agents: the delegated task must contain only text blocks')
+      throw new Error('qoder-cloud-agents: the delegated task must contain only text blocks')
     }
     texts.push(block.text)
   }
   const text = texts.join('\n')
-  if (text.trim().length === 0) throw new Error('subagent-qoder-cloud-agents: the delegated task must not be empty')
+  if (text.trim().length === 0) throw new Error('qoder-cloud-agents: the delegated task must not be empty')
   return text
 }
 
@@ -181,7 +181,7 @@ export function repositoryResource(
   if (username === undefined) {
     const host = new URL(repo.url).host
     throw new Error(
-      `subagent-qoder-cloud-agents: ${host} needs an account name with ${spec.gitTokenEnv ?? 'the git token'}; `
+      `qoder-cloud-agents: ${host} needs an account name with ${spec.gitTokenEnv ?? 'the git token'}; `
       + 'set gitUsername in the plugin config '
       + `or use an origin like https://<account>@${host}/…`,
     )
@@ -215,11 +215,11 @@ export async function startQoderCloudRun(
   spec: QoderCloudRunSpec,
 ): Promise<SubagentRun> {
   const task = textTask(request.prompt)
-  if (request.signal.aborted) throw new Error('subagent-qoder-cloud-agents: request was aborted before session start')
+  if (request.signal.aborted) throw new Error('qoder-cloud-agents: request was aborted before session start')
 
   const controller = new AbortController()
   const requestCancel = (): void => {
-    if (!controller.signal.aborted) controller.abort(new Error('subagent-qoder-cloud-agents: run cancelled locally'))
+    if (!controller.signal.aborted) controller.abort(new Error('qoder-cloud-agents: run cancelled locally'))
   }
   const onAbort = (): void => { requestCancel() }
   request.signal.addEventListener('abort', onAbort, { once: true })
@@ -236,7 +236,7 @@ export async function startQoderCloudRun(
     if (repo?.github) {
       // The platform clones silently and lazily; catch an unusable token here.
       const access = await checkGitHubAccess(repo.url, spec.gitToken, spec.gitTokenEnv ?? 'QODER_GIT_TOKEN', controller.signal)
-      if (access.error !== undefined) throw new Error(`subagent-qoder-cloud-agents: ${access.error}`)
+      if (access.error !== undefined) throw new Error(`qoder-cloud-agents: ${access.error}`)
       preflightNotes.push(...access.warnings)
     }
     // Build resources before resolving the target so a credential mistake fails before any prompt.
@@ -266,7 +266,7 @@ export async function startQoderCloudRun(
   } catch (error: unknown) {
     request.signal.removeEventListener('abort', onAbort)
     if (sessionId !== undefined) await bestEffort(() => client.archiveSession(sessionId!, AbortSignal.timeout(10_000)))
-    if (controller.signal.aborted) throw new Error('subagent-qoder-cloud-agents: request was aborted before session start')
+    if (controller.signal.aborted) throw new Error('qoder-cloud-agents: request was aborted before session start')
     throw error instanceof Error ? error : new Error(String(error))
   }
 
@@ -275,7 +275,7 @@ export async function startQoderCloudRun(
   let timedOut = false
   const timer = setTimeout(() => {
     timedOut = true
-    controller.abort(new Error('subagent-qoder-cloud-agents: turn timed out'))
+    controller.abort(new Error('qoder-cloud-agents: turn timed out'))
   }, spec.timeoutMs)
 
   const footer = (stopReason: string): string => {
@@ -363,7 +363,7 @@ export async function startQoderCloudRun(
       try {
         return await following
       } catch (error: unknown) {
-        if (timedOut) throw new Error(`subagent-qoder-cloud-agents: turn exceeded ${spec.timeoutMs} ms`)
+        if (timedOut) throw new Error(`qoder-cloud-agents: turn exceeded ${spec.timeoutMs} ms`)
         throw error
       } finally {
         clearTimeout(timer)

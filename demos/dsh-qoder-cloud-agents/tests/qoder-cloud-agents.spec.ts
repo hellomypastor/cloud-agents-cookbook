@@ -114,7 +114,7 @@ describe('cloudPrompt', () => {
   })
 })
 
-describe('subagent-qoder-cloud-agents provider', () => {
+describe('qoder-cloud-agents provider', () => {
   it('registers, validates config and unregisters on dispose', async () => {
     const { ctx, fiber, provider } = await mountProvider({ token: 'pt-test' })
     expect(provider).toMatchObject({
@@ -274,7 +274,7 @@ const idleStream = async (s: StreamContext) => {
 class StubSettings extends Service {
   readonly writes: { ns: string; ops: unknown[] }[] = []
   constructor(ctx: Context) { super(ctx, 'settings') }
-  describe() { return [{ ns: 'subagent-qoder-cloud-agents', revision: 0 }] }
+  describe() { return [{ ns: 'qoder-cloud-agents', revision: 0 }] }
   async mutate(ns: string, ops: unknown[]) { this.writes.push({ ns, ops }) }
 }
 
@@ -375,7 +375,7 @@ describe('environment / agent selection', () => {
     const sessions = mock.requests.filter(r => r.path === '/sessions').map(r => r.body)
     expect(sessions.map(b => [b.environment_id, b.agent])).toEqual([['env_b', 'agent_cr'], ['env_b', 'agent_cr']])
     expect((ctx as any).settings.writes).toEqual([{
-      ns: 'subagent-qoder-cloud-agents',
+      ns: 'qoder-cloud-agents',
       ops: [{ op: 'set', path: ['environmentId'], value: 'env_b' }, { op: 'set', path: ['agentId'], value: 'agent_cr' }],
     }])
     // Whichever run won the selection queue reports how the binding was chosen.

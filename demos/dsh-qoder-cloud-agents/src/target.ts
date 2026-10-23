@@ -8,7 +8,7 @@
  * environment fails the delegation and names the candidates instead of
  * guessing.
  *
- * @module dsh-subagent-qoder-cloud-agents/target
+ * @module dsh-qoder-cloud-agents/target
  */
 
 import type { AskUserQuestionAnswer, AskUserQuestionItem } from '@deepseek-ai/dsh-user-questions'
@@ -121,8 +121,8 @@ export class SelectionRequiredError extends Error {
 function ambiguousEnvironment(candidates: readonly EnvironmentView[], entryId: string, reason: string): SelectionRequiredError {
   const lines = [
     candidates.length === 1
-      ? `subagent-qoder-cloud-agents: the only Qoder Cloud environment is self-hosted (BYOC) and ${reason}.`
-      : `subagent-qoder-cloud-agents: ${candidates.length} Qoder Cloud environments are available and ${reason}.`,
+      ? `qoder-cloud-agents: the only Qoder Cloud environment is self-hosted (BYOC) and ${reason}.`
+      : `qoder-cloud-agents: ${candidates.length} Qoder Cloud environments are available and ${reason}.`,
     'Choose one with `/qoder-cloud-agents env <id>` in an interactive dsh session, or set it in the profile patch:',
     '',
     `- id: ${entryId}`,
@@ -298,10 +298,10 @@ export class TargetResolver {
       const custom = item?.custom?.trim()
       if (custom !== undefined && custom.length > 0 && label === undefined) {
         const match = matchByIdOrName(plan.all, custom, 'environment')
-        if (typeof match === 'string') throw new SelectionRequiredError(`subagent-qoder-cloud-agents: ${match}`)
+        if (typeof match === 'string') throw new SelectionRequiredError(`qoder-cloud-agents: ${match}`)
         return match
       }
-      if (label === undefined) throw new SelectionRequiredError('subagent-qoder-cloud-agents: no Qoder Cloud environment was chosen')
+      if (label === undefined) throw new SelectionRequiredError('qoder-cloud-agents: no Qoder Cloud environment was chosen')
     }
     return client.createEnvironment(DEFAULT_ENVIRONMENT_NAME, signal)
   }
@@ -321,10 +321,10 @@ export class TargetResolver {
       const custom = item?.custom?.trim()
       if (custom !== undefined && custom.length > 0 && label === undefined) {
         const match = matchByIdOrName(plan.all, custom, 'agent')
-        if (typeof match === 'string') throw new SelectionRequiredError(`subagent-qoder-cloud-agents: ${match}`)
+        if (typeof match === 'string') throw new SelectionRequiredError(`qoder-cloud-agents: ${match}`)
         return match
       }
-      if (label === undefined) throw new SelectionRequiredError('subagent-qoder-cloud-agents: no Qoder Cloud agent was chosen')
+      if (label === undefined) throw new SelectionRequiredError('qoder-cloud-agents: no Qoder Cloud agent was chosen')
     }
     return this.createManagedAgent(client, signal)
   }
@@ -337,7 +337,7 @@ export class TargetResolver {
       name: this.options.agentName,
       model: this.options.model,
       system: this.options.system,
-      description: 'Managed by the DeepSeek Harness subagent-qoder-cloud-agents plugin',
+      description: 'Managed by the DeepSeek Harness dsh-qoder-cloud-agents plugin',
       tools: [{ type: AGENT_TOOLSET }],
       metadata: { source: 'deepseek-harness' },
     }, signal)

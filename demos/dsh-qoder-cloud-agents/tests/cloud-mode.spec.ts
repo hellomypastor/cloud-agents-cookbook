@@ -58,7 +58,7 @@ function adapterFor(baseURL: string, overrides: Partial<CloudModeOptions> = {}) 
     agentName: 'dsh-qoder-cloud-delegate',
     model: 'ultimate',
     system: '',
-    entryId: 'subagent-qoder-cloud-agents',
+    entryId: 'qoder-cloud-agents',
     persist: async () => true,
   })
   return new QoderCloudAdapter({

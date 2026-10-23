@@ -3,7 +3,7 @@
  * Browser `EventSource` cannot send a Bearer header, so the stream is read
  * through `fetch` and decoded here.
  *
- * @module dsh-subagent-qoder-cloud-agents/sse
+ * @module dsh-qoder-cloud-agents/sse
  */
 
 /** One dispatched SSE frame. Comment-only frames (heartbeats) are dropped. */

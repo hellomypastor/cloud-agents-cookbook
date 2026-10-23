@@ -8,7 +8,7 @@
  * The remote session id travels on each reply's `replayState`, so it survives
  * restarts and forks without extra storage.
  *
- * @module dsh-subagent-qoder-cloud-agents/cloud-mode
+ * @module dsh-qoder-cloud-agents/cloud-mode
  */
 
 import { randomUUID } from 'node:crypto'
@@ -478,7 +478,7 @@ function firstString(value: unknown): string | undefined {
 
 function toLlmError(error: unknown, context: string): LlmError {
   if (error instanceof LlmError) return error
-  const message = error instanceof Error ? error.message.replace(/^subagent-qoder-cloud-agents: /, '') : String(error)
+  const message = error instanceof Error ? error.message.replace(/^qoder-cloud-agents: /, '') : String(error)
   const status = (error as { status?: unknown }).status
   return new LlmError(`${context}: ${message}`, 'REMOTE_AGENT_ERROR', {
     cause: error,
